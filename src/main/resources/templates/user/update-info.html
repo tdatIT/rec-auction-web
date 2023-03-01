@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Thông tin tài khoản</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<main class="site-main">
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/trang-chu">Trang chủ</a></li>
+                            <!-- <li class="breadcrumb-item"><a href="#">User</a></li> -->
+                            <li class="breadcrumb-item active" aria-current="page">Cập nhật thông tin</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+            <div class="container">
+                <div class="row flex-lg-nowrap">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="e-profile">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="mx-auto" style="width: 140px;">
+                                                        <img
+                                                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                                                                alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                                    <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">Trần Tiến Đạt</h4>
+                                                        <p class="mb-0">ROLE</p>
+                                                        <div class="mt-2">
+                                                            <a class="btn btn-primary" href="/tai-khoan">
+                                                                <i class="fa fa-solid fa-arrow-left"></i>
+                                                                <span>Quay lại</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <section class="product_description_area">
+                                                <div class="container">
+                                                    <div th:if="${(param.error != null) and (param.error[0] == '1')}"
+                                                         class="alert alert-warning" role="alert" >
+                                                        Cập nhật thông tin thất bại!
+                                                    </div>
+                                                    <div th:if="${(param.error != null) and (param.error[0] == '2')}"
+                                                         class="alert alert-warning" role="alert" >
+                                                        Cập nhật thất bại. Sai mật khẩu cũ !
+                                                    </div>
+                                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" id="updateUser-tab" data-toggle="tab" href="#updateUser"
+                                                               role="tab" aria-controls="home" aria-selected="true">Cập nhật thông tin</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="updatePassword-tab" data-toggle="tab" href="#updatePassword"
+                                                               role="tab" aria-controls="profile" aria-selected="false">Cập nhật mật khẩu</a>
+                                                        </li>
+
+                                                    </ul>
+                                                    <div class="tab-content" id="myTabContent">
+                                                        <div class="tab-pane fade show active" id="updateUser" role="tabpanel"
+                                                             aria-labelledby="updateUser-tab">
+                                                            <div class="tab-content pt-3">
+                                                                <div class="tab-pane active">
+                                                                    <form class="form" method="post" action="/tai-khoan/doi-thong-tin">
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="row">
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Tên</label>
+                                                                                            <input class="form-control" type="text" name="firstname" required
+                                                                                                   th:value="${user.firstName}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Họ</label>
+                                                                                            <input class="form-control" type="text" name="lastname" required
+                                                                                                   th:value="${user.lastName}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Email</label>
+                                                                                            <input class="form-control" type="email" name="email" required th:value="${user.email}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Số điện thoại</label>
+                                                                                            <input class="form-control" type="text" name="phone" required
+                                                                                                   th:value="${user.phoneNumber}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col d-flex justify-content-end">
+                                                                                <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="updatePassword" role="tabpanel"
+                                                             aria-labelledby="updatePassword-tab">
+                                                            <div class="tab-content pt-3">
+                                                                <div class="tab-pane active">
+                                                                    <form class="form" method="post" action="/tai-khoan/doi-mat-khau"
+                                                                          oninput='con_password.setCustomValidity(con_password.value != password.value ? "Mật khẩu không khớp" : "")'>
+                                                                        <div class="row">
+                                                                            <div class="col-12 col-sm-6 mb-3">
+                                                                                <div class="mb-2"><b>Thay đổi mật khẩu</b></div>
+                                                                                <div class="row">
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Mật khẩu hiện tại</label>
+                                                                                            <input class="form-control" type="password" placeholder="••••••"
+                                                                                                   required name="current-password" minlength="8">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Mật khẩu mới</label>
+                                                                                            <input class="form-control" type="password" placeholder="••••••"
+                                                                                                   required name="password" minlength="8">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col">
+                                                                                        <div class="form-group">
+                                                                                            <label>Xác nhận <span class="d-none d-xl-inline">mật khẩu</span></label>
+                                                                                            <input class="form-control" type="password" placeholder="••••••"
+                                                                                                   required name="con_password" minlength="8">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col d-flex justify-content-end">
+                                                                                <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+</main>
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+</body>
+</html>

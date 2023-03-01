@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lý sản phẩm</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/css/adminx.css"
+          media="screen"/>
+</head>
+<body>
+<div class="adminx-container">
+    <th:block th:replace="admin/admin-fragments::header-sidebar"></th:block>
+    <!-- Main Content -->
+    <div class="adminx-content">
+        <div class="adminx-main-content">
+            <div class="container-fluid">
+                <!-- BreadCrumb -->
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb adminx-page-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Quản lý sản phẩm</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Bảng</li>
+                    </ol>
+                </nav>
+                <div class="pb-3">
+                    <h1>Doanh mục</h1>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-grid">
+                            <div class="table-responsive-md">
+                                <table class="table table-actions table-striped table-hover mb-0" data-table>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+
+                                            <label class="custom-control custom-checkbox m-0 p-0">
+                                                <input type="checkbox" class="custom-control-input table-select-all">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </th>
+                                        <th scope="col">Ảnh</th>
+                                        <th scope="col">Tên</th>
+                                        <th scope="col">Giá mặc định</th>
+                                        <th scope="col">Giá thấp nhất</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Chức năng</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <th:block th:each="p : ${productList}">
+                                        <tr>
+                                            <th scope="row">
+                                                <label class="custom-control custom-checkbox m-0 p-0">
+                                                    <input type="checkbox"
+                                                           class="custom-control-input table-select-row">
+                                                    <span class="custom-control-indicator"></span>
+                                                </label>
+                                            </th>
+                                            <td>
+                                                <img th:src="${p.images[0].getImgName()}"
+                                                     height="40px" width="40px">
+                                            </td>
+                                            <td th:text="${p.productName}"></td>
+                                            <td th:text="${#numbers.formatDecimal(p.defaultPrice, 2, 1,'COMMA')}"></td>
+                                            <td th:text="${#numbers.formatDecimal(p.minPrice, 2, 1,'COMMA')}"></td>
+
+                                            <td th:if="${p.status == 1}">
+                                                <span class="badge badge-pill badge-primary">Thủ công</span>
+                                            </td>
+
+
+                                            <td th:if="${p.status == 2}">
+                                                <span class="badge badge-pill badge-success">Tự động</span>
+                                            </td>
+                                            <td th:if="${p.status == 3}">
+                                                <span class="badge badge-pill badge-danger">Không hoạt động</span>
+                                            </td>
+
+                                            <td>
+                                                <a class="btn btn-sm btn-primary"
+                                                   th:href="@{/admin/san-pham/chinh-sua/{id}(id=${p.productId})} ">Chỉnh
+                                                    sửa</a>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- // Main Content -->
+</div>
+
+
+<th:block th:replace="admin/admin-fragments::script-table"></th:block>
+
+<script>
+    $(document).ready(function () {
+        var table = $('[data-table]').DataTable({
+            "columns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {"orderable": false}
+            ]
+        });
+
+        /* $('.form-control-search').keyup(function(){
+          table.search($(this).val()).draw() ;
+        }); */
+    });
+</script>
+
+
+</body>
+</html>

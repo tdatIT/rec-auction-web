@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Thông tin tài khoản</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<main class="site-main">
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/trang-chu">Trang chủ</a></li>
+                            <!-- <li class="breadcrumb-item"><a href="#">User</a></li> -->
+                            <li class="breadcrumb-item active" aria-current="page">Thông tin người dùng</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                                 alt="avatar"
+                                 class="rounded-circle img-fluid" style="width: 150px;">
+                            <h5 class="my-3" th:text="${user.lastName+ ' '+ user.firstName}"></h5>
+                            <p class="text-muted mb-1"
+                               th:text="${#strings.substring(user.role.name,5,user.role.name.length())}"></p>
+                            <p class="text-muted mb-4">Việt Nam</p>
+                            <div class="d-flex justify-content-center mb-2">
+                                <a th:href="@{/tai-khoan/chinh-sua}" type="button"
+                                   class="btn btn-primary">Chỉnh sửa thông tin</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 mb-lg-0">
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush rounded-3">
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <i class="fa fa-globe fa-lg text-warning"></i>
+                                    <p class="mb-0" th:inline="text">Cấp [[${user.getLevelUser()}]]</p>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <i class="fa fa-solid fa-store text-success"></i>
+                                    <a th:if="${user.role.roleId == 2}" class="mb-0" href="/supplier/">Cửa
+                                        hàng</a>
+                                    <a th:if="${user.role.roleId == 3}" class="mb-0"
+                                       href="/tai-khoan/dang-ky-nha-cung-cap">Đăng ký nhà cung cấp</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <i class="fa fa-solid fa-wallet text-danger"></i>
+                                    <a class="mb-0" href="/tai-khoan/quan-ly-vi">Ví tiền</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Tên đầy đủ</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0" th:text="${user.lastName + ' ' +user.firstName}"></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0" th:text="${user.email}"></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Điện thoại</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0" th:text="${user.phoneNumber}"></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Ngày bắt đầu</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0" th:text="${user.createDate}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <h6>Danh sách địa chỉ</h6>
+                                        </div>
+                                        <div class="col-sm-4 flex d-flex  justify-content-end">
+                                            <a class="btn btn-info text-white" data-toggle="modal"
+                                               data-target="#exampleModal">Thêm</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--LIST-->
+                        <th:block th:if="${user.getUserAddresses().size()>0}"
+                                  th:each="add:${user.getUserAddresses()}">
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Địa chỉ:</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0" th:text="${add.getAddressDetailInfo()    }"></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Quốc gia:</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0">Việt Nam</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Modal -->
+<form method="post" action="/tai-khoan/them-dia-chi">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm địa chỉ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <select id="province" class="form-control" name="province">
+                            <option value="-1">Tỉnh/Thành phố</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quận/Huyện</label>
+                        <select id="district" class="form-control" name="district">
+                            <option value="-1">Quận/Huyện</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Xã/Phường</label>
+                        <select id="ward" class="form-control" name="ward">
+                            <option value="-1">Xã phường</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="detail">Địa chỉ chi tiết</label>
+                        <textarea name="addressDetail" class="form-control" id="detail"
+                                  placeholder="VD: Số nhà, tên đường..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="/js/province_data.js"></script>
+
+</body>
+</html>

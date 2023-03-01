@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thông tin sản phẩm</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/css/adminx.css"
+          media="screen"/>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="adminx-container">
+    <th:block th:replace="admin/admin-fragments-fragments :: header-sidebar"></th:block>
+    <!-- Main Content -->
+    <div class="adminx-content">
+        <div class="adminx-content">
+            <div class="adminx-main-content">
+                <div class="container-fluid">
+                    <!-- BreadCrumb -->
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb adminx-page-breadcrumb">
+                            <li class="breadcrumb-item"><a href="./dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="./product">Sản phẩm</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thông tin
+                            </li>
+                        </ol>
+                    </nav>
+                    <div class="pb-3">
+                        <h1>Thông tin sản phẩm</h1>
+                    </div>
+                    <form id="form-data" method="post" th:object="${productDTO}"
+                          enctype="multipart/form-data" th:action="${action}">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card mb-grid">
+                                    <div class="card-header">
+                                        <div class="card-header-title">Thông tin</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label class="form-label"></label>
+                                            <input th:field="*{productId}" name="productId" id="productId"
+                                                   class="form-control mb-2"
+                                                   type="hidden"
+                                                   th:value="*{productId}">
+                                        </div>
+                                        <div class="form-group" th:if="${message == 1}">
+                                            <div class="alert alert-warning" role="alert">
+                                                Thêm sản phẩm thất bại
+                                            </div>
+                                        </div>
+                                        <div class="form-group" th:if="${message == 2}">
+                                            <div class="alert alert-warning" role="alert">
+                                                Cập nhật sản phẩm thất bại
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Tên sản phẩm</label>
+                                            <input name="name" class="form-control mb-2" type="text" placeholder="Tên"
+                                                   th:field="*{productName}" th:value="*{productName}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Doanh mục sản phẩm</label>
+                                            <select th:field="*{categoryId}" name="categoryId"
+                                                    class="form-control js-choice">
+                                                <th:block th:each="c : ${categories}">
+                                                    <option th:value="${c.categoryId}" th:text="${c.categoryName}">
+
+                                                    </option>
+                                                </th:block>
+
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Giá tiền mặc định</label>
+                                            <input name="price" class="form-control  mb-2" type="number"
+                                                   placeholder="Ví dụ: 25000"
+                                                   th:field="*{defaultPrice}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Giá tiền thấp nhất</label>
+                                            <input name="promotionalPrice" class="form-control mb-2" type="number"
+                                                   placeholder="Giá tiền thấp nhất mà sản phẩm có thể đấu giá"
+                                                   th:field="*{minPrice}">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        Vui lòng nhập đúng thông tin <strong>sản phẩm</strong> để dễ dàng quản lý
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card mb-grid">
+                                    <div class="card-header">
+                                        <div class="card-header-title">Thông tin bổ sung cho sản phẩm</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label class="form-label">Trạng thái</label>
+                                            <select th:field="*{status}" name="status" class="form-control js-choice">
+                                                <option value="1">Thủ công</option>
+                                                <option value="2">Tự động</option>
+                                                <option value="2">Không hoạt động</option>
+                                                <option value="1" th:if="*{status==1}" selected hidden>Thủ công</option>
+                                                <option value="2" th:if="*{status==2}" selected hidden>Tự động</option>
+                                                <option value="3" th:if="*{status==3}" selected hidden>Không hoạt động
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Mô tả tóm tắt</label>
+                                            <textarea name="description" class="form-control mb-2" type="text"
+                                                      placeholder="Chi tiết" th:value="*{detail}"
+                                                      th:field="*{subDetail}"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Mô tả sản phẩm</label>
+                                            <textarea id="summernote" name="description" class="form-control mb-2"
+                                                      type="text"
+                                                      placeholder="Chi tiết" th:value="*{detail}"
+                                                      th:field="*{detail}"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formFileMultiple" class="form-label">Thêm hình ảnh sản
+                                                phẩm</label>
+                                            <div class="justify-content-center">
+                                                <th:block th:each="img: *{images}">
+                                                    <img th:src="${img.imgName}" style="height: 100px; width: 100px;">
+                                                </th:block>
+                                            </div>
+                                            <input th:field="*{images_file}" class="form-control mt-5" type="file"
+                                                   id="formFileMultiple" multiple/>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-between">
+                                            <button type="submit" th:if="*{productId==0}" id="add-btn"
+                                                    class="btn btn-success text-white">Hoàn tất
+                                            </button>
+                                            <th:block th:if="*{productId != 0}">
+                                                <button type="submit" id="update-btn"
+                                                        class="btn btn-primary text-white">Cập nhật
+                                                </button>
+                                                <a th:href="@{/admin/san-pham/xoa/{id}(id=*{productId})}"
+                                                   id="delete-btn" class="btn btn-warning text-white">Xóa sản phẩm</a>
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- // Main Content -->
+</div>
+
+<!-- If you prefer jQuery these are the required scripts -->
+<th:block th:replace="admin/admin-fragments :: script-block"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote();
+    });
+    var choices = new Choices('.js-choice');
+
+    var choices2 = new Choices('.js-choice-remove', {
+        removeItemButton: true,
+    });
+
+    flatpickr(".date-default", {
+        allowInput: true
+    });
+    flatpickr(".date-time", {
+        allowInput: true,
+        enableTime: true,
+    });
+    flatpickr(".date-human", {
+        allowInput: true,
+        altInput: true,
+    });
+    flatpickr(".date-inline", {
+        allowInput: true,
+        inline: true,
+    });
+
+</script>
+</body>
+</html>

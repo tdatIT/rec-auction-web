@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <title id="pageTitle">Nạp tiền vào ví</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<!-- ================ start view wallet area ================= -->
+<main class="site-main">
+    <section style="background-color: #eee;">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="..//trang-chu">Trang chủ</a></li>
+                            <!-- <li class="breadcrumb-item"><a href="#">User</a></li> -->
+                            <li class="breadcrumb-item active" aria-current="page">Nạp tiền</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row flex-lg-nowrap">
+                <div class="col">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="e-profile">
+                                        <div class="row">
+                                            <h3 class="text-center-load">Nạp tiền vào ví</h3>
+                                        </div>
+
+                                        <section class="product_description_area payment-method">
+                                            <div class="container">
+                                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="updateUser-tab" data-toggle="tab"
+                                                           href="#updateUser" role="tab"
+                                                           aria-controls="home" aria-selected="true">Chọn mệnh giá có
+                                                            sẵn</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="updatePassword-tab" data-toggle="tab"
+                                                           href="#updatePassword" role="tab"
+                                                           aria-controls="profile" aria-selected="false">Tuỳ chọn mệnh
+                                                            giá</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content tab-payment" id="myTabContent">
+                                                    <div class="tab-pane fade show active " id="updateUser"
+                                                         role="tabpanel" aria-labelledby="updateUser-tab">
+                                                        <div class="tab-content pt-3 inside">
+                                                            <div class="active">
+                                                                <form class="form mb-lg-5" method="post"
+                                                                      action="/thanh-toan">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <label>Chọn mệnh giá có sẵn</label>
+                                                                            <div class="ui selection dropdown">
+                                                                                <input type="hidden" name="amount">
+                                                                                <i class="dropdown icon"></i>
+                                                                                <div class="default text">Chọn mệnh giá
+                                                                                    có sẳn
+                                                                                </div>
+                                                                                <div class="menu">
+                                                                                    <div class="item"
+                                                                                         data-value="50000">50.000đ
+                                                                                    </div>
+                                                                                    <div class="item"
+                                                                                         data-value="100000">100.000đ
+                                                                                    </div>
+                                                                                    <div class="item"
+                                                                                         data-value="200000">200.000đ
+                                                                                    </div>
+                                                                                    <div class="item"
+                                                                                         data-value="500000">500.000đ
+                                                                                    </div>
+                                                                                    <div class="item"
+                                                                                         data-value="1000000">1.000.000đ
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col">
+                                                                            <p class="guide">Hướng dẫn nạp thẻ: hãy chọn
+                                                                                mệnh giá bạn mong muốn và nhấn vào nút
+                                                                                thanh toán bên dưới</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="d-flex justify-content-center ">
+                                                                            <div class="col-md-12">
+                                                                                <button class="ui primary button"
+                                                                                        type="submit">
+                                                                                    <span>Thanh toán Paypal</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade " id="updatePassword" role="tabpanel"
+                                                         aria-labelledby="updatePassword-tab">
+                                                        <div class="tab-content pt-3 inside">
+                                                            <div class="tab-pane active">
+                                                                <form class="form mb-lg-5" method="post"
+                                                                      action="/thanh-toan">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <div class="form-group">
+                                                                                <label>Chọn số tiền tuỳ chọn</label>
+                                                                                <input class="form-control"
+                                                                                       type="number"
+                                                                                       name="amount"
+                                                                                       placeholder="Tối thiểu 100.000đ"
+                                                                                       required
+                                                                                       min="100000"
+                                                                                       id="currency-input">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <p class="guide">Hướng dẫn nạp thẻ: hãy điền
+                                                                                mệnh giá bạn mong muốn và nhấn vào nút
+                                                                                thanh toán bên dưới</p>
+                                                                            <p>Số tiền thanh toán:
+                                                                                <span id="currency-convert"
+                                                                                      class="text-success"></span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="d-flex justify-content-center ">
+                                                                            <div class="col-md-12">
+                                                                                <button class="ui primary button"
+                                                                                        type="submit">
+                                                                                    <span>Thanh toán Paypal</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- ================ end view wallet area ================= -->
+
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $('#currency-input').keypress(function (e) {
+        var value = $(this).val();
+        console.log(value)
+        $('#currency-convert').text(formatter.format(value))
+    })
+    $('.ui.dropdown').dropdown();
+</script>
+</body>
+</html>

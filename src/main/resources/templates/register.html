@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Đăng ký tài khoản</title>
+</head>
+<body>
+<!-- ================ Start Header Menu Area =================-->
+<header th:replace="fragments :: header">
+
+</header>
+<section class="login_box_area section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login_box_img">
+                    <div class="hover">
+                        <h4>Bạn đã sở hữu tài khoản</h4>
+                        <p>Vui lòng đăng nhập vào tài khoản của bạn để trải nghiệm dịch vụ.</p>
+                        <a class="button button-account" href="/dang-nhap">Đăng nhập ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login_form_inner register_form_inner">
+                    <h3>Tạo tài khoản mới</h3>
+                    <form class="row login_form" th:action="@{/dang-ky}" method="post" id="register_form"
+                          th:object="${register}">
+                        <div class="col-md-12 form-group"
+                             th:if="${(param.error != null) and (param.error[0] == 'true')}">
+                            <div class="alert alert-danger">Đăng ký thất bại kiểm tra lại thông tin</div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <input th:field="*{lastName}" type="text" class="form-control" placeholder="Họ"
+                                   required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <input th:field="*{firstName}" type="text" class="form-control" placeholder="Tên"
+                                   required>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label for="email" id="email-status"></label>
+                            <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email"
+                                   required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input th:field="*{password}" type="password" class="form-control"
+                                   placeholder="Mật khẩu"
+                                   required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="password" class="form-control" placeholder="Xác nhận lại mật khẩu" required>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <input th:field="*{phoneNumber}" type="text" class="form-control"
+                                   placeholder="Số điện thoại" required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button type="submit" value="submit" class="button button-register w-100">Đăng ký</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Login Box Area =================-->
+
+
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="/js/province_data.js"></script>
+<script>
+    $('#email').change(function () {
+        var email = $(this).val()
+        $.ajax({
+            url: '/check-email',
+            method: 'get',
+            data: {"email": email},
+            success: function (data) {
+                if (data.status == false) {
+                    iziToast.warning({
+                        title: 'Email tồn tại',
+                        message: 'Vui lòng sử dụng email khác',
+                        timeout: 1000,
+                        position: "topRight"
+                    });
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

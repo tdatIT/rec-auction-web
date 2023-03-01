@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Xác nhận đơn hàng</title>
+</head>
+<body>
+<!--================ Start Header Menu Area =================-->
+<header th:replace="fragments :: header">
+
+</header>
+
+<!-- ================ start view checkout area ================= -->
+
+<main class="site-main">
+    <section style="background-color: #eee;">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                            <!-- <li class="breadcrumb-item"><a href="#">User</a></li> -->
+                            <li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row flex-lg-nowrap">
+                <div class="container py-5 h-100 checkout-check">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col-12">
+                            <div class="card card-registration card-registration-2" style="border-radius: 5px;">
+                                <div class="card-body p-0">
+                                    <div class="row g-0">
+                                        <div class="col-lg-8">
+                                            <div class="p-5">
+                                                <div class="d-flex justify-content-between align-items-center mb-5">
+                                                    <h1 class="fw-bold mb-0 text-black">Thông đơn hàng</h1>
+                                                    <p class="fw-bold mb-0 text-black id-order"
+                                                       th:text="${order.orderId}"></p>
+                                                </div>
+                                                <hr class="my-4">
+                                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                    <h6 class="text-muted">ID:
+                                                        <th:block th:text="${order.product.productId}"></th:block>
+                                                    </h6>
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img
+                                                                th:src="${order.product.images[0].imgName}"
+                                                                class="img-fluid rounded-3" alt="product">
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <h6 class="text-muted">Doanh mục:
+                                                            <th:block
+                                                                    th:text="${order.product.categoryByCategoryId.categoryName}"></th:block>
+                                                        </h6>
+                                                        <h6 class="text-black mb-0">Tên sản phẩm:
+                                                            <th:block th:text="${order.product.productName}"></th:block>
+                                                        </h6>
+                                                    </div>
+                                                    <!-- <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
+                                                    </div> -->
+                                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                        <h6 class="mb-0">Giá:
+                                                            <th:block
+                                                                    th:text="${#numbers.formatDecimal(order.winAuction.price, 0, 'POINT', 0, 'COMMA')+'₫'}"></th:block>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+
+                                                <hr class="my-4">
+                                                <h5 class="text-uppercase mb-3">Địa chỉ vận chuyển:</h5>
+                                                <div class="mb-4 pb-2">
+                                                    <input type="number" id="location" th:value="${location}" hidden>
+                                                    <select id="select-address" class="select address-select"
+                                                            required>
+                                                        <th:block th:each="a: ${address}">
+                                                            <option th:value="${a.addressId}" class="text-color-white"
+                                                                    th:text="${a.addressDetail}"></option>
+                                                        </th:block>
+                                                    </select>
+                                                </div>
+                                                <hr class="my-4">
+                                                <div class="pt-5">
+                                                    <div class="row">
+                                                        <div class="col mar-left">
+                                                            <h5 class="text-uppercase mb-3">Số dư ví:
+                                                                <th:block
+                                                                        th:text="${#numbers.formatDecimal(balance, 0, 'POINT', 0, 'COMMA')+'₫'}"></th:block>
+                                                            </h5>
+                                                            <p>Bạn có muốn nạp tiền vào ví?</p>
+                                                        </div>
+                                                        <div class="col">
+                                                            <a href="/thanh-toan"
+                                                               class="btn btn-primary btn-load-checkout"
+                                                               type="submit">Nạp tiền
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 bg-grey">
+                                            <div class="p-5">
+                                                <h3 class="fw-bold mb-5 mt-2 pt-1 text-color-white">Thanh toán</h3>
+                                                <hr class="my-4">
+
+                                                <div class="d-flex justify-content-between mb-4">
+                                                    <h5 class="text-uppercase text-color-white">Giá sản phẩm:</h5>
+                                                    <h5 class="text-color-white product-price"
+                                                        th:text="${#numbers.formatDecimal(order.winAuction.price, 0, 0, 'COMMA')+'₫'}"></h5>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mb-4 shiping-method">
+                                                    <h5 class="text-uppercase text-color-white">Phí vận chuyển:</h5>
+                                                    <h5 class="text-color-white" id="shipping-price"></h5>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mb-4 shiping-method">
+                                                    <h5 class="text-uppercase text-color-white">Phương thức: </h5>
+                                                    <h5 class="text-color-white">ViettelPOST</h5>
+                                                </div>
+
+                                                <hr class="my-4">
+
+                                                <div class="d-flex justify-content-between mb-5">
+                                                    <h5 class="text-uppercase text-color-white">Tổng tiền</h5>
+                                                    <h5 class="text-color-white" id="total-price">0đ</h5>
+                                                </div>
+
+                                                <button type="button"
+                                                        class="btn btn-dark btn-block btn-lg text-color-white"
+                                                        id="confirm-order"
+                                                        data-mdb-ripple-color="dark">Xác nhận thanh toán
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ================ end view checkout area ================= -->
+
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css"/>
+    <title id="pageTitle" th:text="${product.productName}"></title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+
+<main class="site-main">
+
+    <!--================Single Product Area =================-->
+    <div class="product_image_area" th:object="${product}">
+        <div class="container">
+            <div class="row s_product_inner">
+                <div class="col-lg-6">
+                    <div class="owl-carousel owl-theme s_Product_carousel">
+                        <!-- <div class="single-prd-item main_image">
+                             <img class="img-fluid" src="/img/category/c1.jpg" alt="">
+                         </div>-->
+                        <th:block th:if="*{images.size()==0}">
+                            <div class="single-prd-item main_image">
+                                <img src="https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
+                                     alt="" style="width: 45px; height: 45px;margin-right: 10px;"/>
+                            </div>
+                        </th:block>
+                        <th:block th:if="*{images.size()>0}" th:each="i: *{images}">
+                            <div class="single-prd-item main_image">
+                                <img class="img-fluid" th:src="${i.imgName}" alt="" width="350" style="height: 100%;">
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="thumbnail_images">
+                        <ul id="thumbnail">
+                            <th:block th:each="i : *{images}">
+                                <li><img class="product-image" onclick="changeImage(this)" th:src="${i.imgName}"
+                                         width="70"></li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <div class="s_product_text">
+                        <h1 th:text="*{productName}"></h1>
+                        <div class="card_area d-flex align-items-center mb-2">
+                            <a class="icon_btn" href="#"><i class="fa fa-message"></i></a>
+                            <a class="icon_btn" href="#"><i class="fa fa-heart"></i></a>
+                        </div>
+                        <br>
+                        <h3>Giá mặc định</h3>
+                        <h2 th:text="*{#numbers.formatDecimal(defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'} "></h2>
+                        <ul class="list">
+                            <li><a class="active" href="#"><span>Category</span> :
+                                <th:block th:text="*{category.categoryName}"></th:block>
+                            </a></li>
+                            <li><a href="#"><span>Trạng thái:</span>
+                                <th:block th:switch="*{status}">
+                                    <th:block th:case="1">Thủ công</th:block>
+                                    <th:block th:case="2">Tự động</th:block>
+                                    <th:block th:case="3">Dừng hoạt động</th:block>
+                                </th:block>
+                            </a></li>
+                            <p th:text="*{subDetail}"></p>
+
+                        </ul>
+                        <div class="product_count">
+                            <a class="button primary-btn" href="/dau-gia/tao-phien">Tạo phiên đấu giá sản phẩm tương
+                                tự</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================End Single Product Area =================-->
+
+    <!--================Product Description Area =================-->
+    <section class="product_description_area">
+        <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                       aria-selected="true">Mô tả</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile"
+                       aria-selected="false">Các phiên đấu giá thành công</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <th:block th:utext="${product.detail}"></th:block>
+
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="table-responsive">
+
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!--================End Product Description Area =================-->
+
+    <!--================ Start related Product area =================-->
+    <section class="related-product-area section-margin--small mt-0">
+        <section class="related-product-area section-margin--small mt-0">
+            <div class="container">
+                <div class="section-intro pb-60px">
+                    <p>Các phiên đấu giá</p>
+                    <h2>Danh sách các phiên đang <span class="secton-intro__style">đấu giá</span></h2>
+                </div>
+                <div class="row">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>ID Phiên đấu giá</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số tiền yêu cầu</th>
+                                <th>Kết thúc</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                            <th:block th:each="a:${top10Auction}">
+                                <tr>
+                                    <td>
+                                        <h5 th:text="${a.auctionSessId}"></h5>
+                                    </td>
+                                    <td>
+                                        <h5 th:text="${a.productKey}"></h5>
+                                    </td>
+                                    <td>
+                                        <h5 th:text="${#numbers.formatDecimal(a.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></h5>
+                                    </td>
+                                    <td>
+                                        <h5 th:text="${#dates.format(a.endDate, 'dd-MM-yyyy HH:mm')}"></h5>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/chi-tiet-dau-gia/{id}(id=${a.auctionSessId})}">Xem</a>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <!--================ end related Product area =================-->
+
+
+</main>
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+<script>
+    function changeImage(element) {
+        let main = document.querySelectorAll("ul#thumbnail li img");
+        for (let i = 0; i < main.length; i++) {
+            if (main[i] == element) {
+                // let owl = document.querySelector(".owl-carousel");
+                let owl = $(".owl-carousel");
+                owl.owlCarousel();
+                owl.trigger("to.owl.carousel", [i, 300]);
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle" th:text="${title}"></title>
+</head>
+<body>
+<!-- ================ Start Header Menu Area =================-->
+<header th:replace="fragments :: header">
+
+</header>
+
+
+<!--================Tracking Box Area =================-->
+<section class="tracking_box_area section-margin--small">
+    <div class="container">
+        <div class="tracking_box_inner">
+            <h1 th:text="${message}"></h1>
+        </div>
+        <div class="mt-5">
+            <h4 th:text="${description}"></h4>
+        </div>
+        <div class="mt-5">
+            <hr>
+            <p>Quay lại <a th:href="@{/${btn_href}}" th:text="${btn_text}">trang chủ</a></p>
+        </div>
+    </div>
+</section>
+<!--================End Tracking Box Area =================-->
+<th:block th:insert="fragments::js_block"></th:block>
+</body>
+</html>

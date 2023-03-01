@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Phiên đấu giá cá nhân</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+
+<div class="blog-banner mt-lg-5">
+    <div class="text-center">
+        <h1>Đơn hàng của tôi</h1>
+        <br>
+        <h5>Chọn ngày để xem</h5>
+        <div class="filter-date text-center mt-lg-4">
+            <form action="/don-hang" method="get">
+                <input type="date" name="filter" class="mr-lg-4" style="height: 38px; width: 200px;">
+                <button type="submit" class="btn btn-primary">Lọc</button>
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+<!-- ================ end banner area ================= -->
+
+<!--================Tracking Box Area =================-->
+<section class="tracking_box_area section-margin--small" style="margin-bottom: 250px;">
+    <div class="container">
+        <table class="table align-middle mb-0 bg-white table-session">
+            <thead class="bg-light">
+            <tr>
+                <th>ID</th>
+                <th>Sản phẩm</th>
+                <th>Tổng cộng</th>
+                <th>Trạng thái</th>
+                <th>Ngày tạo</th>
+                <th>Chức năng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="a: ${orders}">
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1" th:text="${a.orderId}"></p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <img th:src="${a.product.images[0].imgName}"
+                             alt="" style="width: 45px; height: 45px;margin-right: 10px;"/>
+                        <p class="fw-bold mb-1" th:text="${a.product.productName}"></p>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(a.totalPrice, 0, 'POINT', 0, 'COMMA')+'₫'}">
+
+                    </td>
+                    <td>
+                        <span th:if="${a.status == 1}"
+                              class="badge badge-warning rounded-pill d-inline">Chờ xác nhận</span>
+                        <span th:if="${a.status == 2}" class="badge badge-info rounded-pill d-inline">Đang xử lý</span>
+                        <span th:if="${a.status == 3}" class="badge badge-primary d-inline">Vận chuyển</span>
+                        <span th:if="${a.status == 4}" class="badge badge-primary d-inline">Hoàn tất</span>
+                        <span th:if="${a.status == 0}"
+                              class="badge badge-danger rounded-pill d-inline">Kết thúc/Hủy</span>
+                    </td>
+                    <td th:text="${#dates.format(a.createDate, 'dd-MM-yyyy HH:mm')}">
+
+                    </td>
+                    <td>
+                        <a th:if="${a.status != 1}" th:href="@{/don-hang/chi-tiet/{id}(id=${a.orderId})}" type="button"
+                           class="btn btn-link btn-sm btn-rounded">
+                            Chi tiết
+                        </a>
+                        <a th:if="${a.status == 1}" th:href="@{/don-hang/xac-nhan-don-hang/{id}(id=${a.orderId})}"
+                           type="button"
+                           class="btn btn-link btn-sm btn-rounded">
+                            Xác nhận đơn hàng
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+</body>
+</html>

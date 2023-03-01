@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Tạo phiên đấu giá</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+
+<!-- ================ category section start ================= -->
+<section class="section-margin--small mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5">
+                <div class="sidebar-categories">
+                    <div class="head">Lọc theo doanh mục</div>
+                    <ul class="main-categories">
+                        <li class="common-filter">
+                            <form action="#">
+                                <ul>
+                                    <li class="filter-list"><input class="pixel-radio" type="radio" id="men"
+                                                                   name="brand"><label for="men">Thiết bị điện
+                                        tử</label></li>
+                                    <li class="filter-list"><input class="pixel-radio" type="radio" id="women"
+                                                                   name="brand"><label for="women">Thời trang</label>
+                                    </li>
+                                    <li class="filter-list"><input class="pixel-radio" type="radio" id="accessories"
+                                                                   name="brand"><label for="accessories">Khác</label>
+                                    </li>
+
+                                </ul>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebar-filter">
+                    <div class="top-filter-head">Lọc sản phẩm</div>
+                    <div class="common-filter">
+                        <div class="head">Tag sản phẩm</div>
+                        <form action="#">
+                            <ul>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="apple" name="brand"><label
+                                        for="apple">#iphone</label></li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="asus"
+                                                               name="brand"><label for="asus">#samsung</label></li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="gionee"
+                                                               name="brand"><label for="gionee">#oppo</li>
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="common-filter">
+                        <div class="head">Thời gian đấu giá</div>
+                        <form action="#">
+                            <ul>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label
+                                        for="black">2 Ngày</label></li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather"
+                                                               name="color"><label for="balckleather">3 Ngày</label>
+                                </li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="blackred"
+                                                               name="color"><label for="blackred">4 Ngày</label></li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="gold"
+                                                               name="color"><label for="gold">5 Ngày</label></li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey"
+                                                               name="color"><label for="spacegrey">6 Ngày</label></li>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey"
+                                                               name="color"><label for="spacegrey">7 Ngày</label></li>
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="common-filter">
+                        <div class="head">Price</div>
+                        <div class="price-range-area">
+                            <div id="price-range"></div>
+                            <div class="value-wrapper d-flex">
+                                <div class="price">Price:</div>
+                                <span>₫</span>
+                                <div id="lower-value"></div>
+                                <div class="to">to</div>
+                                <span>₫</span>
+                                <div id="upper-value"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-8 col-md-7">
+                <!-- Start Filter Bar -->
+                <div class="filter-bar d-flex flex-wrap align-items-center">
+                    <div class="sorting">
+                        <select>
+                            <option value="1">Sắp xếp mặc định</option>
+                            <option value="1">Thấp đến cao</option>
+                            <option value="1">Cao đến thấp</option>
+                        </select>
+                    </div>
+                    <div class="sorting mr-auto">
+                        <select>
+                            <option value="1">Trang 1</option>
+                            <option value="1">Trang 2</option>
+                            <option value="1">Trang 3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="input-group filter-bar-search">
+                            <input type="text" placeholder="Search">
+                            <div class="input-group-append">
+                                <button type="button"><i class="ti-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Filter Bar -->
+                <!-- Start Best Seller -->
+                <section class="lattest-product-area pb-40 category-list">
+                    <div th:if="${products.size()==0}" class="row">
+                        <h4>Không tìm thấy sản phẩm</h4>
+                    </div>
+                    <div th:if="${products.size()>0}" class="row" th:each="p:${products}">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card text-center card-product">
+                                <div class="card-product__img">
+                                    <img class="card-img" th:src="${p.images[0].imgName}" alt="">
+                                    <ul class="card-product__imgOverlay">
+                                        <li>
+                                            <button><i class="ti-eye"></i></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <p th:text="${p.categoryByCategoryId.categoryName}"></p>
+                                    <h4 class="card-product__title">
+                                        <a th:href="@{/chi-tiet-san-pham/supp-view/{id}(id=${p.productId})}"
+                                           th:text="${p.productName}">
+                                        </a>
+                                    </h4>
+                                    <p class="card-product__price"
+                                       th:text="${#numbers.formatDecimal(p.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Best Seller -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ================ category section end ================= -->
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script>
+    let fileInput = document.getElementById("file-input");
+    let imgContainer = document.getElementById("images");
+
+    function preview() {
+        imgContainer.innerHTML = "";
+
+        for (i of fileInput.files) {
+            let reader = new FileReader();
+            let figure = document.createElement("figure");
+            let figcap = document.createElement("figcaption");
+            figcap.innerText = i.name;
+            figure.appendChild(figcap);
+            reader.onload = () => {
+                let img = document.createElement("img");
+                img.setAttribute("src", reader.result);
+                figure.insertBefore(img, figcap);
+            }
+            imgContainer.appendChild(figure);
+            reader.readAsDataURL(i);
+        }
+    }
+
+
+</script>
+</body>
+</html>

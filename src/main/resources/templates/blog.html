@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Chinh sach nguoi dung</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<!--================Blog Area =================-->
+<!-- Thêm margin 35px để phần trên không bị trống -->
+<section class="blog_area single-post-area py-80px section-margin--small" style="margin: 35px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 posts-list">
+                <div class="single-post row">
+                    <!-- <div class="col-lg-12">
+                        <div class="feature-img">
+                            <img class="img-fluid" src="img/blog/feature-img1.jpg" alt="">
+                        </div>
+                    </div> -->
+
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <h2>Tổng quan về RecAuction</h2>
+                        <p class="excert">
+                            Thành lập năm 2022, RecAuction là nền tảng có mặt tại Việt Nam kết nối giữa người mua và
+                            nhà cung cấp thông qua hình thức đấu giá ngược.
+                        </p>
+                        <p>
+                            Sản phẩm chính được giao dịch trên nền tảng là các sản phẩm công nghệ mới hoặc đã qua sử
+                            dụng. Hệ thống cho phép người mua có nhu cầu mua sản phẩm tạo phiên đấu giá, qua đó các nhà
+                            cung
+                            cấp cạnh tranh về giá cả.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="quotes">
+                            Với phương châm hoạt động: Giá của bạn chúng tôi sẽ gợi ý cho bạn là phương châm hoạt động
+                            của sàn.
+                            Tạo ra môi trường mua sắm đúng với khách hàng là thượng đế.
+                        </div>
+                        <div class="row">
+                            <!-- <div class="col-6">
+                                <img class="img-fluid" src="img/blog/post-img1.jpg" alt="">
+                            </div>
+                            <div class="col-6">
+                                <img class="img-fluid" src="img/blog/post-img2.jpg" alt="">
+                            </div> -->
+                            <div class="col-lg-12 mt-4">
+                                <p>
+                                    Chỉ với vài thao tác trên web, bạn đã có thể đăng sản phẩm cần mua ngay theo nhu cầu
+                                    của mình.
+                                    Không những thế, các người dùng khác với vai trò là nhà cung cấp có thể tham gia
+                                    phiên đấu giá tăng sự cạnh
+                                    tranh giá cả tạo nên những mức giá hấp dẫn.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <h2>Chính sách khách hàng của công ty</h2>
+                        <p class="excert">
+                            Đối với người mua: <br>
+                            Người mua sẽ chọn món đồ công nghệ mà mình muốn sở hữu. Sau đó người mua sẽ tạo một phiên
+                            giao dịch và đặt mức giá khỏi điểm
+                            Giá thành người mua phải trả cho sản phẩm là mức giá cuối cùng của phiển đấu giá (bé hơn
+                            hoặc bằng mức giá khỏi điểm) + phí vận
+                            chuyển sản phẩm. <br>
+                            Người mua có quyền hủy đơn đặt hàng nếu sản phẩm nhận được không đúng với yêu cầu ban đầu.
+                            Người mua sẽ gói sản phẩm và gửi lại cho công ty
+                            nếu sản phẩm gặp vấn đề người mua sẽ không phải chịu bất kì khoảng phí nào.
+                        </p>
+                        <p class="excert">
+                            Đối với nhà cung cấp: <br>
+                            Nhà cung cấp có thể tham gia phiên đấu giá do người dùng tạo. Nhà cung cấp sẽ đặt mức giá
+                            thấp hơn mức giá hiện tại của phiên giao dịch
+                            để cạnh tranh với các đối thủ khác. Khi thời gian đấu giá kết thúc nhà cung cấp đặt ra mức
+                            giá cuối cũng sẽ giành chiến thắng trong phiên đấu giá.
+                            Người bán sẽ chuẩn bị sản phẩm vừa đấu giá và gửi cho công ty. Công ty sẽ gửi sản phẩm cho
+                            khách hàng kiểm tra. Nếu sản phẩm đúng với yêu cầu ban đầu đặt ra
+                            người bán sẽ nhận được tiền sản phẩm (giá sản phẩm cuối cùng của phiên đấu giá - phí giao
+                            dịch). Nếu không sản phẩm sẽ được trả lại và nhà cung cấp sẽ chịu khoảng tiền phạt
+                            nếu muốn tiếp tục sửa dụng nển tảng của công ty.
+
+
+                        </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <h2>Thông tin về Nhóm thực hiện</h2>
+                        <p class="excert">
+                            Nhóm sinh viên môn Thương mại điện tử <br>
+                            Đại Học Sư Phạm Kỹ Thuật TP.HCM (HCMUTE) <br>
+                            - GV Hướng Dẫn: Lương Vĩ Minh <br>
+                            - BE: Trần Tiến Đạt (20110457@student.hcmute.edu.vn) <br>
+                            - Liên lạc qua email:reauction05@gmail.com <br>
+                            - Liên lạc qua email:reauction05@gmail.com <br>
+                            - Liên lạc qua email:reauction05@gmail.com <br>
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="br"></div>
+            </aside>
+
+
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+<!--================Blog Area =================-->
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+</body>
+</html>

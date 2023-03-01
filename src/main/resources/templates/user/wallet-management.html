@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Quản lý ví</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<!-- ================ start view wallet area ================= -->
+<main class="site-main">
+    <section style="background-color: #eee;">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="..//trang-chu">Trang chủ</a></li>
+                            <!-- <li class="breadcrumb-item"><a href="#">User</a></li> -->
+                            <li class="breadcrumb-item active" aria-current="page">Quản lí ví tiền</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row flex-lg-nowrap">
+                <div class="col">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="e-profile">
+                                        <div class="row">
+                                            <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                                                <div class="confirmation-card">
+                                                    <h3 class="billing-title">Thông tin ví</h3>
+                                                    <table class="order-rable">
+                                                        <tr>
+                                                            <td>Mã ví:</td>
+                                                            <td class="text-uppercase"
+                                                                th:text="${wallet.wallet_number.substring(0,6)+'-XXX-'+wallet.wallet_number.substring(7,11)}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Số dư:</td>
+                                                            <td th:text="${#numbers.formatDecimal(wallet.accountBalance, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                                                <div class="confirmation-card">
+                                                    <h3 class="billing-title">Hoạt động</h3>
+                                                    <table class="order-rable">
+                                                        <tr>
+                                                            <td>Tình trạng:</td>
+                                                            <td>Đang sử dụng</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>GD gần nhất:</td>
+                                                            <td th:if="${recent != null}"
+                                                                th:text="${#dates.format(recent.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                                            <td th:if="${recent == null}">Không có</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                                                <div class="confirmation-card">
+                                                    <h3 class="billing-title">Chức năng</h3>
+                                                    <a href="/thanh-toan" class="btn btn-primary justify-content-center"
+                                                       type="button">
+                                                        Nạp tiền thông qua Paypal
+                                                        <i class="fa fa-brands fa-paypal"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container mb-lg-5">
+                                    <div class="order_details_table ">
+                                        <div class="blog-banner mt-lg-5">
+                                            <div class="text-center">
+                                                <h3>Danh sách lịch sử giao dịch</h3>
+                                                <br>
+                                                <h5>Chọn ngày để xem</h5>
+                                                <div class="filter-date text-center mt-lg-4">
+                                                    <form action="/tai-khoan/quan-ly-vi" method="get">
+                                                        <input type="date" name="filter" class="mr-lg-4"
+                                                               style="height: 38px; width: 200px;">
+                                                        <button type="submit" class="btn btn-primary">Lọc</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="table-responsive mt-5">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Loại giao dịch</th>
+                                                    <th scope="col">Số tiền</th>
+                                                    <th scope="col">Ngày thực hiện</th>
+                                                    <th scope="col">Payment code</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody th:each="i: ${logs}">
+                                                <tr>
+                                                    <td>
+                                                        <p th:text="${i.noHistory}">NULL</p>
+                                                    </td>
+                                                    <td>
+                                                        <p th:if="${i.type == true}">Nạp vào</p>
+                                                        <p th:if="${i.type != true}">Thanh toán</p>
+                                                    </td>
+                                                    <td>
+                                                        <p th:text="${#numbers.formatDecimal(i.value, 0, 'POINT', 0, 'COMMA')+'₫'}"></p>
+                                                    </td>
+                                                    <td>
+                                                        <p th:text="${#dates.format(i.createDate, 'dd-MM-yyyy HH:mm')}"></p>
+                                                    </td>
+                                                    <td>
+                                                        <p th:text="${i.paymentId}"></p>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- ================ end view wallet area ================= -->
+
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+</body>
+</html>

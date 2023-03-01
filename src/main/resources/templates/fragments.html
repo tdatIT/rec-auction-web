@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:fragment="head">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="icon" th:href="@{/img/favicon.ico}" type="image/ico">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/11.0.0/nouislider.min.css"/>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+
+
+    </th:block>
+
+</head>
+<body>
+
+<header th:fragment="header" class="header_area">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand logo_h" href="/trang-chu"><img src="/img/rec-logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <div class="nav navbar-nav menu_nav ml-auto mr-auto search-form">
+                        <form id="search-form" th:action="@{/tim-kiem}" method="get">
+                            <input class="search-input form-control rounded" type="search" name="keyword"
+                                   placeholder="Tìm ID phiên / Tên sản phẩm của hệ thống">
+                        </form>
+                    </div>
+
+                    <ul class="nav-shop">
+                        <li class="nav-item">
+                            <button onclick="window.location.href='/dau-gia/quan-ly-phien'"><i
+                                    class="fa fa-light fa-gavel"></i><span
+                                    class="nav-shop__circle">A</span></button>
+                        </li>
+                        <li class="nav-item"><a class="button button-now" href="/dau-gia/tao-phien">Đấu giá ngay!</a>
+                        </li>
+
+
+                        <li class="nav-item active submenu dropdown" sec:authorize="isAnonymous()">
+                            <a href="/tai-khoan" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false"><i class="fa fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu  dropdown-user">
+                                <li class="nav-user"><a class="btn-user" th:href="@{/dang-nhap}">Đăng nhập</a></li>
+                                <li class="nav-user"><a class="btn-user" th:href="@{/dang-ky}">Đăng ký</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item active submenu dropdown" sec:authorize="isAuthenticated()">
+                            <a href="/tai-khoan" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false"><i class="fa fa-user"></i>
+                                <span></span>
+                            </a>
+                            <ul class="dropdown-menu  dropdown-user">
+                                <li class="nav-user"><a class="btn-user" sec:authentication="name"
+                                                        th:href="@{/tai-khoan/}">Xin chào </a></li>
+                                <li class="nav-user"><a class="btn-user" th:href="@{/tai-khoan/chinh-sua}">Thay đổi
+                                    thông
+                                    tin</a></li>
+                                <li class="nav-user"><a class="btn-user" th:href="@{/dau-gia}">Quản lý phiên</a>
+                                </li>
+                                <li class="nav-user"><a class="btn-user" th:href="@{/don-hang}">Quản lý đơn hàng</a>
+                                </li>
+                                <li class="nav-user"><a class="btn-user" th:href="@{/dang-xuat}">Thoát</a></li>
+                            </ul>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+<footer th:fragment="footer" class="footer">
+    <div class="footer-area">
+        <div class="container">
+            <div class="row section_gap">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-footer-widget tp_widgets">
+                        <h4 class="footer_title large_title">RecAuction</h4>
+                        <p>
+                            Giá của bạn chúng tôi sẽ gợi ý cho bạn là phương châm hoạt động của sàn. Tạo ra môi trường
+                            mua sắm đúng với khách hàng là thượng đế.
+                        </p>
+                        <p>
+                            Chỉ với vài thao tác trên web, bạn đã có thể đăng sản phẩm cần mua ngay theo nhu cầu của
+                            mình.
+                            Không những thế, các người dùng khác với vai trò là nhà cung cấp có thể tham gia phiên đấu
+                            giá
+                            tăng sự cạnh tranh giá cả tạo nên những mức giá hấp dẫn.
+                        </p>
+                    </div>
+                </div>
+                <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
+                    <div class="single-footer-widget tp_widgets">
+                        <h4 class="footer_title">Các chính sách</h4>
+                        <ul class="list">
+                            <li><a href="#">Mua hàng</a></li>
+                            <li><a href="#">Bán hàng</a></li>
+                            <li><a href="#">Đổi trả</a></li>
+                            <li><a href="#">Vận chuyển</a></li>
+                            <li><a href="#">Thanh toán</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
+                    <div class="single-footer-widget tp_widgets">
+                        <h4 class="footer_title">Liên kết</h4>
+                        <ul class="list">
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Doanh mục</a></li>
+                            <li><a href="#">Giỏ haàng</a></li>
+                            <li><a href="#">Quản lý phiên</a></li>
+                            <li><a href="#">Tài khoản</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
+                    <div class="single-footer-widget tp_widgets">
+                        <h4 class="footer_title">Liên hệ với chúng tôi</h4>
+                        <div class="ml-40">
+                            <p class="sm-head">
+                                <span class="fa fa-location-arrow"></span>
+                                HCMUTE
+                            </p>
+                            <p>1, Võ Văn Ngân, Hồ Chí Minh</p>
+
+                            <p class="sm-head">
+                                <span class="fa fa-phone"></span>
+                                Số điện thoại
+                            </p>
+                            <p>
+                                +123 456 7890 <br>
+                                +123 456 7890
+                            </p>
+
+                            <p class="sm-head">
+                                <span class="fa fa-envelope"></span>
+                                Email
+                            </p>
+                            <p>
+                                HCMUTE@recauction.com <br>
+                                https://hcmute.edu.vn/
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row d-flex">
+                <p class="col-lg-12 footer-text text-center">
+                    ©2023 RecAuction Co.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--================ End footer Area  =================-->
+<th:block th:fragment="js_block">
+    <!--Js code cdn-->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.30/skrollr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxchimp/1.3.0/jquery.ajaxchimp.min.js"></script>
+    <script src="https://kit.fontawesome.com/ae7c745789.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+
+    <!--Custom-->
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/currency_format.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css"/>
+    <title id="pageTitle">Chi tiết phiên đấu giá</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+
+<main class="site-main">
+
+    <!--================Single Product Area =================-->
+    <div class="product_image_area">
+        <div class="container" th:object="${auction}">
+            <div class="row s_product_inner">
+                <div class="col-lg-6">
+                    <div class="owl-carousel owl-theme s_Product_carousel">
+                        <div th:if="*{img.size()==0}" class="single-prd-item">
+                            <img class="img-fluid"
+                                 src="https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
+                                 alt="anh-san-pham">
+                        </div>
+                        <th:block th:each="i : *{img}">
+                            <div class="single-prd-item main_image">
+                                <img class="img-fluid" th:src="${i.getImageFile()}" alt="anh-san-pham">
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <div class="s_product_text">
+                        <h1 th:text="*{productKey}"></h1>
+                        <br>
+                        <h2>Giá khởi điểm:
+                            <th:block
+                                    th:text="*{#numbers.formatDecimal(reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}">
+                            </th:block>
+                        </h2>
+                        <h3>Giá giá đang trả thấp nhất:
+                            <th:block th:if="${joins.size()>0}"
+                                      th:text="${#numbers.formatDecimal(joins[0].price, 0, 'POINT', 0, 'COMMA')+'₫'}">
+                            </th:block>
+                            <th:block th:if="${joins.size()==0}">
+                                Chưa có người tham gia
+                            </th:block>
+                        </h3>
+                        <ul class="list">
+                            <li>
+                                <a class="active" href="#"><span>Category</span> :
+                                    <th:block
+                                            th:text="*{categoryByCategoryId.categoryName}">
+                                    </th:block>
+                                </a>
+                            </li>
+                            <li>
+                                Tình trạng :
+                                <span th:if="*{complete == false}"
+                                      class="badge bg-primary text-white ml-4">Diễn ra</span>
+                            </li>
+                            <span th:if="*{complete == true}"
+                                  class="badge bg-danger text-white"> Kết thúc</span></a></li>
+                            <li><a class="active" href="#">Ngày lên sàn:</a>
+                                <th:block
+                                        th:text="*{#dates.format(startDate.getTime(), 'dd-MM-yyyy HH:mm')}">
+                                </th:block>
+                            </li>
+                            <li><a class="active" href="#">Ngày kết thúc:</a>
+                                <th:block
+                                        th:text="*{#dates.format(endDate.getTime(), 'dd-MM-yyyy HH:mm')}">
+                                </th:block>
+                            </li>
+                            <li>Tag:
+
+                                <span class="badge badge-dark rounded-pill d-inline"
+                                      th:text="${auction.productTagStr}"></span>
+
+                        </ul>
+                        <p th:text="*{description}"></p>
+                        <div class="product_count">
+                            <a th:if="${joined == false}" class="button primary-btn text-white"
+                               data-toggle="modal"
+                               data-target="#join">Tham gia đấu giá</a>
+                            <a th:if="${joined == true}" class="button primary-btn text-white" data-toggle="modal"
+                               data-target="#exampleModalCenter">
+                                Đặt lại giá
+                            </a>
+                        </div>
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Đặt giá mới cho sản phẩm</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Sản phẩm của bạn đang được đặt với giá
+                                            <th:block
+                                                    th:text="${#numbers.formatDecimal(supp_price, 0, 'POINT', 0, 'COMMA')+'₫'}">
+                                            </th:block>
+                                        </p>
+                                        <input type="number" id="auction-id-input" th:value="${auction.auctionSessId}"
+                                               hidden>
+                                        <label>Giá mới cho sản phẩm</label>
+
+                                        <input type="number" id="new-price" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                            Hủy
+                                        </button>
+                                        <button type="button" class="btn btn-success" id="set-new-price">
+                                            Đặt giá
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="join" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <form action="/dau-gia/tham-gia" method="post">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="example">Tham gia đấu giá</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <th:block th:if="${products.size()==0}">
+                                                <p>Chưa có sản phẩm phù hợp trong kho</p>
+                                                <a class="btn btn-info text-white" href="/supplier">Thêm sản phẩm vào
+                                                    kho</a>
+                                            </th:block>
+                                            <th:block th:if="${products.size()>0}">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Sản phẩm tham gia</label>
+                                                    <select name="productId" required id="exampleFormControlSelect1">
+                                                        <th:block th:each="c: ${products}">
+                                                            <option th:value="${c.productId}"
+                                                                    th:text="${c.productName}"></option>
+                                                        </th:block>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlInput1">Giá đặt</label>
+                                                    <input type="number" class="form-control"
+                                                           id="exampleFormControlInput1" placeholder="10000000đ"
+                                                           name="price"
+                                                           required>
+                                                </div>
+                                                <input th:value="${auction.auctionSessId}" type="number"
+                                                       name="auctionId"
+                                                       hidden>
+
+                                            </th:block>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy
+                                            </button>
+                                            <button type="submit" class="btn btn-success" id="">
+                                                Đặt giá
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================End Single Product Area =================-->
+
+
+    <!--================Product Description Area =================-->
+    <section class="product_description_area">
+        <div class="container">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                       aria-selected="true">Mô tả</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile" aria-selected="false">Nhà tham gia đấu giá</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+                     aria-selected="false">Comments</a>
+                </li> -->
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                    <p th:text="${auction.description}"></p>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>ID Nhà CC</th>
+                                <th>Link SP</th>
+                                <th>Số tiền</th>
+                                <th>Ngày đặt</th>
+                            </tr>
+                            <th:block th:if="${joins.size()>0}" th:each="j: ${joins}">
+                                <tr>
+                                    <td>
+                                        <h5 th:text="${j.productByProductId.supplierId}"></h5>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/chi-tiet-san-pham/supp-view/{id}(id=${j.productId})}">
+                                            Link
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h5 th:text="${#numbers.formatDecimal(j.price, 0, 'POINT', 0, 'COMMA')+'₫'}"></h5>
+                                    </td>
+                                    <td>
+                                        <h5 th:text="${j.time}"></h5>
+                                    </td>
+                                </tr>
+                            </th:block>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Product Description Area =================-->
+
+
+    <!--================ Start related Product area =================-->
+    <section class="related-product-area section-margin--small mt-0">
+        <div class="container">
+            <div class="section-intro pb-60px">
+                <p>Các phiên đấu giá</p>
+                <h2>Danh sách các phiên đang <span class="secton-intro__style">đấu giá</span></h2>
+            </div>
+            <div class="row">
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>ID Phiên đấu giá</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số tiền yêu cầu</th>
+                            <th>Kết thúc</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                        <th:block th:each="a:${top10Auction}">
+                            <tr>
+                                <td>
+                                    <h5 th:text="${a.auctionSessId}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${a.productKey}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${#numbers.formatDecimal(a.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${#dates.format(a.endDate, 'dd-MM-yyyy HH:mm')}"></h5>
+                                </td>
+                                <td>
+                                    <a th:href="@{/chi-tiet-dau-gia/{id}(id=${a.auctionSessId})}">Xem</a>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================ end related Product area =================-->
+
+
+</main>
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" ></script>
+<script>
+
+    function changeImage(element) {
+        let main = document.querySelectorAll("ul#thumbnail li img");
+        for (let i = 0; i < main.length; i++) {
+            if (main[i] == element) {
+                // let owl = document.querySelector(".owl-carousel");
+                let owl = $(".owl-carousel");
+                owl.owlCarousel();
+                owl.trigger("to.owl.carousel", [i, 300]);
+            }
+        }
+    }
+</script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

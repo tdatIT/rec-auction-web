@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Đăng ký tham gia với vai trò mới</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<!--================Blog Area =================-->
+<!-- Thêm margin 35px để phần trên không bị trống -->
+<section class="blog_area single-post-area py-80px section-margin--small" style="margin: 35px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 posts-list">
+                <div class="single-post row">
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <h2>Xin chào bạn</h2>
+                        <p class="excert">
+                            Bạn đang quan tâm đến việc làm sau để sản phẩm của mình có thể bán trên sàn 1 cách thuận
+                            tiện và dễ dàng đúng không.
+                            Chúng tôi hiểu yêu cầu đó để ở đây tư vấn cho bạn quyền lợi cũng như yêu cầu khi trở thành
+                            nhà cung cấp, một thành phần của sàn thương mại chúng tôi.
+                        </p>
+                        <p>
+                            Bạn vui lòng đọc các chính sách ngắn bên dưới để tiến hành đăng ký nhé. Hãy đọc kỹ vì đây
+                            chính là quyền lợi của bạn trong tương lai.
+                        </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <h2>Chính sách của người bán</h2>
+                        <p class="excert">
+                            Nhà cung cấp là thành phần không thể thiếu trong hệ thống của chúng tôi, cho nên chúng tôi
+                            rất mong bạn thực hiện để đãm bảo quyền lợi cho 2 bên.
+                        </p>
+                        <p>
+                            Với vai trò là người bán, bạn vẫn có các đặc quyền của người dùng bình thường,nhưng thêm vào
+                            đó
+                            bạn sẽ được quản lý tối đa 5 sản phẩm trên hệ thống, tham gia đồng thời 10 phiên đấu giá.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <h2>Phân chia lợi nhuận</h2>
+                        <p class="excert">
+                            Đối với người bán: <br>
+                            - Hàng tháng hệ thống sẽ thu 1.000.000 với nhà cung cấp LV1
+                            (Đang cập nhật)
+                            - Hàng tháng hệ thống sẽ thu 2.000.000 với nhà cung cấp LV2
+                            - Hàng tháng hệ thống sẽ thu 4.000.000 với nhà cung cấp LV3
+                            - Hàng tháng hệ thống sẽ thu 6.000.000 với nhà cung cấp LV4
+                        </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 blog_details">
+                        <form action="/tai-khoan/dang-ky-nha-cung-cap" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Tỉnh/Thành phố</label>
+                                    <select id="province" class="form-control" name="province">
+                                        <option value="-1">Tỉnh/Thành phố</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 ">
+                                    <label>Quận/Huyện</label>
+                                    <select id="district" class="form-control" name="district">
+                                        <option value="-1">Quận/Huyện</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Xã/Phường</label>
+                                    <select id="ward" class="form-control" name="ward">
+                                        <option value="-1">Xã phường</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="detail">Địa chỉ chi tiết</label>
+                                <textarea name="addressDetail" class="form-control" id="detail"
+                                          placeholder="VD: Số nhà, tên đường..." required></textarea>
+                            </div>
+                            <input type="checkbox" value="true" required>
+                            <label>Bạn đã đọc và đồng ý các chính sách</label>
+                            <br>
+                            <button class="button button-now" type="submit">Đăng ký</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="br"></div>
+            </aside>
+
+
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+<!--================Blog Area =================-->
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="/js/province_data.js"></script>
+</body>
+</html>

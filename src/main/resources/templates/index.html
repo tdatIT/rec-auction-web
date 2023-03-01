@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css"/>-->
+    <title id="pageTitle">RecAuction - Your Price We Recommend</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+<main class="site-main">
+    <section class="hero-banner">
+        <div class="container">
+            <div class="row no-gutters align-items-center pt-60px">
+                <div class="col-5 d-none d-sm-block">
+                    <div class="hero-banner__img">
+                        <img class="img-fluid" src="img/home/hero-banner.png" alt="">
+                    </div>
+                </div>
+                <div class="col-sm-7 col-lg-6 offset-lg-1 pl-4 pl-md-5 pl-lg-0">
+                    <div class="hero-banner__content">
+                        <h4>Chào mừng đến với RecAuction</h4>
+                        <h1>Trả bao nhiêu ?</h1>
+                        <p>Your price we recommend !
+                            <br>Sở hữu sản phẩm với giá tiền và chất lượng mong muốn. Giá của bạn chúng tôi sẽ gợi ý !
+                        </p>
+                        <a class="button button-hero" href="/dau-gia/tao-phien">Tạo phiên đấu giá ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-margin mt-0">
+        <div class="owl-carousel owl-theme hero-carousel">
+            <div class="hero-carousel__slide">
+                <img src="/img/home/hero-slide1.png" alt="" class="img-fluid">
+                <a href="/doanh-muc-san-pham?id=2" class="hero-carousel__slideOverlay">
+                    <h3>Thời trang</h3>
+                    <p>Xem sản phẩm đang được giao dịch</p>
+                </a>
+            </div>
+            <div class="hero-carousel__slide">
+                <img src="/img/home/hero-slide2.png" alt="" class="img-fluid">
+                <a href="/doanh-muc-san-pham?id=1" class="hero-carousel__slideOverlay">
+                    <h3>Thiết bị điện tử</h3>
+                    <p>Xem sản phẩm</p>
+                </a>
+            </div>
+            <div class="hero-carousel__slide">
+                <img src="/img/home/hero-slide3.png" alt="" class="img-fluid">
+                <a href="/doanh-muc-san-pham?id=3" class="hero-carousel__slideOverlay">
+                    <h3>Sản phẩm khác</h3>
+                    <p>Xem sản phẩm</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-margin calc-60px">
+        <div class="container">
+            <div class="section-intro pb-60px">
+                <p>Các phiên đấu giá</p>
+                <h2>Danh sách các phiên đang <span class="secton-intro__style">đấu giá</span></h2>
+            </div>
+            <div class="row">
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>ID Phiên đấu giá</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số tiền yêu cầu</th>
+                            <th>Kết thúc</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                        <th:block th:each="a:${top10Auction}">
+                            <tr>
+                                <td>
+                                    <h5 th:text="${a.auctionSessId}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${a.productKey}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${#numbers.formatDecimal(a.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${#dates.format(a.endDate, 'dd-MM-yyyy HH:mm')}"></h5>
+                                </td>
+                                <td>
+                                    <a th:href="@{/chi-tiet-dau-gia/{id}(id=${a.auctionSessId})}">Xem</a>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offer" id="parallax-1" data-anchor-target="#parallax-1"
+             data-300-top="background-position: 20px 30px" data-top-bottom="background-position: 0 20px">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5">
+                    <div class="offer__content text-center">
+                        <h3>Tham gia với vai trò là người bán</h3>
+                        <h4>Bạn có sản phẩm tham gia đấu giá</h4>
+                        <p>Chỉ cần 1 tài khoản được cấp quyền bạn sẽ trở thành nhà cung cấp</p>
+                        <a class="button button--active mt-3 mt-xl-4" href="/tai-khoan/dang-ky-nha-cung-cap">Đăng ký
+                            ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section-margin calc-60px">
+        <div class="container">
+            <div class="section-intro pb-60px">
+                <p>Sản phẩm trên hệ thống của các nhà cung cấp</p>
+                <h2>Sản phẩm <span class="section-intro__style">trending</span></h2>
+            </div>
+            <div class="owl-carousel owl-theme" id="bestSellerCarousel">
+                <th:block th:each="p : ${top5Trending}">
+                    <div class="card text-center card-product">
+                        <div class="card-product__img">
+                            <img class="img-fluid" th:src="${p.images[0].imgName}" alt="">
+                            <ul class="card-product__imgOverlay">
+                                <li>
+                                    <a th:href="@{/chi-tiet-san-pham/supp-view/{id}(id=${p.productId})}"><i
+                                            class="fa fa-light fa-eye"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <p th:text="${p.category.categoryName}"></p>
+                            <h4 class="card-product__title"><a th:text="${p.productName}"
+                                                               th:href="@{/chi-tiet-san-pham/supp-view/{id}(id=${p.productId})}"></a>
+                            </h4>
+                            <p class="card-product__price"
+                               th:text="${#numbers.formatDecimal(p.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></p>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+</body>
+</html>

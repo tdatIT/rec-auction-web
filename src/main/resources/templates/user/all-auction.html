@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <th:block th:replace="fragments :: head">
+    </th:block>
+    <title id="pageTitle">Phiên đấu giá cá nhân</title>
+</head>
+<body>
+
+<header th:replace="fragments :: header">
+
+</header>
+
+
+
+<div class="blog-banner mt-lg-5">
+    <div class="text-center">
+        <h1>Danh sách các phiên đấu giá</h1>
+        <br>
+        <h5>Chọn ngày để xem</h5>
+        <div class="filter-date text-center mt-lg-4">
+            <form action="/dau-gia/quan-ly-phien" method="get">
+                <input type="date" name="date-filter" class="mr-lg-4" style="height: 38px; width: 200px;">
+                <button type="submit" class="btn btn-primary">Lọc</button>
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+<!-- ================ end banner area ================= -->
+
+<!--================Tracking Box Area =================-->
+<section class="tracking_box_area section-margin--small" style="margin-bottom: 250px;">
+    <div class="container">
+        <table class="table align-middle mb-0 bg-white table-session">
+            <thead class="bg-light">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Tag</th>
+                <th>Trạng thái</th>
+                <th>Loại giao dịch</th>
+                <th>Giá đặt</th>
+                <th>Thông tin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="a: ${data}">
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
+                                 alt="" style="width: 45px; height: 45px;margin-right: 10px;"/>
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1" th:text="${a.productKey}"></p>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <th:block th:each="tag : ${#strings.arraySplit(a.getProductTagStr(),';')}">
+                            <span class="badge badge-dark rounded-pill d-inline" th:text="${tag}"></span>
+                        </th:block>
+                    </td>
+                    <td>
+                        <span th:if="${a.isComplete() != true}" class="badge badge-primary rounded-pill d-inline">Đang diễn ra</span>
+                        <span th:if="${a.isComplete() == true}" class="badge badge-danger rounded-pill d-inline">Kết thúc/Hủy</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-info rounded-pill d-inline">Host</span>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(a.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}">
+
+                    </td>
+                    <td>
+                        <a th:href="@{/chi-tiet-dau-gia/{id}(id=${a.auctionSessId})}" type="button"
+                           class="btn btn-link btn-sm btn-rounded">
+                            Chi tiết
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<!--================ Start footer Area  =================-->
+<footer th:replace="fragments :: footer">
+    <!--================ End footer Area  =================-->
+</footer>
+<th:block th:replace="fragments :: js_block">
+</th:block>
+</body>
+</html>
