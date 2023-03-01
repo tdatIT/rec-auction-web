@@ -11,7 +11,6 @@ $(document).ready(function (e) {
                     .text(value));
 
             });
-
         }
     })
 
