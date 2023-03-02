@@ -59,7 +59,7 @@ public class SProductController {
                     + "] sản phẩm");
         }
         modelMap.addAttribute("products", products);
-        return "supplier/store-product";
+        return "supplier/products";
     }
 
     @RequestMapping(value = "/them", method = RequestMethod.GET)
@@ -75,7 +75,7 @@ public class SProductController {
             modelMap.addAttribute("categories", categories);
             modelMap.addAttribute("productDTO", productDTO);
             modelMap.addAttribute("action", "them");
-            return "supplier/product-info";
+            return "supplier/product-form";
         }
         return "forward:/supplier/san-pham";
     }

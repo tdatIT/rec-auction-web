@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+  <title>Trang quản lý</title>
+</head>
+
+<body>
+<div id="app">
+  <div class="main-wrapper main-wrapper-1">
+    <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+    <!-- Main Content -->
+
+
+    <!-- Main Content -->
+    <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+  </div>
+</div>
+
+<th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+</body>
+
+</html>

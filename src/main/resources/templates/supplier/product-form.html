@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+    <title>Thêm sản phẩm RecAuctionCMS</title>
+</head>
+
+<body>
+<div id="app">
+    <div class="main-wrapper main-wrapper-1">
+        <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+        <!-- Main Content -->
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h1>Editor</h1>
+
+                    <div class="section-header-breadcrumb">
+                        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                        <div class="breadcrumb-item"><a href="#">Sản phẩm</a></div>
+                        <div class="breadcrumb-item">Thông tin</div>
+                    </div>
+                </div>
+
+                <div class="section-body">
+                    <h2 class="section-title">Thêm sản phẩm</h2>
+                    <p class="section-lead">Nhập thông tin đầy đủ cho sản phẩm</p>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Thông tin sản phẩm</h4>
+                                    <div class="section-header-button justify-content-end">
+                                        <button id="add-type" class="btn btn-primary">Thêm loại cho sản phẩm</button>
+                                    </div>
+                                    <div class="section-header-button" th:if="${productDTO.productId != 0}">
+                                        <button id="remove-product" class="btn btn-danger">Xóa sản phẩm</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form th:object="${productDTO}" th:action="${action}" method="post"
+                                          enctype="multipart/form-data">
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">ID</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input th:field="*{productId}" type="text" class="form-control" readonly
+                                                       data-toggle="tooltip"
+                                                       data-placement="bottom"
+                                                       title="Không cần điền">
+                                            </div>
+
+                                            <label class="col-form-label col-1 col-md-1 col-lg-1">Mã sản phẩm</label>
+                                            <div class="col-sm-3 col-md-3 justify-content-start">
+                                                <input type="text" class="form-control" readonly data-toggle="tooltip"
+                                                       data-placement="bottom"
+                                                       title="Không cần điền">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tên sản
+                                                phẩm(*)</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <input th:field="*{productName}" type="text" class="form-control"
+                                                       required
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Tên sản phẩm không chứa các ký tự đặt biệt">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Doanh
+                                                mục(*)</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <select th:field="*{categoryId}" class="form-control selectric"
+                                                        required>
+                                                    <th:block th:each="c: ${categories}">
+                                                        <option th:value="${c.categoryId}"
+                                                                th:text="${c.categoryName}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Mô tả
+                                                ngắn gọn(*)</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <input th:field="*{subDetail}" type="text" class="form-control" required
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Không quá 255 ký  tự">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Thông
+                                                tin sản phẩm(*)</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <textarea th:field="*{detail}" class="summernote"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">Giá mặc
+                                                định(*)</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input th:field="*{defaultPrice}" type="number" class="form-control"
+                                                       id="default-price"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Mức giá cơ bản của sản phẩm">
+                                            </div>
+
+                                            <label class="col-form-label col-1 col-md-1 col-lg-1">Giá thấp nhất</label>
+                                            <div class="col-sm-3 col-md-3 justify-content-start">
+                                                <input th:field="*{minPrice}" type="text" class="form-control"
+                                                       data-toggle="tooltip"
+                                                       data-placement="bottom"
+                                                       title="Mức giá thấp tối đa có thể tham gia đấu giá">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">VND</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input id="preview-price" type="text" class="form-control" readonly>
+                                            </div>
+                                            <label class="col-form-label col-1 col-md-1 col-lg-1">VND</label>
+                                            <div class="col-sm-3 col-md-3 justify-content-start">
+                                                <input type="text" class="form-control" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">Trạng
+                                                thái(*)</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <select th:field="*{status}" class="form-control selectric">
+                                                    <option value="1">Hoạt động</option>
+                                                    <option value="2">Dừng</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Ảnh sản
+                                                phẩm</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <input th:field="*{images_file}" type="file" class="form-control"
+                                                       multiple>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                                            <div class="col-sm-12 justify-content-center">
+                                                <button class="btn btn-primary">Lưu thông tin sản phẩm</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Main Content -->
+        <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+    </div>
+</div>
+
+<th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+
+<script>
+    $('.summernote-simple').summernote('disable');
+
+    $('#type-select').change(function () {
+        if ($(this).val() == 1) {
+            $('.summernote-simple').summernote('disable');
+            $('#color-picker').prop('disabled', false)
+        } else {
+            $('.summernote-simple').summernote('enable');
+            $('#color-picker').prop('disabled', true)
+        }
+
+    })
+    const formatter = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+    $('#default-price').on('input', function (e) {
+        console.log('a');
+        var price = $(this).val();
+        $('#preview-price').val(formatter.format(price))
+    })
+    $('#price-type').on('input', function (e) {
+        var price = $(this).val();
+        $('#price-format').text(formatter.format(price))
+    })
+
+    $('#add-type').on('click', function (e) {
+        $('#type-modal').modal('show')
+    })
+    $('#remove-product').click(function (e) {
+        console.log('Run')
+        swal({
+            title: 'Bạn có muốn xóa sản phẩm này?',
+            text: 'Sản phẩm sẽ không hiển thị trên web nhưng vẫn lưu trử dữ liệu trong hệ thống',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                var code = $('#productCode').val()
+                $.ajax({
+                    url: 'admin/san-pham/xoa',
+                    method: 'POST',
+                    data: {productCode: code},
+                    success: function () {
+                        window.location.href = '/admin/san-pham'
+                    },
+                    error: function () {
+                        swal("Thất bại !", "Xóa sản phẩm không thành công thử lại sau !", "error");
+                    }
+                })
+            } else {
+                swal('Hủy thao tác thành công');
+            }
+        });
+    })
+</script>
+</body>
+
+</html>
