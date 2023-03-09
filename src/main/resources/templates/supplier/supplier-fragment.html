@@ -96,17 +96,17 @@
             </li>
             <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                    <img alt="avatar" src="https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png"
+                    <img alt="avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                          class="rounded-circle mr-1">
                     <div class="d-sm-none d-lg-inline-block">Tài khoản</div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <div class="dropdown-title">Trần Tiến Đạt</div>
+                <div class="dropdown-menu dropdown-menu-right" th:with="uLogged=${#authentication.getPrincipal().getUser()}">
+                    <div class="dropdown-title" th:text="*{uLogged.getLastName()+' '+uLogged.getFirstName()}"></div>
                     <a href="/tai-khoan" class="dropdown-item has-icon">
                         <i class="far fa-user"></i> Thông tin
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item has-icon text-danger">
+                    <a href="/logout" class="dropdown-item has-icon text-danger">
                         <i class="fas fa-sign-out-alt"></i> Thoát
                     </a>
                 </div>

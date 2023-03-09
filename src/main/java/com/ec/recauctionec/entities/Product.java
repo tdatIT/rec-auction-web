@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Data
@@ -19,6 +20,8 @@ public class Product {
     @Id
     @Column(name = "product_id", nullable = false)
     private int productId;
+    @Column
+    private String productCode;
 
     @Column(name = "detail", nullable = true, columnDefinition = "TEXT")
     private String detail;
@@ -44,6 +47,8 @@ public class Product {
     @Column(name = "product_tag")
     private String productTag;
 
+    @Column
+    private Date updateDate;
     @OneToMany(mappedBy = "product")
     private Collection<AuctSessJoin> auctSessJoins;
 
@@ -61,6 +66,10 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private Collection<Orders> orders;
+    //constraint
+    public static final int ACTIVE_S = 1;
+    public static final int DISABLE_S = 2;
+    public static final int DELETED_S = 0;
 
 
 }

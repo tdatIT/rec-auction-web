@@ -71,7 +71,6 @@ public class SProductController {
         if (SupplierLevel.checkingAvailableProduct(sup)) {
             List<Category> categories = categoryService.findAll();
             ProductDTO productDTO = new ProductDTO();
-
             modelMap.addAttribute("categories", categories);
             modelMap.addAttribute("productDTO", productDTO);
             modelMap.addAttribute("action", "them");

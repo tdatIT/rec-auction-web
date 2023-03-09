@@ -5,11 +5,13 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 public class ProductDTO {
 
     private int productId;
+    private String productCode;
 
     private int categoryId;
 
@@ -30,5 +32,6 @@ public class ProductDTO {
 
     private Collection<ProductImg> images;
     private boolean isDeleted;
+    private Date updateDate;
 
 }

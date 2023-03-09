@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "chi-tiet-san-pham")
+@RequestMapping(value = "/chi-tiet-san-pham")
 public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
     private AuctionService auctionService;
 
-    @RequestMapping("/supp-view/{id}")
+    @RequestMapping("/{id}")
     public String viewProductSupplier(@PathVariable int id, ModelMap modelMap) {
         List<AuctionSession> top10Auction = auctionService.findTop10AuctionForDay();
         modelMap.addAttribute("top10Auction", top10Auction);

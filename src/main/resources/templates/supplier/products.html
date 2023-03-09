@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
@@ -40,7 +41,7 @@
                                                     class="badge badge-white">5</span></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Hoạt động <span
+                                            <a class="nav-link" href="#">Hoạt động<span
                                                     class="badge badge-primary">1</span></a>
                                         </li>
                                         <li class="nav-item">
@@ -81,35 +82,40 @@
                                     <div class="table-responsive">
                                         <table class="table table-striped">
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Tên sản phẩm</th>
                                                 <th>Ảnh</th>
+                                                <th>Tên sản phẩm</th>                                                <th>Mã</th>
                                                 <th>Giá cơ bản</th>
                                                 <th>Ngày tạo</th>
                                                 <th>Trạng thái</th>
                                             </tr>
+                                            <th:block th:each="p:${products}">
                                             <tr>
-                                                <td>1</td>
-                                                <td>Laravel 5 Tutorial: Introduction
-                                                    <div class="table-links">
-                                                        <a href="#">Xem</a>
-                                                        <div class="bullet"></div>
-                                                        <a href="#">Chỉnh sửa</a>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="#">
-                                                        <img alt="image" src="assets/img/avatar/avatar-5.png"
-                                                             class="rounded-circle" width="35"
-                                                             data-toggle="title" title="">
-                                                    </a>
-                                                </td>
-                                                <td>1.238.700 đ</td>
-                                                <td>2018-01-20</td>
-                                                <td>
-                                                    <div class="badge badge-primary">Còn hàng</div>
-                                                </td>
+                                                    <td>
+                                                        <a href="#">
+                                                            <img alt="image" th:src="${p.images[0].imgName}"
+                                                                 class="rounded-circle" width="35"
+                                                                 data-toggle="title" title="">
+                                                        </a>
+                                                    </td>
+                                                    <td>[[${p.productName}]]
+                                                        <div class="table-links">
+                                                            <a th:href="@{/chi-tiet-san-pham/(productCode=${p.productCode})}">Xem</a>
+                                                            <div class="bullet"></div>
+                                                            <a th:href="@{/supplier/san-pham/chinh-sua/(productCode=${p.productCode})}">Chỉnh
+                                                                sửa</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-uppercase" th:text="${p.productCode}"></td>
+
+                                                    <td th:text="${#numbers.formatDecimal(p.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
+                                                    <td th:text="${#dates.format(p.updateDate, 'dd-MM-yyyy')}"></td>
+                                                    <td>
+                                                        <div th:if="${p.status == 1}" class="badge badge-primary">Hoạt động</div>
+                                                        <div th:if="${p.status == 2}" class="badge badge-danger">Dừng</div>
+                                                    </td>
+
                                             </tr>
+                                            </th:block>
                                         </table>
                                     </div>
                                 </div>
