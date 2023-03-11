@@ -36,6 +36,8 @@ public class ClientController {
     @Autowired
     private AuctionService auctionService;
 
+    private Authentication auth;
+
 
     @RequestMapping(value = {"", Router.HOME_PAGE}, method = RequestMethod.GET)
     public String getHomePage(ModelMap modelMap) {
@@ -50,8 +52,8 @@ public class ClientController {
     //get page sign up
     @RequestMapping(value = Router.REGISTER_PAGE, method = RequestMethod.GET)
     public String getRegister(ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             UserDTO user = new UserDTO();
             modelMap.addAttribute("register", user);
             return "register";
@@ -75,8 +77,8 @@ public class ClientController {
 
     @RequestMapping(value = Router.LOGIN_PAGE, method = RequestMethod.GET)
     public String login(ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             return "login";
         }
         return "redirect:/";
@@ -84,8 +86,8 @@ public class ClientController {
 
     @RequestMapping(value = Router.FORGOT_PASS_PAGE, method = RequestMethod.GET)
     public String showForgot(ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             return "forgot";
         }
         return "redirect:/";
@@ -111,7 +113,6 @@ public class ClientController {
         if (verificationToken == null) {
             return "redirect:/";
         }
-        User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             return "redirect:/";
@@ -129,46 +130,54 @@ public class ClientController {
 
     @RequestMapping(value = "/chi-tiet-dau-gia/{id}", method = RequestMethod.GET)
     public String viewAuctionDetails(@PathVariable("id") int auctionId, ModelMap modelMap) {
-        try {
-            AuctionSession auction = auctionService.findById(auctionId);
-            if (auction != null) {
-                List<AuctSessJoin> joins = new ArrayList<>(auction.getAuctSessJoins());
-                List<AuctionSession> top10Auction = auctionService.findTop10AuctionForDay();
-                List<Product> products = new ArrayList<>();
-                modelMap.addAttribute("top10Auction", top10Auction);
-                Collections.sort(joins, new Comparator<AuctSessJoin>() {
-                    @Override
-                    public int compare(AuctSessJoin o1, AuctSessJoin o2) {
-                        return Double.compare(o1.getPrice(), o2.getPrice());
-                    }
-                });
-                modelMap.addAttribute("auction", auction);
-                modelMap.addAttribute("joins", joins);
-                modelMap.addAttribute("joined", false);
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-                    modelMap.addAttribute("supp_price", 0);
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        AuctionSession auction = auctionService.findById(auctionId);
+        if (auction != null) {
+            List<AuctSessJoin> joins = new ArrayList<>(auction.getAuctSessJoins());
+            List<AuctionSession> top10Auction = auctionService.findTop10AuctionForDay();
+            List<Product> products = new ArrayList<>();
+            modelMap.addAttribute("top10Auction", top10Auction);
+            Collections.sort(joins, new Comparator<AuctSessJoin>() {
+                @Override
+                public int compare(AuctSessJoin o1, AuctSessJoin o2) {
+                    return Double.compare(o1.getPrice(), o2.getPrice());
+                }
+            });
+            modelMap.addAttribute("auction", auction);
+            modelMap.addAttribute("joins", joins);
+            modelMap.addAttribute("joined", 1);
+            //Check anonymous view
+            if (auth == null || auth instanceof AnonymousAuthenticationToken) {
+                modelMap.addAttribute("supp_price", 0);
+            } else {
+                //Does the product belong to the user?
+                User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
+                if (us.getUserId() == auction.getUser().getUserId()) {
+                    modelMap.addAttribute("joined", 0);
                 } else {
-                    User us = ((CustomUserDetails) authentication.getPrincipal()).getUser();
-                    products = productService.findProductForAuction(us.getUserId(), auction.
-                            getProductTagStr());
+                    //Did user join auction last time?
+                    AuctSessJoin last_bid = joins.stream()
+                            .filter(bid -> bid.getProduct()
+                                    .getSupplier()
+                                    .getUser().getUserId() == us.getUserId())
+                            .findFirst().orElse(null);
+                    //if joined show btn with text set new bid
+                    //else show btn with text choose the product for join auction
+                    if (last_bid != null) {
+                        modelMap.addAttribute("joined", 2);
+                        modelMap.addAttribute("supp_price", last_bid.getPrice());
+                    } else {
+                        products = productService.findProductForAuction(
+                                us.getUserId(),
+                                auction.getProductTagStr());
 
-                    for (AuctSessJoin j : joins) {
-                        if (j.getProduct()
-                                .getSupplier()
-                                .getUser().getUserId() == us.getUserId()) {
-                            modelMap.addAttribute("joined", true);
-                            modelMap.addAttribute("supp_price", j.getPrice());
-                            break;
-                        }
                     }
                 }
-                modelMap.addAttribute("products", products);
             }
+            modelMap.addAttribute("products", products);
             return "view-auction-detail";
-        } catch (Exception e) {
-            return "redirect:/thong-bao?type=" + MessageController.NOT_FOUND_AUCTION;
         }
+        return "redirect:/thong-bao?type=" + MessageController.NOT_FOUND_AUCTION;
     }
 
     @GetMapping(value = "/check-email")

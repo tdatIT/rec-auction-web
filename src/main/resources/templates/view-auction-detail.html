@@ -84,10 +84,12 @@
                         </ul>
                         <p th:text="*{description}"></p>
                         <div class="product_count">
-                            <a th:if="${joined == false}" class="button primary-btn text-white"
+                            <a th:if="${joined == 0}" class="button btn-outline-info  text-white"
+                               href="#">Bạn là chủ phiên đấu giá</a>
+                            <a th:if="${joined == 1}" class="button primary-btn text-white"
                                data-toggle="modal"
                                data-target="#join">Tham gia đấu giá</a>
-                            <a th:if="${joined == true}" class="button primary-btn text-white" data-toggle="modal"
+                            <a th:if="${joined == 2}" class="button primary-btn text-white" data-toggle="modal"
                                data-target="#exampleModalCenter">
                                 Đặt lại giá
                             </a>

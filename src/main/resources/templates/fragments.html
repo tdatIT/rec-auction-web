@@ -55,13 +55,12 @@
 
                         <li class="nav-item active submenu dropdown" sec:authorize="isAnonymous()">
                             <a href="/tai-khoan" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false"><i class="fa fa-user"></i>
+                               aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i>
                             </a>
-                            <ul class="dropdown-menu  dropdown-user">
-                                <li class="nav-user"><a class="btn-user" th:href="@{/dang-nhap}">Đăng nhập</a></li>
-                                <li class="nav-user"><a class="btn-user" th:href="@{/dang-ky}">Đăng ký</a></li>
-                            </ul>
+                            <div class="dropdown-menu dropdown-menu-center">
+                                <a class="dropdown-item" th:href="@{/dang-nhap}">Đăng nhập</a>
+                                <a class="dropdown-item" th:href="@{/dang-ky}">Đăng ký</a>
+                            </div>
                         </li>
                         <li class="nav-item active submenu dropdown" sec:authorize="isAuthenticated()">
                             <a href="/tai-khoan" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
@@ -69,17 +68,16 @@
                                aria-expanded="false"><i class="fa fa-user"></i>
                                 <span></span>
                             </a>
-                            <ul class="dropdown-menu  dropdown-user">
-                                <li class="nav-user"><a class="btn-user" sec:authentication="name"
-                                                        th:href="@{/tai-khoan/}">Xin chào </a></li>
-                                <li class="nav-user"><a class="btn-user" th:href="@{/tai-khoan/chinh-sua}">Thay đổi
-                                    thông
-                                    tin</a></li>
-                                <li class="nav-user"><a class="btn-user" th:href="@{/dau-gia}">Quản lý phiên</a>
-                                </li>
-                                <li class="nav-user"><a class="btn-user" th:href="@{/don-hang}">Quản lý đơn hàng</a>
-                                </li>
-                                <li class="nav-user"><a class="btn-user" th:href="@{/dang-xuat}">Thoát</a></li>
+                            <ul class="dropdown-menu dropdown-menu-center">
+                                <a class="dropdown-item text-success" sec:authentication="name"
+                                   th:href="@{/tai-khoan/}">Xin chào</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/tai-khoan/chinh-sua}">Thay đổi thông tin</a>
+                                <a class="dropdown-item" th:href="@{/dau-gia}">Quản lý phiên</a>
+                                <a class="dropdown-item" th:href="@{/don-hang}">Quản lý đơn hàng</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" th:href="@{/dang-xuat}">
+                                    <i class="fas fa-sign-out-alt"></i>Thoát</a>
                             </ul>
                     </ul>
                 </div>

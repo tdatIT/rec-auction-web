@@ -136,7 +136,7 @@
                 <th:block th:each="p : ${top5Trending}">
                     <div class="card text-center card-product">
                         <div class="card-product__img">
-                            <img class="img-fluid" th:src="${p.images[0].imgName}" alt="">
+                            <img class="img-product" th:src="${p.images[0].imgName}">
                             <ul class="card-product__imgOverlay">
                                 <li>
                                     <a th:href="@{/chi-tiet-san-pham/{productCode}(productCode=${p.productCode})}"><i
@@ -147,7 +147,7 @@
                         <div class="card-body">
                             <p th:text="${p.category.categoryName}"></p>
                             <h4 class="card-product__title"><a th:text="${p.productName}"
-                                                               th:href="@{/chi-tiet-san-pham/{productCode}(productCode=${p.productId})}"></a>
+                                                               th:href="@{/chi-tiet-san-pham/{productCode}(productCode=${p.productCode})}"></a>
                             </h4>
                             <p class="card-product__price"
                                th:text="${#numbers.formatDecimal(p.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></p>
