@@ -17,7 +17,11 @@
                 <div class="section-header">
                     <h1>Quản lý sản phẩm</h1>
                     <div class="section-header-button">
-                        <a href="san-pham/them" class="btn btn-primary">Thêm sản phẩm mới</a>
+                        <a th:if="${enable_add == true}" href="san-pham/them" class="btn btn-primary">Thêm sản phẩm
+                            mới</a>
+                        <a th:if="${enable_add == false}" href="#" class="btn btn-primary">Đã đạt tới giới hạn sản
+                            phẩm</a>
+
                     </div>
                     <div class="section-header-breadcrumb">
                         <div class="breadcrumb-item active"><a href="#">Trang chủ</a></div>
@@ -38,14 +42,13 @@
                                     <ul class="nav nav-pills">
                                         <li class="nav-item">
                                             <a class="nav-link active" href="#">Giới hạn sản phẩm <span
-                                                    class="badge badge-white">5</span></a>
+                                                    th:text="${total_products}"
+                                                    class="badge badge-white"></span></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Hoạt động<span
-                                                    class="badge badge-primary">1</span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Dừng<span class="badge badge-primary">0</span></a>
+                                            <a class="nav-link" href="#">Có thể thêm<span
+                                                    class="badge badge-primary"
+                                                    th:text="${total_products - products.size()}"></span></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -83,13 +86,14 @@
                                         <table class="table table-striped">
                                             <tr>
                                                 <th>Ảnh</th>
-                                                <th>Tên sản phẩm</th>                                                <th>Mã</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Mã</th>
                                                 <th>Giá cơ bản</th>
                                                 <th>Ngày tạo</th>
                                                 <th>Trạng thái</th>
                                             </tr>
                                             <th:block th:each="p:${products}">
-                                            <tr>
+                                                <tr>
                                                     <td>
                                                         <a href="#">
                                                             <img alt="image" th:src="${p.images[0].imgName}"
@@ -99,9 +103,9 @@
                                                     </td>
                                                     <td>[[${p.productName}]]
                                                         <div class="table-links">
-                                                            <a th:href="@{/chi-tiet-san-pham/(productCode=${p.productCode})}">Xem</a>
+                                                            <a th:href="@{/chi-tiet-san-pham/{productCode}(productCode=${p.productCode})}">Xem</a>
                                                             <div class="bullet"></div>
-                                                            <a th:href="@{/supplier/san-pham/chinh-sua/(productCode=${p.productCode})}">Chỉnh
+                                                            <a th:href="@{/supplier/san-pham/chinh-sua/{productCode}(productCode=${p.productCode})}">Chỉnh
                                                                 sửa</a>
                                                         </div>
                                                     </td>
@@ -110,11 +114,14 @@
                                                     <td th:text="${#numbers.formatDecimal(p.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
                                                     <td th:text="${#dates.format(p.updateDate, 'dd-MM-yyyy')}"></td>
                                                     <td>
-                                                        <div th:if="${p.status == 1}" class="badge badge-primary">Hoạt động</div>
-                                                        <div th:if="${p.status == 2}" class="badge badge-danger">Dừng</div>
+                                                        <div th:if="${p.status == 1}" class="badge badge-primary">Hoạt
+                                                            động
+                                                        </div>
+                                                        <div th:if="${p.status == 2}" class="badge badge-danger">Dừng
+                                                        </div>
                                                     </td>
 
-                                            </tr>
+                                                </tr>
                                             </th:block>
                                         </table>
                                     </div>
@@ -128,6 +135,7 @@
         <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
     </div>
 </div>
+
 
 <th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
 <!-- Page Specific JS File -->

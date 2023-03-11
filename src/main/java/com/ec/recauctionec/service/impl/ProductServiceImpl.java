@@ -38,6 +38,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product findByProductCode(String code) {
+        return productRepo.findProductByProductCode(code);
+    }
+
+    @Override
     public void insertProduct(Product product) {
         String uuid = UUID.randomUUID().toString();
         String productCode = uuid.substring(0, 4)

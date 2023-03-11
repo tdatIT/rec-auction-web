@@ -31,11 +31,11 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional
     public boolean insertNewSupplier(User user, AddressData address) {
-        if (user != null && user.getRole().getRoleId() == RoleConst.USER) {
+        if (user != null && (user.getRole().getRoleId() == RoleConst.USER)) {
             Supplier supplier = new Supplier();
             supplier.setActive(true);
             supplier.setCreateDate(new Date(new java.util.Date().getTime()));
-            supplier.setLevelSupp(1);
+            supplier.setLevelSupp(Supplier.LEVEL_BASIC);
             supplier.setRating(0);
             List<AddressData> dataList = new ArrayList<>();
             address.setSupplier(supplier);

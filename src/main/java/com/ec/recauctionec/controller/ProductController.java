@@ -20,11 +20,11 @@ public class ProductController {
     @Autowired
     private AuctionService auctionService;
 
-    @RequestMapping("/{id}")
-    public String viewProductSupplier(@PathVariable int id, ModelMap modelMap) {
+    @RequestMapping("/{productCode}")
+    public String viewProductSupplier(@PathVariable String productCode, ModelMap modelMap) {
         List<AuctionSession> top10Auction = auctionService.findTop10AuctionForDay();
         modelMap.addAttribute("top10Auction", top10Auction);
-        Product p = productService.findById(id);
+        Product p = productService.findByProductCode(productCode);
         if (p.getProductId() != 0) {
             modelMap.addAttribute("product", p);
             return "product-suppview";

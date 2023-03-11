@@ -6,19 +6,17 @@ import com.ec.recauctionec.service.CategoryService;
 import com.ec.recauctionec.service.ProductService;
 import com.ec.recauctionec.service.StorageImage;
 import com.ec.recauctionec.service.SupplierService;
-import com.ec.recauctionec.variable.SupplierLevel;
+import com.ec.recauctionec.variable.SupplierLevelUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -53,12 +51,12 @@ public class SProductController {
         Supplier sup = user.getSuppliers();
         //get product list
         List<Product> products = productService.findBySupplierId(sup.getSupplierId());
-        if (SupplierLevel.checkingAvailableProduct(sup)) {
-            int available = SupplierLevel.getNumberProductAvailable(sup.getLevelSupp()) - products.size();
-            modelMap.addAttribute("message", "Bạn thể thêm  [" + available
-                    + "] sản phẩm");
-        }
         modelMap.addAttribute("products", products);
+        //get number of products available
+        int max_product = SupplierLevelUtils.getNumberProductAvailable(sup.getLevelSupp());
+        boolean available_product = SupplierLevelUtils.checkingAvailableProduct(sup);
+        modelMap.addAttribute("enable_add", available_product);
+        modelMap.addAttribute("total_products", max_product);
         return "supplier/products";
     }
 
@@ -68,7 +66,7 @@ public class SProductController {
         User user = ((CustomUserDetails) auth.getPrincipal()).getUser();
         Supplier sup = user.getSuppliers();
 
-        if (SupplierLevel.checkingAvailableProduct(sup)) {
+        if (SupplierLevelUtils.checkingAvailableProduct(sup)) {
             List<Category> categories = categoryService.findAll();
             ProductDTO productDTO = new ProductDTO();
             modelMap.addAttribute("categories", categories);
@@ -81,13 +79,12 @@ public class SProductController {
 
 
     @RequestMapping(value = "/them", method = RequestMethod.POST)
-    public String insertNewProduct(@ModelAttribute ProductDTO productDTO,
-                                   ModelMap modelMap) {
+    public String insertNewProduct(@ModelAttribute ProductDTO productDTO) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User user = ((CustomUserDetails) auth.getPrincipal()).getUser();
         Supplier sup = user.getSuppliers();
 
-        if (SupplierLevel.checkingAvailableProduct(sup)) {
+        if (SupplierLevelUtils.checkingAvailableProduct(sup)) {
             Product product = modelMapper.map(productDTO, Product.class);
             product.setSupplier(sup);
             List<String> filenames = storageImage.storageMultiImage(productDTO.getImages_file());
@@ -105,25 +102,23 @@ public class SProductController {
     }
 
 
-    @RequestMapping(value = "/chinh-sua/{id}", method = RequestMethod.GET)
-    public String updateProduct(@PathVariable int id, ModelMap modelMap) {
+    @RequestMapping(value = "/chinh-sua/{productCode}", method = RequestMethod.GET)
+    public String updateProduct(@PathVariable String productCode, ModelMap modelMap) {
 
         List<Category> categories = categoryService.findAll();
-        Product p = productService.findById(id);
+        Product p = productService.findByProductCode(productCode);
         ProductDTO productDTO = modelMapper.map(p, ProductDTO.class);
-
         modelMap.addAttribute("action", "/supplier/san-pham/chinh-sua");
         modelMap.addAttribute("productDTO", productDTO);
         modelMap.addAttribute("categories", categories);
-        return "supplier/product-info";
+        return "supplier/product-form";
     }
 
-    @Transactional
     @RequestMapping(value = "/chinh-sua", method = RequestMethod.POST)
     public String updateProduct(@ModelAttribute ProductDTO productDTO,
                                 ModelMap modelMap) {
 
-        Product p = productService.findById(productDTO.getProductId());
+        Product p = productService.findByProductCode(productDTO.getProductCode());
         BeanUtils.copyProperties(productDTO, p);
         if (productDTO.getImages_file() != null) {
             List<String> filenames = storageImage.storageMultiImage(productDTO.getImages_file());
@@ -140,11 +135,11 @@ public class SProductController {
         return "redirect:/supplier/san-pham";
     }
 
-    @RequestMapping(value = "/xoa/{id}", method = RequestMethod.GET)
-    public String deleteProduct(@PathVariable int id, ModelMap modelMap) {
-        Product p = productService.findById(id);
+    @RequestMapping(value = "/xoa", method = RequestMethod.POST)
+    public ResponseEntity deleteProduct(@RequestParam String productCode) {
+        Product p = productService.findByProductCode(productCode);
         productService.deleteProduct(p);
-        return "redirect:/supplier/san-pham";
+        return ResponseEntity.status(HttpStatus.OK).body("Delete product success");
     }
 
 }

@@ -5064,10 +5064,10 @@ input[type="date"] {
 }
 .form-create-auction{
     font-size: 16px;
-    background-color: #0C73BD;
+    background-color: #ffffff;
     padding: 40px;
-    color: #fff;
-    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
 }
 
 .btn-payment {

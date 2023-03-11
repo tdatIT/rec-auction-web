@@ -55,7 +55,7 @@
                             <li>
                                 <a class="active" href="#"><span>Category</span> :
                                     <th:block
-                                            th:text="*{categoryByCategoryId.categoryName}">
+                                            th:text="*{category.categoryName}">
                                     </th:block>
                                 </a>
                             </li>
@@ -220,10 +220,10 @@
                             <th:block th:if="${joins.size()>0}" th:each="j: ${joins}">
                                 <tr>
                                     <td>
-                                        <h5 th:text="${j.productByProductId.supplierId}"></h5>
+                                        <h5 th:text="${j.product.supplier.supplierId}"></h5>
                                     </td>
                                     <td>
-                                        <a th:href="@{/chi-tiet-san-pham/supp-view/{id}(id=${j.productId})}">
+                                        <a th:href="@{/chi-tiet-san-pham/(productCode = ${j.product.productCode})}">
                                             Link
                                         </a>
                                     </td>

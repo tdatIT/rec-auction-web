@@ -18,6 +18,8 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 
     Product findByProductId(int productId);
 
+    Product findProductByProductCode(String productCode);
+
     List<Product> findAllByStatus(int status);
 
     @Query("select p from Product p where p.status = 1 or p.status = 2 order by p.defaultPrice desc")

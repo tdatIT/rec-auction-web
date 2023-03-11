@@ -38,6 +38,8 @@ public class AuctionController {
     public String getCreateAuction(ModelMap modelMap) {
         List<Category> categories = categoryService.findAll();
         List<ProductTag> tags = productTagService.findAll();
+        AuctionSessionDTO dto = new AuctionSessionDTO();
+        modelMap.addAttribute("dto",dto);
         modelMap.addAttribute("tags", tags);
         modelMap.addAttribute("categories", categories);
         return "user/create-auction";

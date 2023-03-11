@@ -15,6 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "supplier")
 public class Supplier {
+    public static final int NUM_OF_PRODUCTS_FOR_BASIC = 5;
+    public static final int NUM_OF_PRODUCTS_FOR_PREMIUM = 20;
+    public static final int NUM_OF_PRODUCTS_FOR_MALL = 40;
+    public static final int LEVEL_BASIC = 1;
+    public static final int LEVEL_PREMIUM = 2;
+    public static final int LEVEL_MALL = 3;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "supplier_id", nullable = false)
@@ -41,4 +47,6 @@ public class Supplier {
 
     @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AddressData> addresses;
+
+
 }

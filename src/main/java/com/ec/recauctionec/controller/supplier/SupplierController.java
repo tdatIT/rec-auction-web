@@ -14,14 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/supplier")
 
 public class SupplierController {
-    @Autowired
-    private SupplierService supplierService;
 
-    @RequestMapping(value = {"", "/dashboard"})
+    @RequestMapping(value = {""})
     public String getDashboard(ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        int userId = ((CustomUserDetails) authentication.getPrincipal()).getUserId();
-        Supplier sup = supplierService.findByOwnerId(userId);
-        return "supplier/dashboard";
+        return "redirect:/supplier/san-pham";
     }
 }

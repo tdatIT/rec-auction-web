@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -35,11 +34,11 @@ public class AuctionSessionDTO {
 
     private boolean isComplete;
     @NotNull
-    private int categoryId;
+    private Category category;
     @NotNull
     private double reservePrice;
     @NotEmpty
-    private String startDate;
+    private Date startDate;
 
     private MultipartFile[] img;
 
@@ -52,19 +51,14 @@ public class AuctionSessionDTO {
 
     private Collection<AuctSessJoin> auctSessJoins;
 
-    private Category categoryByCategoryId;
-
-    private User userByUserId;
+    private User user;
 
     public AuctionSession mapping() throws Exception {
         AuctionSession auction = new AuctionSession();
-        //Get date from request
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = simpleDateFormat.parse(startDate);
         //Set current time for properties
         Calendar current = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
-        startDate.setTime(date);
+        startDate.setTime(startDate.getTime());
         startDate.set(Calendar.HOUR, current.get(Calendar.HOUR));
         startDate.set(Calendar.MINUTE, current.get(Calendar.MINUTE));
         startDate.set(Calendar.SECOND, current.get(Calendar.SECOND));
@@ -72,13 +66,16 @@ public class AuctionSessionDTO {
         Timestamp startTime = new Timestamp(startDate.getTimeInMillis());
         startDate.add(Calendar.DAY_OF_MONTH, countDay);
         Timestamp endTime = new Timestamp(startDate.getTimeInMillis());
-        //Mapping into object
-        auction.setProductKey(productKey);
-        auction.setReservePrice(reservePrice);
+        //set create time
         auction.setCreateDate(new Timestamp(new Date().getTime()));
         auction.setStartDate(startTime);
         auction.setEndDate(endTime);
+        //Mapping into object
+        auction.setProductKey(productKey);
+        auction.setReservePrice(reservePrice);
+        auction.setDescription(description);
         auction.setProductTagStr(productTagStr);
+        auction.setCategory(category);
         return auction;
     }
 }
