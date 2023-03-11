@@ -4,7 +4,7 @@
 <head>
     <th:block th:replace="fragments :: head">
     </th:block>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css"/>
     <title id="pageTitle">Chi tiết phiên đấu giá</title>
 </head>
 <body>
@@ -105,16 +105,16 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Sản phẩm của bạn đang được đặt với giá
-                                            <th:block
-                                                    th:text="${#numbers.formatDecimal(supp_price, 0, 'POINT', 0, 'COMMA')+'₫'}">
-                                            </th:block>
-                                        </p>
-                                        <input type="number" id="auction-id-input" th:value="${auction.auctionSessId}"
+                                        <div class="form-group">
+                                            <label for="new-price" class="text-success">Bạn đang kêu giá:
+                                                [[${#numbers.formatDecimal(supp_price, 0, 'POINT',
+                                                0, 'COMMA')+'₫'}]]</label>
+                                            <input type="number" class="form-control" id="new-price"
+                                                   placeholder="Giá mới">
+                                        </div>
+                                        <input type="number" id="auction-id-input"
+                                               th:value="${auction.auctionSessId}"
                                                hidden>
-                                        <label>Giá mới cho sản phẩm</label>
-
-                                        <input type="number" id="new-price" required>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">
@@ -129,9 +129,9 @@
                         </div>
                         <div class="modal fade" id="join" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <form action="/dau-gia/tham-gia" method="post">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <form action="/dau-gia/tham-gia" method="post">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="example">Tham gia đấu giá</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -140,14 +140,17 @@
                                         </div>
                                         <div class="modal-body">
                                             <th:block th:if="${products.size()==0}">
-                                                <p>Chưa có sản phẩm phù hợp trong kho</p>
-                                                <a class="btn btn-info text-white" href="/supplier">Thêm sản phẩm vào
-                                                    kho</a>
+                                                <div class="form-group">
+                                                    <label for="notify">Chưa có sản phẩm phù hợp trong kho</label>
+                                                    <a id="notify" class="btn btn-info text-white" href="/supplier">
+                                                        Thêm sản phẩm vào kho
+                                                    </a>
+                                                </div>
                                             </th:block>
                                             <th:block th:if="${products.size()>0}">
                                                 <div class="form-group">
-                                                    <label for="exampleFormControlSelect1">Sản phẩm tham gia</label>
-                                                    <select name="productId" required id="exampleFormControlSelect1">
+                                                    <label for="select-product">Sản phẩm tham gia</label>
+                                                    <select name="productId" required id="select-product">
                                                         <th:block th:each="c: ${products}">
                                                             <option th:value="${c.productId}"
                                                                     th:text="${c.productName}"></option>
@@ -155,11 +158,10 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="exampleFormControlInput1">Giá đặt</label>
+                                                    <label for="exampleFormControlInput1">Kêu giá</label>
                                                     <input type="number" class="form-control"
                                                            id="exampleFormControlInput1" placeholder="10000000đ"
-                                                           name="price"
-                                                           required>
+                                                           name="price" required>
                                                 </div>
                                                 <input th:value="${auction.auctionSessId}" type="number"
                                                        name="auctionId"
@@ -175,9 +177,10 @@
                                                 Đặt giá
                                             </button>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -214,18 +217,18 @@
                         <table class="table">
                             <tbody>
                             <tr>
-                                <th>ID Nhà CC</th>
+                                <th>Nhà CC</th>
                                 <th>Link SP</th>
                                 <th>Số tiền</th>
                                 <th>Ngày đặt</th>
                             </tr>
                             <th:block th:if="${joins.size()>0}" th:each="j: ${joins}">
                                 <tr>
+                                    <td th:with="email=${j.product.supplier.user.email}">
+                                        <h5 th:text="${#strings.substring(email,0,3)+ 'xxxxxx'
+                                                + #strings.substring(email,email.length()-11,email.length())}"></h5>
                                     <td>
-                                        <h5 th:text="${j.product.supplier.supplierId}"></h5>
-                                    </td>
-                                    <td>
-                                        <a th:href="@{/chi-tiet-san-pham/(productCode = ${j.product.productCode})}">
+                                        <a th:href="@{/chi-tiet-san-pham/{productCode}(productCode = ${j.product.productCode})}">
                                             Link
                                         </a>
                                     </td>
@@ -304,7 +307,7 @@
 </footer>
 <th:block th:replace="fragments :: js_block">
 </th:block>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
 <script>
 
     function changeImage(element) {

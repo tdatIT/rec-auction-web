@@ -32,6 +32,7 @@ public class AuctionController {
     private AuctSessJoinService joinService;
     @Autowired
     private ProductService productService;
+    private Authentication auth;
 
 
     @RequestMapping(value = "/tao-phien", method = RequestMethod.GET)
@@ -39,7 +40,7 @@ public class AuctionController {
         List<Category> categories = categoryService.findAll();
         List<ProductTag> tags = productTagService.findAll();
         AuctionSessionDTO dto = new AuctionSessionDTO();
-        modelMap.addAttribute("dto",dto);
+        modelMap.addAttribute("dto", dto);
         modelMap.addAttribute("tags", tags);
         modelMap.addAttribute("categories", categories);
         return "user/create-auction";
@@ -47,8 +48,8 @@ public class AuctionController {
 
     @PostMapping(value = "/tao-phien")
     public ResponseEntity createAuction(@ModelAttribute AuctionSessionDTO dto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User us = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (auctionService.createNewAuction(us, dto)) {
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -59,34 +60,27 @@ public class AuctionController {
     public String joinAuction(@RequestParam("auctionId") int auctionId,
                               @RequestParam("productId") int productId,
                               @RequestParam("price") double price) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User us = ((CustomUserDetails) authentication.getPrincipal()).getUser();
-        try {
-            AuctionSession auction = auctionService.findById(auctionId);
-            Product product = productService.findById(productId);
-            if (product.getSupplier()
-                    .getUser().getUserId() != auction.getUser().getUserId()) {
-                AuctSessJoin auctSessJoin = new AuctSessJoin();
-                auctSessJoin.setPrice(price);
-                /*auctSessJoin.setProductId(productId);*/
-                /*auctSessJoin.setAuctionSession(auctionId);*/
-                auctSessJoin.setTime(new Timestamp(new java.util.Date().getTime()));
-                auctSessJoin.setStatus(AuctSessJoin.ACTIVE);
-                joinService.joinAuction(auctSessJoin);
-                return "redirect:/chi-tiet-dau-gia/"+auctionId;
-            }
-
-        } catch (Exception e) {
-
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        AuctionSession auction = auctionService.findById(auctionId);
+        Product product = productService.findById(productId);
+        if (product.getSupplier()
+                .getUser().getUserId() != auction.getUser().getUserId()) {
+            AuctSessJoin auctSessJoin = new AuctSessJoin();
+            auctSessJoin.setPrice(price);
+            auctSessJoin.setProduct(product);
+            auctSessJoin.setAuctionSession(auction);
+            auctSessJoin.setTime(new Timestamp(new java.util.Date().getTime()));
+            auctSessJoin.setStatus(AuctSessJoin.ACTIVE);
+            joinService.joinAuction(auctSessJoin);
         }
-        return "redirect:/chi-tiet-dau-gia/"+auctionId;
+        return "redirect:/chi-tiet-dau-gia/" + auctionId;
     }
 
     @GetMapping(value = {"/quan-ly-phien", ""})
-    public String getAllAuctionOfUser(@RequestParam(value = "date-filter", required = false) Date date
-            , ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User us = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+    public String getAllAuctionOfUser(@RequestParam(value = "date-filter", required = false) Date date,
+                                      ModelMap modelMap) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (date == null)
             date = new Date(new java.util.Date().getTime());
         List<AuctionSession> data = auctionService.findAllByUserAndActive(us.getUserId(), date);
@@ -98,8 +92,8 @@ public class AuctionController {
     public ResponseEntity getJoinAuction(@RequestParam("auctionId") int auctionId,
                                          @RequestParam("price") double price,
                                          ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User us = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         AuctionSession auction = auctionService.findById(auctionId);
         List<AuctSessJoin> joins = new ArrayList<>(auction.getAuctionSessId());
         for (AuctSessJoin j : joins) {
