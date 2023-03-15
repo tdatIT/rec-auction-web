@@ -9,10 +9,11 @@
 </head>
 <body>
 <!--================ Start Header Menu Area =================-->
-<header th:replace="fragments :: header">
-
-</header>
-
+<header th:replace="fragments :: header"></header>
+<!-- Page Preloder -->
+<div id="pre-loader">
+    <div class="loader"></div>
+</div>
 <!-- ================ start view checkout area ================= -->
 
 <main class="site-main">
@@ -39,49 +40,46 @@
                                         <div class="col-lg-8">
                                             <div class="p-5">
                                                 <div class="d-flex justify-content-between align-items-center mb-5">
-                                                    <h1 class="fw-bold mb-0 text-black">Thông đơn hàng</h1>
+                                                    <h1 class="fw-bold mb-0 text-black">Thông tin đơn hàng</h1>
                                                     <p class="fw-bold mb-0 text-black id-order"
                                                        th:text="${order.orderId}"></p>
                                                 </div>
                                                 <hr class="my-4">
                                                 <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                     <h6 class="text-muted">ID:
-                                                        <th:block th:text="${order.product.productId}"></th:block>
+                                                        <th:block th:text="${order.product.productCode}"></th:block>
                                                     </h6>
                                                     <div class="col-md-2 col-lg-2 col-xl-2">
-                                                        <img
-                                                                th:src="${order.product.images[0].imgName}"
+                                                        <img th:src="${order.product.images[0].imgName}"
                                                                 class="img-fluid rounded-3" alt="product">
                                                     </div>
                                                     <div class="col-md-3 col-lg-3 col-xl-3">
                                                         <h6 class="text-muted">Doanh mục:
                                                             <th:block
-                                                                    th:text="${order.product.categoryByCategoryId.categoryName}"></th:block>
+                                                                    th:text="${order.product.category.categoryName}"></th:block>
                                                         </h6>
                                                         <h6 class="text-black mb-0">Tên sản phẩm:
                                                             <th:block th:text="${order.product.productName}"></th:block>
                                                         </h6>
                                                     </div>
-                                                    <!-- <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-
-                                                    </div> -->
                                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                                         <h6 class="mb-0">Giá:
                                                             <th:block
-                                                                    th:text="${#numbers.formatDecimal(order.winAuction.price, 0, 'POINT', 0, 'COMMA')+'₫'}"></th:block>
+                                                                    th:text="${#numbers.formatDecimal(order.product.minPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></th:block>
                                                         </h6>
                                                     </div>
                                                 </div>
 
                                                 <hr class="my-4">
-                                                <h5 class="text-uppercase mb-3">Địa chỉ vận chuyển:</h5>
+                                                <h5 class="text-uppercase mb-3">Địa chỉ giao hàng:
+                                                    <a class="btn btn-outline-info" data-toggle="modal"
+                                                       data-target="#exampleModal">Thêm địa chỉ</a>
+                                                </h5>
                                                 <div class="mb-4 pb-2">
-                                                    <input type="number" id="location" th:value="${location}" hidden>
-                                                    <select id="select-address" class="select address-select"
-                                                            required>
+                                                    <select id="select-address" class="select address-select" required>
                                                         <th:block th:each="a: ${address}">
                                                             <option th:value="${a.addressId}" class="text-color-white"
-                                                                    th:text="${a.addressDetail}"></option>
+                                                                    th:text="${a.getAddressDetailInfo()}"></option>
                                                         </th:block>
                                                     </select>
                                                 </div>
@@ -114,7 +112,7 @@
                                                 <div class="d-flex justify-content-between mb-4">
                                                     <h5 class="text-uppercase text-color-white">Giá sản phẩm:</h5>
                                                     <h5 class="text-color-white product-price"
-                                                        th:text="${#numbers.formatDecimal(order.winAuction.price, 0, 0, 'COMMA')+'₫'}"></h5>
+                                                        th:text="${#numbers.formatDecimal(order.totalPrice, 0, 0, 'COMMA')+'₫'}"></h5>
                                                 </div>
 
                                                 <div class="d-flex justify-content-between mb-4 shiping-method">
@@ -152,6 +150,50 @@
         </div>
     </section>
 </main>
+<form id="add-address">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm địa chỉ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <select id="province" class="form-control" name="province">
+                            <option value="-1">Tỉnh/Thành phố</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quận/Huyện</label>
+                        <select id="district" class="form-control" name="district">
+                            <option value="-1">Quận/Huyện</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Xã/Phường</label>
+                        <select id="ward" class="form-control" name="ward">
+                            <option value="-1">Xã phường</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="detail">Địa chỉ chi tiết</label>
+                        <textarea name="addressDetail" class="form-control" id="detail"
+                                  placeholder="VD: Số nhà, tên đường..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <!-- ================ end view checkout area ================= -->
 
@@ -160,5 +202,7 @@
 </footer>
 <th:block th:replace="fragments :: js_block">
 </th:block>
+<script src="/js/province_data.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>

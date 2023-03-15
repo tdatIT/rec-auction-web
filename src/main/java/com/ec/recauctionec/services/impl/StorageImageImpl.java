@@ -1,8 +1,8 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.ec.recauctionec.service.StorageImage;
+import com.ec.recauctionec.services.StorageImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

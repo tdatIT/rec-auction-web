@@ -1,8 +1,8 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.email.EmailDetails;
 import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.service.EmailService;
+import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.variable.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

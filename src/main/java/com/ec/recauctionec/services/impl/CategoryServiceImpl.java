@@ -1,8 +1,8 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.entities.Category;
 import com.ec.recauctionec.repositories.CategoryRepo;
-import com.ec.recauctionec.service.CategoryService;
+import com.ec.recauctionec.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.ec.recauctionec.controller.admin;
 
 import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.service.UserService;
+import com.ec.recauctionec.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

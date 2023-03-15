@@ -1,4 +1,4 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.dto.AuctionSessionDTO;
 import com.ec.recauctionec.entities.*;
@@ -6,8 +6,8 @@ import com.ec.recauctionec.repositories.AuctSessJoinRepo;
 import com.ec.recauctionec.repositories.AuctionRepo;
 import com.ec.recauctionec.repositories.UserRepo;
 import com.ec.recauctionec.repositories.WalletRepo;
-import com.ec.recauctionec.service.AuctionService;
-import com.ec.recauctionec.service.StorageImage;
+import com.ec.recauctionec.services.AuctionService;
+import com.ec.recauctionec.services.StorageImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -85,22 +85,23 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     @Transactional
-    public AuctSessJoin setWinAuctionSession(int auctionId) {
+    public void setWinAuctionSession(int auctionId) {
         AuctionSession auction = auctionRepo.findById(auctionId).orElseThrow();
         if (auction != null) {
-            AuctSessJoin winner = new AuctSessJoin();
-            for (AuctSessJoin join : auction.getAuctSessJoins()) {
-                join.setStatus(AuctSessJoin.LOSS);
-                joinRepo.save(join);
-            }
-            winner.setStatus(AuctSessJoin.WIN);
-            auction.setComplete(true);
-            //save into db
 
-            auctionRepo.save(auction);
-            return joinRepo.save(winner);
+            if (auction.getAuctSessJoins().size() > 0) {
+                for (AuctSessJoin join : auction.getAuctSessJoins()) {
+                    join.setStatus(AuctSessJoin.LOSS);
+                    joinRepo.save(join);
+                }
+                AuctSessJoin winner = joinRepo.findFirstByAuctionSessionOrderByPriceAsc(auction);
+                winner.setStatus(AuctSessJoin.WIN);
+                auction.setComplete(true);
+                //save into db
+                auctionRepo.save(auction);
+                joinRepo.save(winner);
+            }
         }
-        return null;
     }
 
     @Override
@@ -124,4 +125,5 @@ public class AuctionServiceImpl implements AuctionService {
         Pageable top10 = PageRequest.of(0, 10);
         return auctionRepo.findTop10AuctionForDay(top10, new java.util.Date(new java.util.Date().getTime()));
     }
+
 }

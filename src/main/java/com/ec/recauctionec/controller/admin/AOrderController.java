@@ -1,7 +1,7 @@
 package com.ec.recauctionec.controller.admin;
 
 import com.ec.recauctionec.entities.Orders;
-import com.ec.recauctionec.service.OrderService;
+import com.ec.recauctionec.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

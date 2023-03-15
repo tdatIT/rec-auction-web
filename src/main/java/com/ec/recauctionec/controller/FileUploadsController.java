@@ -1,7 +1,7 @@
 package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.service.UserService;
+import com.ec.recauctionec.services.UserService;
 import com.ec.recauctionec.variable.Router;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

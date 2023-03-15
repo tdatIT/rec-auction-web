@@ -1,11 +1,12 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.dto.OrderDTO;
 import com.ec.recauctionec.entities.*;
 import com.ec.recauctionec.location.Shipping;
 import com.ec.recauctionec.repositories.*;
-import com.ec.recauctionec.service.AuctSessJoinService;
-import com.ec.recauctionec.service.OrderService;
+import com.ec.recauctionec.services.AuctSessJoinService;
+import com.ec.recauctionec.services.OrderService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+    @Autowired
+    private ModelMapper modelMapper;
     private static final Logger log =
             LoggerFactory.getLogger(OrderServiceImpl.class);
     //Percent for 1 transaction for E-Commerce Exchange
@@ -60,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void createOrderNotConfirm(OrderDTO dto) {
-        Orders order = dto.mapping();
+        Orders order = modelMapper.map(dto, Orders.class);
         order.setDelivery(new Delivery(DEFAULT_SHIPPING));
         order.setStatus(Orders.NOT_CONFIRM);
         order.setCreateDate(new Timestamp(new Date().getTime()));
@@ -151,9 +154,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public boolean completedOrder(Orders order) {
         try {
-            Wallet user_wallet = order.getProduct().
-                    getSupplier().
-                    getUser()
+            Wallet user_wallet = order.getProduct()
+                    .getSupplier()
+                    .getUser()
                     .getWallet();
             if (order.getStatus() == Orders.DELIVERY) {
                 order.setStatus(Orders.COMPLETE);
@@ -162,10 +165,10 @@ public class OrderServiceImpl implements OrderService {
                 Commission commission = new Commission();
                 double realValue = order.getTotalPrice() - order.getShippingPrice();
                 commission.setAmountFromSupplier(realValue * FROM_SUPPLIER);
-                double profit = order.getWinAuction()
+                /*  double profit = order.getWinAuction()
                         .getAuctionSession()
-                        .getReservePrice() - order.getTotalPrice();
-                commission.setAmountFromBuyer(profit * FROM_BUYER);
+                        .getReservePrice() - order.getTotalPrice();*//*
+                commission.setAmountFromBuyer(profit * FROM_BUYER);*/
                 commission.setOrder(order);
                 //Create log in wallet of user by status
                 WalletHistory log1 = new WalletHistory();

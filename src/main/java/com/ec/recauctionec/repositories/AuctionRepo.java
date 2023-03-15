@@ -34,4 +34,5 @@ public interface AuctionRepo extends JpaRepository<AuctionSession, Integer> {
             "order by a.endDate asc")
     List<AuctionSession> findTop10AuctionForDay(Pageable top10,
                                                 @Param("currentDay") java.util.Date current);
+
 }

@@ -6,9 +6,10 @@ import com.ec.recauctionec.entities.AuctSessJoin;
 import com.ec.recauctionec.entities.AuctionSession;
 import com.ec.recauctionec.entities.Orders;
 import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.service.AuctionService;
-import com.ec.recauctionec.service.EmailService;
-import com.ec.recauctionec.service.OrderService;
+import com.ec.recauctionec.services.AuctSessJoinService;
+import com.ec.recauctionec.services.AuctionService;
+import com.ec.recauctionec.services.EmailService;
+import com.ec.recauctionec.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +37,8 @@ public class CheckAuctionScheduledEnd {
     private EmailService emailService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private AuctSessJoinService joinService;
 
     @Scheduled(fixedRate = MIN_SCHEDULED * MILLISECOND)
     public void checkEndTimeAuction() {
@@ -45,18 +48,21 @@ public class CheckAuctionScheduledEnd {
                 .findAllByDate(new Date(new java.util.Date().getTime()));
         for (AuctionSession auction : auctions) {
             if (auction.getEndDate().getTime() <= calendar.getTimeInMillis()) {
-                AuctSessJoin win = auctionService.setWinAuctionSession(auction.getAuctionSessId());
-                OrderDTO dto = new OrderDTO();
-                User us = auction.getUser();
-                dto.setUser(us);
-                //set default address
-                dto.setProduct(win.getProduct());
-                dto.setTotalPrice(win.getPrice());
-                dto.setStatus(Orders.NOT_CONFIRM);
-                dto.setWinAuction(win);
-                dto.setCreateDate(new Timestamp(new java.util.Date().getTime()));
-                orderService.createOrderNotConfirm(dto);
-                log.info("Create order of Auction ID:  " + auction.getAuctionSessId());
+                auctionService.setWinAuctionSession(auction.getAuctionSessId());
+                AuctSessJoin win = joinService.findBestPriceAuctionJoinByAuction(auction);
+                if (win != null) {
+                    OrderDTO dto = new OrderDTO();
+                    User us = auction.getUser();
+                    dto.setUser(us);
+                    //set default address
+                    dto.setProduct(win.getProduct());
+                    dto.setTotalPrice(win.getPrice());
+                    dto.setStatus(Orders.NOT_CONFIRM);
+
+                    dto.setCreateDate(new Timestamp(new java.util.Date().getTime()));
+                    orderService.createOrderNotConfirm(dto);
+                    log.info("Create order of Auction ID:  " + auction.getAuctionSessId());
+                }
             } else if (auction.getEndDate().getTime() <= calendar.getTimeInMillis() + (MIN_NOTIFY * MILLISECOND)) {
                 EmailDetails email = new EmailDetails();
                 email.setRecipient(auction.getUser().getEmail());

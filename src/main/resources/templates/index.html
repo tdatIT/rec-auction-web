@@ -11,10 +11,11 @@
 </head>
 <body>
 
-<header th:replace="fragments :: header">
-
-</header>
-
+<header th:replace="fragments :: header"></header>
+<!-- Page Preloder -->
+    <div id="pre-loader">
+        <div class="loader"></div>
+    </div>
 <main class="site-main">
     <section class="hero-banner">
         <div class="container">
@@ -164,8 +165,8 @@
 <footer th:replace="fragments :: footer">
     <!--================ End footer Area  =================-->
 </footer>
-<th:block th:replace="fragments :: js_block">
-</th:block>
+<th:block th:replace="fragments :: js_block"></th:block>
+<script src="/js/app.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
 </body>
 </html>

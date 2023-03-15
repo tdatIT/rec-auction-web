@@ -1,13 +1,13 @@
 package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.dto.OrderDTO;
+import com.ec.recauctionec.entities.AddressData;
 import com.ec.recauctionec.entities.CustomUserDetails;
 import com.ec.recauctionec.entities.Orders;
 import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.entities.AddressData;
 import com.ec.recauctionec.repositories.UserAddressRepo;
 import com.ec.recauctionec.repositories.WalletRepo;
-import com.ec.recauctionec.service.OrderService;
+import com.ec.recauctionec.services.OrderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,7 +51,7 @@ public class OrderController {
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         try {
             Orders order = orderService.findById(orderId);
-            if (order != null) {
+            if (order != null && order.getUser().getUserId() == user.getUserId()) {
                 modelMap.addAttribute("order", order);
                 modelMap.addAttribute("address", userAddressRepo.findByUser(user));
                 modelMap.addAttribute("balance", walletRepo

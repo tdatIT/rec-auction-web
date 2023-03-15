@@ -14,6 +14,7 @@ public class MessageController {
     public static final int CHANGE_PASS_SUCCESS = 1;
     public static final int FAIL_SUPPLIER = 3;
     public static final int LOGOUT_MESS = 5;
+    public static final int CREATE_SUCCESS = 6;
 
     @GetMapping(value = Router.MESSAGE)
     public String getMessage(@RequestParam("type") int type, ModelMap modelMap) {
@@ -27,6 +28,12 @@ public class MessageController {
             case NOT_FOUND_AUCTION:
                 modelMap.addAttribute("message", "Phiên đấu giá không tồn tại");
                 modelMap.addAttribute("description", "Hệ thống không tìm thấy phiên đấu bạn mong muốn");
+                modelMap.addAttribute("btn_text", "Trang chủ");
+                modelMap.addAttribute("btn_href", "trang-chu");
+                break;
+            case CREATE_SUCCESS:
+                modelMap.addAttribute("message", "Tạo phiên thành công");
+                modelMap.addAttribute("description", "Hệ thông đã ghi nhận phiên đấu giá thành công");
                 modelMap.addAttribute("btn_text", "Trang chủ");
                 modelMap.addAttribute("btn_href", "trang-chu");
                 break;

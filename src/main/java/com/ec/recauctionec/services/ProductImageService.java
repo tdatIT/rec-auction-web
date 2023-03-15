@@ -1,4 +1,4 @@
-package com.ec.recauctionec.service;
+package com.ec.recauctionec.services;
 
 public interface ProductImageService {
 }

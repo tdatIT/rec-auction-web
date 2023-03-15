@@ -1,4 +1,4 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.entities.CustomUserDetails;
 import com.ec.recauctionec.entities.User;

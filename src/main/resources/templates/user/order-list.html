@@ -36,6 +36,7 @@
             <thead class="bg-light">
             <tr>
                 <th>ID</th>
+                <th>Ảnh</th>
                 <th>Sản phẩm</th>
                 <th>Tổng cộng</th>
                 <th>Trạng thái</th>
@@ -55,7 +56,9 @@
                     </td>
                     <td>
                         <img th:src="${a.product.images[0].imgName}"
-                             alt="" style="width: 45px; height: 45px;margin-right: 10px;"/>
+                             alt="san-pham" style="width: 45px; height: 45px;margin-right: 10px;"/>
+                    </td>
+                    <td>
                         <p class="fw-bold mb-1" th:text="${a.product.productName}"></p>
                     </td>
                     <td th:text="${#numbers.formatDecimal(a.totalPrice, 0, 'POINT', 0, 'COMMA')+'₫'}">

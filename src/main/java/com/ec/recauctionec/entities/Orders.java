@@ -43,20 +43,17 @@ public class Orders {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "delivery_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "delivery_id", nullable = false)
     private Delivery delivery;
 
     @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
+    @JoinColumn(name = "address_id")
     private AddressData address;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "win_auct_id", referencedColumnName = "id")
-    private AuctSessJoin winAuction;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "commission_id", referencedColumnName = "order_id")

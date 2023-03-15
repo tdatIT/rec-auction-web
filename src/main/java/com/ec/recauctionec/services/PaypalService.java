@@ -1,4 +1,4 @@
-package com.ec.recauctionec.service;
+package com.ec.recauctionec.services;
 
 import com.ec.recauctionec.paypal.PaypalPaymentIntent;
 import com.ec.recauctionec.paypal.PaypalPaymentMethod;

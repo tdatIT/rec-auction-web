@@ -4,7 +4,7 @@ import com.ec.recauctionec.entities.AddressData;
 import com.ec.recauctionec.entities.Delivery;
 import com.ec.recauctionec.repositories.DeliveryRepo;
 import com.ec.recauctionec.repositories.UserAddressRepo;
-import com.ec.recauctionec.service.ProductService;
+import com.ec.recauctionec.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

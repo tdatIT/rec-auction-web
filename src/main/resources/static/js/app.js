@@ -1,3 +1,11 @@
+/*------------------
+      Preloader
+  --------------------*/
+$(window).on("load", function () {
+    console.log('Preload')
+    $(".loader").fadeOut();
+    $("#pre-loader").delay(200).fadeOut("slow");
+})
 $('#forgot-pass-btn').on('click', function (e) {
     let email = $('#forgot-pass-input').val();
     $.ajax({
@@ -60,6 +68,25 @@ $('#set-new-price').on('click', function (e) {
         },
         error: function (e) {
 
+        }
+    })
+})
+$('#add-address').submit(function (e) {
+    e.preventDefault()
+    $.ajax({
+        url: '/tai-khoan/them-dia-chi',
+        method: 'POST',
+        data: $('#add-address').serialize(),
+        success: function () {
+            location.reload();
+        },
+        error: function () {
+            iziToast.warning({
+                title: 'Thêm địa chỉ thất bại',
+                message: 'Hệ thống xảy ra lỗi vui lòng thử lại sau',
+                timeout: 1000,
+                position: "topRight"
+            });
         }
     })
 })

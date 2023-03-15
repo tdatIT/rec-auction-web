@@ -1,8 +1,8 @@
-package com.ec.recauctionec.service.impl;
+package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.entities.Product;
 import com.ec.recauctionec.repositories.ProductRepo;
-import com.ec.recauctionec.service.ProductService;
+import com.ec.recauctionec.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

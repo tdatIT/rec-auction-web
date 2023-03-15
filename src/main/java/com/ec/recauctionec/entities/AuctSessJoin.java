@@ -41,7 +41,4 @@ public class AuctSessJoin {
     @JoinColumn(name = "auction_sess_id")
     private AuctionSession auctionSession;
 
-    @OneToOne(mappedBy = "winAuction", fetch = FetchType.LAZY)
-    private Orders orders;
-
 }

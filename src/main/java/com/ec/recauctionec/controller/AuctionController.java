@@ -2,7 +2,8 @@ package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.dto.AuctionSessionDTO;
 import com.ec.recauctionec.entities.*;
-import com.ec.recauctionec.service.*;
+import com.ec.recauctionec.services.*;
+import com.ec.recauctionec.variable.Router;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,13 +48,15 @@ public class AuctionController {
     }
 
     @PostMapping(value = "/tao-phien")
-    public ResponseEntity createAuction(@ModelAttribute AuctionSessionDTO dto) {
+    public String createAuction(@ModelAttribute AuctionSessionDTO dto,
+                                ModelMap modelMap) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (auctionService.createNewAuction(us, dto)) {
-            return new ResponseEntity(HttpStatus.OK);
+            return "redirect:" + Router.MESSAGE + "?type=" + MessageController.CREATE_SUCCESS;
         }
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        return "redirect:" + Router.MESSAGE + "?type=" + MessageController.CREATE_FAIL;
+
     }
 
     @PostMapping(value = "/tham-gia")

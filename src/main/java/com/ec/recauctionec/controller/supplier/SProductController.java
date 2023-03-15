@@ -2,10 +2,10 @@ package com.ec.recauctionec.controller.supplier;
 
 import com.ec.recauctionec.dto.ProductDTO;
 import com.ec.recauctionec.entities.*;
-import com.ec.recauctionec.service.CategoryService;
-import com.ec.recauctionec.service.ProductService;
-import com.ec.recauctionec.service.StorageImage;
-import com.ec.recauctionec.service.SupplierService;
+import com.ec.recauctionec.services.CategoryService;
+import com.ec.recauctionec.services.ProductService;
+import com.ec.recauctionec.services.StorageImage;
+import com.ec.recauctionec.services.SupplierService;
 import com.ec.recauctionec.variable.SupplierLevelUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
