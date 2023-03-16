@@ -14,11 +14,16 @@ public interface AuctSessJoinRepo extends JpaRepository<AuctSessJoin, Long> {
 
 
     AuctSessJoin findFirstByAuctionSessionOrderByPriceAsc(AuctionSession auctionSession);
+
     @Query("select j from AuctSessJoin j " +
             "where j.product.supplier.supplierId = ?1 " +
-            "and j.auctionSession.endDate=?2")
-    List<AuctSessJoin> findBySupplierAndDate(long supplierId, Date date);
+            "and j.auctionSession.endDate>=?2")
+    List<AuctSessJoin> findBySupplierAndDate(int supplierId, Date date);
 
+    @Query("select count(u) from AuctSessJoin u where u.product.supplier.supplierId =?1")
+    long totalBidJoinOfSupplier(int supplierId);
 
-
+    @Query("select count(u) from AuctSessJoin u where u.product.supplier.supplierId = ?1 " +
+            "and u.status = 2")
+    long totalBidActiveOfSupplier(int supplier);
 }

@@ -47,4 +47,14 @@ public class AuctSessJoinServiceImpl implements AuctSessJoinService {
     public List<AuctSessJoin> findAllBySupplierAndDate(Supplier suppliers, Date date) {
         return joinRepo.findBySupplierAndDate(suppliers.getSupplierId(), date);
     }
+
+    @Override
+    public long totalBidJoinOfSupplier(Supplier supplier) {
+        return joinRepo.totalBidJoinOfSupplier(supplier.getSupplierId());
+    }
+
+    @Override
+    public long totalBidActiveOfSupplier(Supplier supplier) {
+        return joinRepo.totalBidActiveOfSupplier(supplier.getSupplierId());
+    }
 }

@@ -19,4 +19,7 @@ public interface AuctSessJoinService {
     AuctSessJoin findById(long id);
 
     List<AuctSessJoin> findAllBySupplierAndDate(Supplier suppliers, Date date);
+
+    long totalBidJoinOfSupplier(Supplier supplier);
+    long totalBidActiveOfSupplier(Supplier supplier);
 }
