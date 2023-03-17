@@ -2,8 +2,10 @@ package com.ec.recauctionec.location;
 
 import com.ec.recauctionec.entities.AddressData;
 import com.ec.recauctionec.entities.Delivery;
+import com.ec.recauctionec.entities.Orders;
 import com.ec.recauctionec.repositories.DeliveryRepo;
 import com.ec.recauctionec.repositories.UserAddressRepo;
+import com.ec.recauctionec.services.OrderService;
 import com.ec.recauctionec.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,20 +23,28 @@ public class CalculateShipCost {
     private ProductService productService;
     @Autowired
     private DeliveryRepo deliveryRepo;
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping(value = "api/v1/shipping-cost", method = RequestMethod.GET)
-    public ResponseEntity<ShipCostObject> calculateShipping(@RequestParam("addressId") int desId,
-                                                            @RequestParam("location") int srcId) {
-        ShipCostObject obj;
+    public ResponseEntity<ShipCostObject> calculateShipping(@RequestParam int addressId,
+                                                            @RequestParam int orderId) {
+        ShipCostObject obj = null;
         try {
-            AddressData src = userAddressRepo.findById(srcId).orElseThrow();
-            AddressData des = userAddressRepo.findById(desId).orElseThrow();
-            Delivery delivery = deliveryRepo.findById(1).orElseThrow();
-            //Set default Viettel Post
-            double ship_cost = Shipping.calculateShipping(src, des, delivery);
-            obj = new ShipCostObject("Tinh thanh cong "
-                    + src.getAddressDetailInfo() + "->" + des.getAddressDetailInfo(),
-                    (int) ship_cost);
+            Orders order = orderService.findById(orderId);
+            AddressData des = userAddressRepo.findById(addressId).orElseThrow();
+            if (order != null && des != null) {
+                //Get address of supplier
+                AddressData src = order.getProduct()
+                        .getSupplier()
+                        .getAddresses().get(0);
+                Delivery delivery = deliveryRepo.findById(1).orElseThrow();
+                //Set default Viettel Post
+                double ship_cost = Shipping.calculateShipping(src, des, delivery);
+                obj = new ShipCostObject("Tinh thanh cong "
+                        + src.getAddressDetailInfo() + "->" + des.getAddressDetailInfo(),
+                        (int) ship_cost);
+            }
         } catch (Exception e) {
             obj = new ShipCostObject("FAILS", 0);
         }

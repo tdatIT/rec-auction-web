@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+    <title>Xử lý đơn hàng - RecAuctionCMS</title>
+</head>
+
+<body>
+<div id="app">
+    <div class="main-wrapper main-wrapper-1">
+        <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+        <!-- Main Content -->
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h1>Editor</h1>
+
+                    <div class="section-header-breadcrumb">
+                        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+                        <div class="breadcrumb-item"><a href="#">Đơn hàng</a></div>
+                        <div class="breadcrumb-item">Thông tin</div>
+                    </div>
+                </div>
+
+                <div class="section-body">
+                    <h2 class="section-title">Thông tin/Xử lý đơn hàng</h2>
+                    <p class="section-lead">Thông tin chi tiết đơn hàng</p>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <form th:object="${order}">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h4>Thông tin đơn hàng</h4>
+                                        <div class="section-header-button">
+                                            <button class="btn btn-primary float-right">Hoàn tất xử lý
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">ID Đơn
+                                                hàng</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input th:field="*{orderId}" type="number" class="form-control"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="ID của đơn hàng trên hệ thống" readonly>
+                                            </div>
+
+                                            <label class="col-form-label col-1 col-md-1 col-lg-1">Mã SP</label>
+                                            <div class="col-sm-3 col-md-3 justify-content-start">
+                                                <input th:field="*{product.productCode}" type="text"
+                                                       class="form-control"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Mã sản phẩm trên hệ thống" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">Phí vận
+                                                chuyển</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input th:field="*{shippingPrice}" type="number" class="form-control"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Mức giá cơ bản của sản phẩm">
+                                            </div>
+
+                                            <label class="col-form-label col-1 col-md-1 col-lg-1">Tổng cộng</label>
+                                            <div class="col-sm-3 col-md-3 justify-content-start">
+                                                <input th:field="*{totalPrice}" type="text" class="form-control"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Tổng giá trị đơn hàng bao gồm phí vận chuyển">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">Ngày
+                                                tạo</label>
+                                            <div class="col-sm-3 col-md-3">
+                                                <input th:field="*{createDate}"
+                                                       class="form-control"
+                                                       th:value="*{#dates.format(createDate,'dd-MM-yy')}"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Ngày tạo đơn hàng">
+                                            </div>
+
+                                            <label class="col-form-label col-1 col-md-1 col-lg-1">Cập nhật</label>
+                                            <div class="col-sm-3 col-md-3 justify-content-start">
+                                                <input th:field="*{updateDate}"
+                                                       class="form-control"
+                                                       th:value="*{#dates.format(updateDate,'dd-MM-yy')}"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Ngày đơn hàng được xử lý">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Địa
+                                                chỉ</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <input class="form-control"
+                                                       th:value="*{address.getAddressDetailInfo()}"
+                                                       data-toggle="tooltip" data-placement="bottom"
+                                                       title="Địa chỉ nhận hàng" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Trạng
+                                                thái xử lý</label>
+                                            <div class="col-sm-12 col-md-7">
+                                                <select class="form-control selectric">
+                                                    <option value="3">Vận chuyển</option>
+                                                    <option value="4">Hoàn tất</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-4">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <tr>
+                                                        <th>Ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Mã</th>
+                                                        <th>Giá cơ bản</th>
+                                                        <th>Ngày tạo</th>
+                                                        <th>Trạng thái</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a href="#">
+                                                                <img alt="image"
+                                                                     th:src="${order.product.images[0].imgName}"
+                                                                     class="rounded-circle" width="35"
+                                                                     data-toggle="title" title="">
+                                                            </a>
+                                                        </td>
+                                                        <td>[[${order.product.productName}]]
+                                                            <div class="table-links">
+                                                                <a th:href="@{/chi-tiet-san-pham/{productCode}(productCode=${order.product.productCode})}">Xem</a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-uppercase"
+                                                            th:text="${order.product.productCode}"></td>
+
+                                                        <td th:text="${#numbers.formatDecimal(order.product.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
+                                                        <td th:text="${#dates.format(order.product.updateDate, 'dd-MM-yyyy')}"></td>
+                                                        <td>
+                                                            <div th:if="${order.product.status == 1}"
+                                                                 class="badge badge-primary">Hoạt
+                                                                động
+                                                            </div>
+                                                            <div th:if="${order.product.status == 2}"
+                                                                 class="badge badge-danger">Dừng
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Main Content -->
+        <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+    </div>
+</div>
+<!--Modal-->
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteConfirm">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận yêu cầu thực hiện</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn đang yêu cầu xóa sản phẩm.</p>
+                <div class="form-group">
+                    <label>Mã sản phẩm</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" name="productCode" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+<script src="/js/product-form.js"></script>
+
+</body>
+
+</html>

@@ -26,7 +26,6 @@
     <script src="/js/admin.js"></script>
 
 
-
     <!-- JS Libraies -->
     <script src="https://kit.fontawesome.com/ae7c745789.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -99,11 +98,13 @@
             </li>
             <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                    <img alt="avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+                    <img alt="avatar"
+                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                          class="rounded-circle mr-1">
                     <div class="d-sm-none d-lg-inline-block">Tài khoản</div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" th:with="uLogged=${#authentication.getPrincipal().getUser()}">
+                <div class="dropdown-menu dropdown-menu-right"
+                     th:with="uLogged=${#authentication.getPrincipal().getUser()}">
                     <div class="dropdown-title" th:text="*{uLogged.getLastName()+' '+uLogged.getFirstName()}"></div>
                     <a href="/tai-khoan" class="dropdown-item has-icon">
                         <i class="far fa-user"></i> Thông tin
@@ -132,7 +133,8 @@
                     </a>
                 </li>
                 <li class="dropdown">
-                    <a href="/supplier/phien-dau-gia" class="nav-link has-dropdown"><i class="fas fa-light fa-gavel"></i>
+                    <a href="/supplier/phien-dau-gia" class="nav-link has-dropdown"><i
+                            class="fas fa-light fa-gavel"></i>
                         <span>Phiên đấu giá</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="/supplier/phien-dau-gia?status=true">Đang diễn ra</a></li>
@@ -141,13 +143,14 @@
                 </li>
                 <li class="menu-header">Sale</li>
                 <li class="dropdown">
-                    <a href="/supplier/order" class="nav-link has-dropdown"><i class="fas fa-shopping-cart"></i>
+                    <a href="/supplier/don-hang" class="nav-link has-dropdown">
+                        <i class="fas fa-shopping-cart"></i>
                         <span>Đơn hàng</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link beep beep-sidebar" href="/supplier/order?status=1">Chờ xử lý</a></li>
-                        <li><a class="nav-link" href="/supplier/order?status=2">Vận chuyển</a></li>
-                        <li><a class="nav-link" href="/supplier/order?status=3">Hoàn tất</a></li>
+                        <li><a class="nav-link beep beep-sidebar" href="/supplier/don-hang?status=2">Chờ xử lý</a></li>
+                        <li><a class="nav-link" href="/supplier/don-hang?status=3">Vận chuyển</a></li>
+                        <li><a class="nav-link" href="/supplier/don-hang?status=4">Hoàn tất</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

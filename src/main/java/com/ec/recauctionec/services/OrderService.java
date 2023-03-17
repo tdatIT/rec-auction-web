@@ -2,6 +2,7 @@ package com.ec.recauctionec.services;
 
 import com.ec.recauctionec.dto.OrderDTO;
 import com.ec.recauctionec.entities.Orders;
+import com.ec.recauctionec.entities.Supplier;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,12 @@ public interface OrderService {
 
     List<Orders> findOrderByDate(int userId, Date date);
 
+    List<Orders> findAll();
+
+    List<Orders> findAllBySupplierDate(Supplier supplier, Date filterDate);
+    long numberOfOrdersPendingOfSupplier(Supplier supplier,Date filterDate);
+    long numberOfOrdersOfSupplier(Supplier supplier,Date filterDate);
+
     void createOrderNotConfirm(OrderDTO dto);
 
     boolean confirmOrder(OrderDTO dto);
@@ -22,7 +29,7 @@ public interface OrderService {
     boolean completedOrder(Orders order);
 
     boolean deliveryOrder(OrderDTO dto);
-    List<Orders> findAll();
+
     void updateOrder(Orders orders);
 
 }

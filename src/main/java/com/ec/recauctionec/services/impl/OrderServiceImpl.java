@@ -52,6 +52,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Orders> findAllBySupplierDate(Supplier supplier, Date filterDate) {
+        return orderRepo.findAllBySupplierAndDate(supplier.getSupplierId(), filterDate);
+    }
+
+    @Override
     public List<Orders> findOrderNonConfirm() {
         Calendar current = Calendar.getInstance();
         //Add 1 day
@@ -61,12 +66,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public long numberOfOrdersPendingOfSupplier(Supplier supplier, Date filterDate) {
+        return orderRepo.totalPendingOrderByDate(supplier.getSupplierId(), filterDate);
+    }
+
+    @Override
+    public long numberOfOrdersOfSupplier(Supplier supplier, Date filterDate) {
+        return orderRepo.totalOrderByDate(supplier.getSupplierId(), filterDate);
+    }
+
+    @Override
     @Transactional
     public void createOrderNotConfirm(OrderDTO dto) {
         Orders order = modelMapper.map(dto, Orders.class);
         order.setDelivery(new Delivery(DEFAULT_SHIPPING));
         order.setStatus(Orders.NOT_CONFIRM);
         order.setCreateDate(new Timestamp(new Date().getTime()));
+        order.setUpdateDate(new java.sql.Date(new Date().getTime()));
         orderRepo.save(order);
     }
 

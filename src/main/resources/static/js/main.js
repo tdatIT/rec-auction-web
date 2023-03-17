@@ -130,13 +130,13 @@ function updateTotal() {
 }
 
 $("#select-address").change(function () {
-    var location = $('#location').val()
+    var orderId = $('#order-id').text()
     var addressId = $("#select-address").val()
     $.ajax({
         url: '/api/v1/shipping-cost',
         method: 'get',
         data: {
-            'location': location,
+            'orderId': orderId,
             'addressId': addressId
         },
         success(data) {
