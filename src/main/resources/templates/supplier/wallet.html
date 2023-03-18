@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+    <title>Trang quản lý ví</title>
+</head>
+
+<body>
+<div id="app">
+    <div class="main-wrapper main-wrapper-1">
+        <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+        <!-- Main Content -->
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h1>Mã Ví:
+                        <span class="text-uppercase"
+                              th:text="${wallet.wallet_number.substring(0,6)+'-XXX-'+wallet.wallet_number.substring(7,11)}">
+                        </span>
+                    </h1>
+                    <div class="section-header-button">
+                        <a href="/thanh-toan" class="btn btn-primary">Nạp tiền</a>
+                    </div>
+                    <div class="section-header-breadcrumb">
+                        <div class="breadcrumb-item active"><a href="#">Trang chủ</a></div>
+                        <div class="breadcrumb-item"><a href="#">Quản lý ví</a></div>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <h2 class="section-title"
+                        th:text="'Số dư:'+${#numbers.formatDecimal(wallet.accountBalance, 0, 'POINT', 0, 'COMMA')+'₫'}"></h2>
+                    <p class="section-lead">Hiển thị biểu đồ phân tích và bảng lịch sử giao dịch theo tháng</p>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Biểu đồ biến động lịch sử giao dịch</h4>
+                                    <div class="card-header-action">
+                                        <div class="input-group">
+                                            <input name="date-filter" type="date" class="form-control date"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Chọn ngày cần xem đến ngày hiện tại">
+                                            <button class="btn btn-primary">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="line-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Biểu đồ so sánh loại giao dịch</h4>
+                                    <div class="card-header-action">
+                                        <div class="input-group">
+                                            <input name="date-filter" type="date" class="form-control date"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Chọn ngày cần xem đến ngày hiện tại">
+                                            <button class="btn btn-primary">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="donut-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Danh sách giao dịch từ ngày [[${#dates.format(filter,'dd-MM-yyyy')}]]</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="float-right">
+                                        <form>
+                                            <div class="input-group">
+                                                <input name="dateFilter" type="date" class="form-control date">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary"><i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="clearfix mb-3"></div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Số tiền</th>
+                                                <th>CODE</th>
+                                                <th>Thời gian</th>
+                                                <th>Loại giao dịch</th>
+                                            </tr>
+                                            <th:block th:each="l:${logs}">
+                                                <tr>
+                                                    <td th:text="${l.noHistory}"></td>
+                                                    <td th:text="${#numbers.formatDecimal(l.value, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
+                                                    <td class="text-uppercase" th:text="${l.paymentId}"></td>
+                                                    <td th:text="${#dates.format(l.createDate, 'dd-MM-yyyy')}"></td>
+                                                    <td>
+                                                        <div th:if="${l.type == true}" class="badge badge-primary">Nạp
+                                                            tiền
+                                                        </div>
+                                                        <div th:if="${l.type == false}" class="badge badge-danger">
+                                                            Thanh toán/Dịch vụ
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- Main Content -->
+        <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+    </div>
+</div>
+
+<th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="/js/chart_supplier.js"></script>
+<script>
+    $(document).ready(function () {
+        let today = new Date().toISOString().slice(0, 10);
+        $('.date').attr('max', today)
+        $('.date').attr('value', today)
+    })
+</script>
+</body>
+
+</html>

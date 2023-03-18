@@ -53,7 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/tai-khoan/**",
                         "/dau-gia/**",
                         "/don-hang/**",
-                        "/thanh-toan/**").authenticated()
+                        "/thanh-toan/**",
+                        "/api/v1/supplier/**").authenticated()
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
