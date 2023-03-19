@@ -38,11 +38,12 @@
                                     <h4>Biểu đồ biến động lịch sử giao dịch</h4>
                                     <div class="card-header-action">
                                         <div class="input-group">
-                                            <input name="date-filter" type="date" class="form-control date"
+                                            <input id="lchart-input" name="date-filter" type="month"
+                                                   class="form-control date-month"
                                                    data-toggle="tooltip"
                                                    data-placement="bottom"
                                                    title="Chọn ngày cần xem đến ngày hiện tại">
-                                            <button class="btn btn-primary">
+                                            <button id="lchart-btn" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i>
                                             </button>
 
@@ -60,11 +61,12 @@
                                     <h4>Biểu đồ so sánh loại giao dịch</h4>
                                     <div class="card-header-action">
                                         <div class="input-group">
-                                            <input name="date-filter" type="date" class="form-control date"
+                                            <input id="dchart-input" name="date-filter" type="month"
+                                                   class="form-control date-month"
                                                    data-toggle="tooltip"
                                                    data-placement="bottom"
                                                    title="Chọn ngày cần xem đến ngày hiện tại">
-                                            <button class="btn btn-primary">
+                                            <button id="dchart-btn" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i>
                                             </button>
                                         </div>
@@ -147,6 +149,8 @@
         let today = new Date().toISOString().slice(0, 10);
         $('.date').attr('max', today)
         $('.date').attr('value', today)
+        $('.date-month').attr('max', today.slice(0,7))
+        $('.date-month').attr('value', today.slice(0,7))
     })
 </script>
 </body>
