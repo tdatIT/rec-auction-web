@@ -59,7 +59,7 @@ public class MessageController {
                 modelMap.addAttribute("message", "Đăng ký thông tin thành công !");
                 modelMap.addAttribute("description", "Vui lòng đăng nhập tài khoản để hoàn tất cập nhật !");
                 modelMap.addAttribute("btn_text", "Đăng xuất");
-                modelMap.addAttribute("btn_href", "logout");
+                modelMap.addAttribute("btn_href", "dang-xuat");
         }
         return "message";
     }

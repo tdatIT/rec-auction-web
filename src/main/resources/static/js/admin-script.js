@@ -1,4 +1,9 @@
-"use strict";
+//preloader
+$(window).on("load", function () {
+    console.log('Preload')
+    $(".loader").fadeOut();
+    $("#pre-loader").delay(200).fadeOut("slow");
+})
 
 // DropzoneJS
 if (window.Dropzone) {
