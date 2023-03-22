@@ -7,12 +7,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -22,22 +19,24 @@ public class AOrderController {
     OrderService orderService;
 
     @GetMapping(value = {""})
-    public String getProductList(ModelMap modelMap, HttpServletRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<Orders> ordersList = orderService.findAll();
-        modelMap.addAttribute("ordersList", ordersList);
-        return "admin/admin-order";
+    public String getProductList(@RequestParam(required = false) Integer page,
+                                 @RequestParam(required = false) Integer size,
+                                 @RequestParam(required = false, name = "date-filter") Date filter,
+                                 ModelMap modelMap) {
+        if (filter == null)
+            filter = new Date(new java.util.Date().getTime());
+        if (page == null)
+            page = 0;
+        if (size == null)
+            size = 20;
+        long total_order = orderService.totalOrderFromDate(filter);
+        List<Orders> ordersList = orderService.findAllOrderByDate(filter, page, size);
+        modelMap.addAttribute("orders", ordersList);
+        modelMap.addAttribute("filter_date", filter);
+        modelMap.addAttribute("total_order", total_order);
+        return "admin/orders";
     }
 
-    //    @RequestMapping(value = {"/chinh-sua/{id}"}, method = RequestMethod.GET)
-//    public String disableUser(@PathVariable int id, ModelMap modelMap) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        Orders orders = orderService.findById(id);
-//        if (orders.getStatus() == 2 || orders.getStatus() == 3)
-//            orderService.completedOrder(orders);
-//
-//        return "redirect:/admin/don-hang";
-//    }
     @RequestMapping(value = {"/chinh-sua/{id}"}, method = RequestMethod.GET)
     public String disableUser(@PathVariable int id, ModelMap modelMap) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

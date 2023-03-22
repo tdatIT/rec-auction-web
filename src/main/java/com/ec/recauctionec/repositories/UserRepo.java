@@ -1,6 +1,7 @@
 package com.ec.recauctionec.repositories;
 
 import com.ec.recauctionec.entities.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,6 +17,15 @@ public interface UserRepo extends JpaRepository<User, Integer> {
     @Query(value = "select u from User u where u.email = ?1")
     User findByEmail(String email);
 
-    @Query(value = "select u from User u where u.role.roleId <> 1")
-    List<User> findAllUserNotAdmin();
+    @Query("select u from User u order by u.firstName asc")
+    List<User> findAllUser(Pageable pageable);
+
+    @Query("select count(u) from User u")
+    long totalUserInDb();
+
+    @Query("select count(u) from User u where u.role.roleId = 2")
+    long totalSupplierInDb();
+
+    @Query("select count(u) from User u where u.role.roleId = 1")
+    long totalAdminInDb();
 }

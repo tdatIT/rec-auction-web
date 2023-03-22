@@ -5,7 +5,10 @@
 .form-control:focus {
     box-shadow: none !important;
     outline: none; }
-
+tbody {
+    overflow-y: auto; /* Trigger vertical scroll    */
+    overflow-x: hidden; /* Hide the horizontal scroll */
+}
 a {
     color: #63B175;
     font-weight: 500;

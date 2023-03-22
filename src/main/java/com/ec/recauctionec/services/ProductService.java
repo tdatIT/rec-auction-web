@@ -27,5 +27,9 @@ public interface ProductService {
 
     List<Product> findProductForAuction(int userId, String productTagStr);
 
-    List<Product> findAllProduct();
+    List<Product> findAllProduct(int page, int size);
+
+    long totalProduct();
+
+    long totalActive();
 }

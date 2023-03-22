@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Orders findById(int id) {
         return orderRepo.findByOrderId(id);
+    }
+
+    @Override
+    public long totalOrderFromDate(java.sql.Date filter) {
+        return orderRepo.totalOrderFromDateForAdmin(filter);
+    }
+
+    @Override
+    public List<Orders> findAllOrderByDate(java.sql.Date filter, Integer page, Integer size) {
+        return orderRepo.findAllOrdersByDate(filter, PageRequest.of(page, size));
     }
 
     @Override

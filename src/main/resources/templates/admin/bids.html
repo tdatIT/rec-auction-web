@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+    <title>Trang quản lý phiên đấu giá</title>
+</head>
+
+<body>
+<div id="app">
+    <!-- Page Preloder -->
+    <div id="pre-loader">
+        <div class="loader"></div>
+    </div>
+    <div class="main-wrapper main-wrapper-1">
+        <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+        <!-- Main Content -->
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h1>Quản lý phiên tham gia</h1>
+                    <div class="section-header-breadcrumb">
+                        <div class="breadcrumb-item active"><a href="#">Trang chủ</a></div>
+                        <div class="breadcrumb-item"><a href="#">Phiên</a></div>
+                        <div class="breadcrumb-item">Danh sách</div>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <h2 class="section-title">Phiên đấu giá</h2>
+                    <p class="section-lead">
+                        Quản lý phiên đấu giá
+                    </p>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link active">Tổng phiên đấu giá đã tham gia <span
+                                                    th:text="${total}"
+                                                    class="badge badge-white"></span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link">Số phiên đang hoạt động<span
+                                                    class="badge badge-primary"
+                                                    th:text="${active_size}"></span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Danh sách phiên đang tham gia</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="float-left">
+                                            <select name="status" class="form-control selectric">
+                                                <option value="">Tất cả</option>
+                                                <option value="true">Hoạt động</option>
+                                                <option value="false">Kết thúc</option>
+                                            </select>
+                                        </div>
+                                        <div class="float-right">
+
+                                            <div class="input-group">
+                                                <input id="end" name="date-filter" type="date" class="form-control"
+                                                       ata-toggle="tooltip"
+                                                       data-placement="bottom"
+                                                       title="Chọn ngày cần xem đến ngày hiện tại">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary"><i class="fa fa-filter"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                    <div class="clearfix mb-3"></div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>Ảnh</th>
+                                                <th>Tên phiên</th>
+                                                <th>Mã</th>
+                                                <th>Giá đang đặt</th>
+                                                <th>Thời gian</th>
+                                                <th>Trạng thái</th>
+                                            </tr>
+                                            <th:block th:if="${joins.size()>0}">
+                                                <tr>
+                                                    Không có dữ liệu. Vui lòng chọn ngày xem phù hợp
+                                                </tr>
+                                            </th:block>
+                                            <th:block th:if="${joins.size()>0}" th:each="j:${joins}">
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" th:if="${j.auctionSession.img.size()>0}">
+                                                            <img alt="san-pham"
+                                                                 th:src="${j.auctionSession.img[0].imageFile}"
+                                                                 class="rounded-circle" width="35"
+                                                                 data-toggle="title">
+                                                        </a>
+                                                        <a th:if="${j.auctionSession.img.size()==0}">
+                                                            <img src="https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
+                                                                 class="rounded-circle" width="35"
+                                                                 data-toggle="title" alt="san-pham">
+                                                        </a>
+                                                    </td>
+                                                    <td>[[${j.auctionSession.productKey}]]
+                                                        <div class="table-links">
+                                                            <div class="bullet"></div>
+                                                            <a th:href="@{/chi-tiet-dau-gia/{id}(id=${j.auctionSession.auctionSessId})}">Xem
+                                                                hoặc đặt giá</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-uppercase"
+                                                        th:text="${j.auctionSession.auctionSessId}"></td>
+                                                    <td th:text="${#numbers.formatDecimal(j.price, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
+                                                    <td th:text="${#dates.format(j.time, 'dd-MM-yyyy HH:mm')}"></td>
+                                                    <td>
+                                                        <div th:if="${j.status == 1}" class="badge badge-primary">Chưa
+                                                            xác nhận
+                                                        </div>
+                                                        <div th:if="${j.status == 2}" class="badge badge-success">Hoạt
+                                                            động
+                                                        </div>
+                                                        <div th:if="${j.status == 3}" class="badge badge-danger">Kết
+                                                            thúc
+                                                        </div>
+                                                        <div th:if="${j.status == 4}" class="badge badge-warning">Thắng
+                                                        </div>
+                                                        <div th:if="${j.status == 0}" class="badge badge-danger">Hủy
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            </th:block>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+    </div>
+</div>
+
+
+<th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+<script src="/js/features-post-create.js"></script>
+<!-- Page Specific Lib File -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+<script src="/js/components-multiple-upload.js"></script>
+<script>
+    $(document).ready(function () {
+        let today = new Date().toISOString().slice(0, 10);
+        $('#end').attr('max', today)
+        $('#end').attr('value', today)
+    })
+</script>
+</body>
+</html>

@@ -9,14 +9,11 @@ import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.StorageImage;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,11 +28,20 @@ public class AProductController {
     StorageImage storageImage;
 
     @GetMapping(value = {""})
-    public String getProductList(ModelMap modelMap, HttpServletRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<Product> productList = productService.findAllProduct();
-        modelMap.addAttribute("productList", productList);
-        return "admin/admin-product";
+    public String getProductList(@RequestParam(required = false) Integer page,
+                                 @RequestParam(required = false) Integer size,
+                                 ModelMap modelMap) {
+        if (page == null)
+            page = 0;
+        if (size == null)
+            size = 20;
+        List<Product> productList = productService.findAllProduct(page, size);
+        long total = productService.totalProduct();
+        long total_active = productService.totalActive();
+        modelMap.addAttribute("products", productList);
+        modelMap.addAttribute("total_products", total);
+        modelMap.addAttribute("total_active", total_active);
+        return "admin/products";
     }
 
     @RequestMapping(value = "/chinh-sua/{id}", method = RequestMethod.GET)

@@ -1,6 +1,7 @@
 package com.ec.recauctionec.repositories;
 
 import com.ec.recauctionec.entities.Orders;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,7 +30,13 @@ public interface OrderRepo extends JpaRepository<Orders, Integer> {
     @Query("select count(o) from Orders o where (o.product.supplier.supplierId =?1 " +
             "and date(o.createDate)>=?2) and o.status = 2")
     long totalPendingOrderByDate(int supplierId, Date date);
+
     @Query("select count(o) from Orders o where o.product.supplier.supplierId =?1 " +
             "and date(o.createDate)>=?2")
     long totalOrderByDate(int supplierId, Date date);
+
+    @Query("select count(o) from Orders o where o.createDate >= ?1")
+    long totalOrderFromDateForAdmin(java.sql.Date filter);
+    @Query("select o from Orders o where o.createDate >= ?1 order by o.createDate desc")
+    List<Orders> findAllOrdersByDate(java.sql.Date filter, Pageable pageable);
 }

@@ -32,4 +32,7 @@ public interface OrderService {
 
     void updateOrder(Orders orders);
 
+    long totalOrderFromDate(java.sql.Date filter);
+
+    List<Orders> findAllOrderByDate(java.sql.Date filter, Integer page, Integer size);
 }

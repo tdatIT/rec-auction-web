@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="admin/admin-fragment::head-css-link"></th:block>
+    <title>Trang quản lý</title>
+</head>
+
+<body>
+<div id="app">
+    <!-- Page Preloder -->
+    <div id="pre-loader">
+        <div class="loader"></div>
+    </div>
+    <div class="main-wrapper main-wrapper-1">
+        <th:block th:insert="admin/admin-fragment::header-sidebar"></th:block>
+        <!-- Main Content -->
+        <th:block th:insert="admin/admin-fragment::footer"></th:block>
+    </div>
+</div>
+
+<th:block th:insert="admin/admin-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+</body>
+
+</html>

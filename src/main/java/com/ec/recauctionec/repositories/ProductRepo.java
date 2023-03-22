@@ -16,6 +16,15 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     @Query("select p from  Product p where p.productName like %:name%")
     List<Product> findAllByProductName(String name);
 
+    @Query("select p from Product p order by p.updateDate desc")
+    List<Product> findAllProductByPageAndSize(Pageable pageable);
+
+    @Query("select count(p) from Product p")
+    long totalProduct();
+
+    @Query("select count(p) from Product p where p.status <>0")
+    long totalActive();
+
     Product findByProductId(int productId);
 
     Product findProductByProductCode(String productCode);
@@ -25,8 +34,6 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     @Query("select p from Product p where p.status = 1 or p.status = 2 order by p.defaultPrice desc")
     List<Product> findProductLimit(Pageable pageable);
 
-    @Query("select p from Product p where p.isDeleted = false ")
-    List<Product> findAllActive();
 
     @Query("select p from Product p where p.category.categoryId = ?1")
     List<Product> findByCategoryId(int categoryId);

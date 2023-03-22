@@ -10,6 +10,7 @@ import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.UserService;
 import com.ec.recauctionec.verification.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class
-UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     VerificationTokenRepo verificationTokenRepo;
@@ -30,6 +30,26 @@ UserServiceImpl implements UserService {
     RoleRepo roleRepo;
     @Autowired
     EmailService emailService;
+
+    @Override
+    public List<User> findAllUser(int page, int size) {
+        return userRepo.findAllUser(PageRequest.of(page, size));
+    }
+
+    @Override
+    public long totalUserInDB() {
+        return userRepo.totalUserInDb();
+    }
+
+    @Override
+    public long totalSupplierInDB() {
+        return userRepo.totalSupplierInDb();
+    }
+
+    @Override
+    public long totalAdminInDB() {
+        return userRepo.totalAdminInDb();
+    }
 
     @Transactional
     @Override
@@ -130,8 +150,5 @@ UserServiceImpl implements UserService {
         return userRepo.findById(id).orElseThrow();
     }
 
-    @Override
-    public List<User> findAllUser() {
-        return userRepo.findAllUserNotAdmin();
-    }
+
 }

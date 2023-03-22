@@ -23,6 +23,21 @@ public class ProductServiceImpl implements ProductService {
     private Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Override
+    public List<Product> findAllProduct(int page, int size) {
+        return productRepo.findAllProductByPageAndSize(PageRequest.of(page, size));
+    }
+
+    @Override
+    public long totalProduct() {
+        return productRepo.totalProduct();
+    }
+
+    @Override
+    public long totalActive() {
+        return productRepo.totalActive();
+    }
+
+    @Override
     public List<Product> findBySupplierId(int supplierId) {
         return productRepo.findAllBySupplierIdActive(supplierId);
     }
@@ -89,8 +104,5 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findByCategoryId(categoryId);
     }
 
-    @Override
-    public List<Product> findAllProduct() {
-        return productRepo.findAllActive();
-    }
+
 }

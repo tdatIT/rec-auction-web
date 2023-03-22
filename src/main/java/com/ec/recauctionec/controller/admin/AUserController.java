@@ -3,16 +3,10 @@ package com.ec.recauctionec.controller.admin;
 import com.ec.recauctionec.entities.User;
 import com.ec.recauctionec.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -22,17 +16,26 @@ public class AUserController {
     UserService userService;
 
     @GetMapping(value = {""})
-    public String getUserList(ModelMap modelMap, HttpServletRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<User> userList = userService.findAllUser();
+    public String getUserList(@RequestParam(required = false) Integer page,
+                              @RequestParam(required = false) Integer size,
+                              ModelMap modelMap) {
+        if (page == null)
+            page = 0;
+        if (size == null)
+            size = 20;
+        List<User> userList = userService.findAllUser(page, size);
+        long total_user = userService.totalUserInDB();
+        long total_supplier = userService.totalSupplierInDB();
+        long total_admin = userService.totalAdminInDB();
+        modelMap.addAttribute("total_user", total_user);
+        modelMap.addAttribute("total_supplier", total_supplier);
+        modelMap.addAttribute("total_admin", total_admin);
         modelMap.addAttribute("userList", userList);
-
-        return "admin/admin-user";
+        return "admin/users";
     }
 
     @RequestMapping(value = {"/chinh-sua/{id}"}, method = RequestMethod.GET)
     public String disableUser(@PathVariable int id, ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findById(id);
         if (user.isActive() == true) {
             user.setActive(false);

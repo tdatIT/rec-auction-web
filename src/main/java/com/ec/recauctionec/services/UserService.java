@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface UserService {
     User findById(int id);
+
     User findByUsername(String username);
 
     User findByEmail(String email);
@@ -23,7 +24,16 @@ public interface UserService {
     void requestResetPassword(User us);
 
     void resetPassword(String token, String password);
+
     void updateConfirmUser(User user);
+
     boolean updatePassword(User user, String curPass, String newPass);
-    List<User> findAllUser();
+
+    List<User> findAllUser(int page, int size);
+
+    long totalUserInDB();
+
+    long totalSupplierInDB();
+
+    long totalAdminInDB();
 }
