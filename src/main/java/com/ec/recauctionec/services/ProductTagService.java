@@ -1,6 +1,6 @@
 package com.ec.recauctionec.services;
 
-import com.ec.recauctionec.entities.ProductTag;
+import com.ec.recauctionec.data.entities.ProductTag;
 
 import java.util.List;
 

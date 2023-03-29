@@ -1,7 +1,7 @@
 package com.ec.recauctionec.services;
 
-import com.ec.recauctionec.paypal.PaypalPaymentIntent;
-import com.ec.recauctionec.paypal.PaypalPaymentMethod;
+import com.ec.recauctionec.configs.paypal.PaypalPaymentIntent;
+import com.ec.recauctionec.configs.paypal.PaypalPaymentMethod;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;

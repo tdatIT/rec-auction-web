@@ -1,6 +1,6 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.variable.Router;
+import com.ec.recauctionec.data.variable.Router;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;

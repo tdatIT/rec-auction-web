@@ -1,10 +1,10 @@
 package com.ec.recauctionec.controller.api;
 
-import com.ec.recauctionec.entities.CustomUserDetails;
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.repositories.WalletHistoryRepo;
-import com.ec.recauctionec.response.WalletObjQuery;
-import com.ec.recauctionec.response.WalletStatisticResp;
+import com.ec.recauctionec.data.entities.CustomUserDetails;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
+import com.ec.recauctionec.data.response.WalletObjQuery;
+import com.ec.recauctionec.data.response.WalletStatisticResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

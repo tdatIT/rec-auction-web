@@ -1,7 +1,7 @@
 package com.ec.recauctionec.services.impl;
 
-import com.ec.recauctionec.entities.Product;
-import com.ec.recauctionec.repositories.ProductRepo;
+import com.ec.recauctionec.data.entities.Product;
+import com.ec.recauctionec.data.repositories.ProductRepo;
 import com.ec.recauctionec.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

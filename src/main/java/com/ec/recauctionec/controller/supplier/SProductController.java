@@ -1,12 +1,12 @@
 package com.ec.recauctionec.controller.supplier;
 
-import com.ec.recauctionec.dto.ProductDTO;
-import com.ec.recauctionec.entities.*;
+import com.ec.recauctionec.data.dto.ProductDTO;
+import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.services.CategoryService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.StorageImage;
 import com.ec.recauctionec.services.SupplierService;
-import com.ec.recauctionec.variable.SupplierLevelUtils;
+import com.ec.recauctionec.data.variable.SupplierLevelUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

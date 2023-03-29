@@ -1,6 +1,6 @@
 package com.ec.recauctionec.controller.admin;
 
-import com.ec.recauctionec.entities.Orders;
+import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -37,13 +37,4 @@ public class AOrderController {
         return "admin/orders";
     }
 
-    @RequestMapping(value = {"/chinh-sua/{id}"}, method = RequestMethod.GET)
-    public String disableUser(@PathVariable int id, ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Orders orders = orderService.findById(id);
-        if (orders.getStatus() == 2 || orders.getStatus() == 3)
-            orders.setStatus(4);
-        orderService.updateOrder(orders);
-        return "redirect:/admin/don-hang";
-    }
 }

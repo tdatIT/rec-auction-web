@@ -1,8 +1,8 @@
 package com.ec.recauctionec.controller.supplier;
 
-import com.ec.recauctionec.entities.AuctSessJoin;
-import com.ec.recauctionec.entities.CustomUserDetails;
-import com.ec.recauctionec.entities.User;
+import com.ec.recauctionec.data.entities.AuctSessJoin;
+import com.ec.recauctionec.data.entities.CustomUserDetails;
+import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.AuctSessJoinService;
 import com.ec.recauctionec.services.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;

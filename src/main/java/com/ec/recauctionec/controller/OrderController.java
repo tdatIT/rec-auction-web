@@ -1,12 +1,12 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.dto.OrderDTO;
-import com.ec.recauctionec.entities.AddressData;
-import com.ec.recauctionec.entities.CustomUserDetails;
-import com.ec.recauctionec.entities.Orders;
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.repositories.UserAddressRepo;
-import com.ec.recauctionec.repositories.WalletRepo;
+import com.ec.recauctionec.data.dto.OrderDTO;
+import com.ec.recauctionec.data.entities.AddressData;
+import com.ec.recauctionec.data.entities.CustomUserDetails;
+import com.ec.recauctionec.data.entities.Orders;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.repositories.UserAddressRepo;
+import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.OrderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

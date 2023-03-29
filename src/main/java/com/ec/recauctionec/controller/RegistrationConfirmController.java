@@ -1,8 +1,8 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.entities.User;
+import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.UserService;
-import com.ec.recauctionec.verification.VerificationToken;
+import com.ec.recauctionec.data.entities.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;

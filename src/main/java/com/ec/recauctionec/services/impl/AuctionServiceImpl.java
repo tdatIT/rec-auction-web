@@ -1,11 +1,12 @@
 package com.ec.recauctionec.services.impl;
 
-import com.ec.recauctionec.dto.AuctionSessionDTO;
-import com.ec.recauctionec.entities.*;
-import com.ec.recauctionec.repositories.AuctSessJoinRepo;
-import com.ec.recauctionec.repositories.AuctionRepo;
-import com.ec.recauctionec.repositories.UserRepo;
-import com.ec.recauctionec.repositories.WalletRepo;
+import com.ec.recauctionec.data.dto.AuctionSessionDTO;
+import com.ec.recauctionec.data.entities.*;
+
+import com.ec.recauctionec.data.repositories.AuctSessJoinRepo;
+import com.ec.recauctionec.data.repositories.AuctionRepo;
+import com.ec.recauctionec.data.repositories.UserRepo;
+import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.AuctionService;
 import com.ec.recauctionec.services.StorageImage;
 import org.springframework.beans.factory.annotation.Autowired;

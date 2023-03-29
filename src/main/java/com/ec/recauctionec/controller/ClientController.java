@@ -1,14 +1,15 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.dto.UserDTO;
-import com.ec.recauctionec.entities.*;
+import com.ec.recauctionec.data.dto.UserDTO;
+import com.ec.recauctionec.data.entities.*;
+
 import com.ec.recauctionec.event.OnRegistrationCompleteEvent;
-import com.ec.recauctionec.paypal.CheckUser;
+import com.ec.recauctionec.configs.paypal.CheckUser;
 import com.ec.recauctionec.services.AuctionService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.UserService;
-import com.ec.recauctionec.variable.Router;
-import com.ec.recauctionec.verification.VerificationToken;
+import com.ec.recauctionec.data.variable.Router;
+import com.ec.recauctionec.data.entities.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;

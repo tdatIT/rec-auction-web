@@ -1,9 +1,9 @@
 package com.ec.recauctionec.services.impl;
 
-import com.ec.recauctionec.entities.AuctSessJoin;
-import com.ec.recauctionec.entities.AuctionSession;
-import com.ec.recauctionec.entities.Supplier;
-import com.ec.recauctionec.repositories.AuctSessJoinRepo;
+import com.ec.recauctionec.data.entities.AuctSessJoin;
+import com.ec.recauctionec.data.entities.AuctionSession;
+import com.ec.recauctionec.data.entities.Supplier;
+import com.ec.recauctionec.data.repositories.AuctSessJoinRepo;
 import com.ec.recauctionec.services.AuctSessJoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

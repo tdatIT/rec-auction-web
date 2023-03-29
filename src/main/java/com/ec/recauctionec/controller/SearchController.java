@@ -1,6 +1,6 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.entities.Product;
+import com.ec.recauctionec.data.entities.Product;
 import com.ec.recauctionec.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

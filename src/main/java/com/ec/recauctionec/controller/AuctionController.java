@@ -1,9 +1,10 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.dto.AuctionSessionDTO;
-import com.ec.recauctionec.entities.*;
+import com.ec.recauctionec.data.dto.AuctionSessionDTO;
+import com.ec.recauctionec.data.entities.*;
+
 import com.ec.recauctionec.services.*;
-import com.ec.recauctionec.variable.Router;
+import com.ec.recauctionec.data.variable.Router;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

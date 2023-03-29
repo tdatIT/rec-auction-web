@@ -1,9 +1,9 @@
 package com.ec.recauctionec.controller.supplier;
 
-import com.ec.recauctionec.entities.CustomUserDetails;
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.entities.WalletHistory;
-import com.ec.recauctionec.repositories.WalletHistoryRepo;
+import com.ec.recauctionec.data.entities.CustomUserDetails;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.entities.WalletHistory;
+import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

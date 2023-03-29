@@ -1,7 +1,7 @@
 package com.ec.recauctionec.services;
 
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.verification.VerificationToken;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.entities.VerificationToken;
 
 import java.util.List;
 

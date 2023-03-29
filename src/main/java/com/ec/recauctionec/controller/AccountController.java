@@ -1,9 +1,10 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.entities.*;
-import com.ec.recauctionec.repositories.UserAddressRepo;
-import com.ec.recauctionec.repositories.WalletHistoryRepo;
-import com.ec.recauctionec.repositories.WalletRepo;
+import com.ec.recauctionec.data.entities.*;
+
+import com.ec.recauctionec.data.repositories.UserAddressRepo;
+import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
+import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.SupplierService;
 import com.ec.recauctionec.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <form th:object="${order}">
+                                <form th:object="${order}" action="/supplier/don-hang/cap-nhat" method="post">
                                     <div class="card-header d-flex justify-content-between">
                                         <h4>Thông tin đơn hàng</h4>
                                         <div class="section-header-button">
@@ -66,14 +66,14 @@
                                             <div class="col-sm-3 col-md-3">
                                                 <input th:field="*{shippingPrice}" type="number" class="form-control"
                                                        data-toggle="tooltip" data-placement="bottom"
-                                                       title="Mức giá cơ bản của sản phẩm">
+                                                       title="Mức giá cơ bản của sản phẩm" readonly>
                                             </div>
 
                                             <label class="col-form-label col-1 col-md-1 col-lg-1">Tổng cộng</label>
                                             <div class="col-sm-3 col-md-3 justify-content-start">
                                                 <input th:field="*{totalPrice}" type="text" class="form-control"
                                                        data-toggle="tooltip" data-placement="bottom"
-                                                       title="Tổng giá trị đơn hàng bao gồm phí vận chuyển">
+                                                       title="Tổng giá trị đơn hàng bao gồm phí vận chuyển" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group row mb-4">
@@ -84,7 +84,7 @@
                                                        class="form-control"
                                                        th:value="*{#dates.format(createDate,'dd-MM-yy')}"
                                                        data-toggle="tooltip" data-placement="bottom"
-                                                       title="Ngày tạo đơn hàng">
+                                                       title="Ngày tạo đơn hàng" readonly>
                                             </div>
 
                                             <label class="col-form-label col-1 col-md-1 col-lg-1">Cập nhật</label>
@@ -93,7 +93,7 @@
                                                        class="form-control"
                                                        th:value="*{#dates.format(updateDate,'dd-MM-yy')}"
                                                        data-toggle="tooltip" data-placement="bottom"
-                                                       title="Ngày đơn hàng được xử lý">
+                                                       title="Ngày đơn hàng được xử lý" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group row mb-4">

@@ -1,9 +1,12 @@
 package com.ec.recauctionec.services.impl;
 
-import com.ec.recauctionec.dto.OrderDTO;
-import com.ec.recauctionec.entities.*;
-import com.ec.recauctionec.location.Shipping;
-import com.ec.recauctionec.repositories.*;
+import com.ec.recauctionec.data.dto.OrderDTO;
+import com.ec.recauctionec.data.entities.*;
+import com.ec.recauctionec.data.repositories.*;
+
+import com.ec.recauctionec.services.shipping.Shipping;
+
+
 import com.ec.recauctionec.services.AuctSessJoinService;
 import com.ec.recauctionec.services.OrderService;
 import org.modelmapper.ModelMapper;

@@ -1,11 +1,11 @@
 package com.ec.recauctionec.scheduling;
 
-import com.ec.recauctionec.dto.OrderDTO;
-import com.ec.recauctionec.email.EmailDetails;
-import com.ec.recauctionec.entities.AuctSessJoin;
-import com.ec.recauctionec.entities.AuctionSession;
-import com.ec.recauctionec.entities.Orders;
-import com.ec.recauctionec.entities.User;
+import com.ec.recauctionec.data.dto.OrderDTO;
+import com.ec.recauctionec.data.email.EmailDetails;
+import com.ec.recauctionec.data.entities.AuctSessJoin;
+import com.ec.recauctionec.data.entities.AuctionSession;
+import com.ec.recauctionec.data.entities.Orders;
+import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.AuctSessJoinService;
 import com.ec.recauctionec.services.AuctionService;
 import com.ec.recauctionec.services.EmailService;

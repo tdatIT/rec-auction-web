@@ -1,8 +1,8 @@
 package com.ec.recauctionec.services;
 
-import com.ec.recauctionec.dto.OrderDTO;
-import com.ec.recauctionec.entities.Orders;
-import com.ec.recauctionec.entities.Supplier;
+import com.ec.recauctionec.data.dto.OrderDTO;
+import com.ec.recauctionec.data.entities.Orders;
+import com.ec.recauctionec.data.entities.Supplier;
 
 import java.util.Date;
 import java.util.List;

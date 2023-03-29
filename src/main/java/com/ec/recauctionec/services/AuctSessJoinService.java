@@ -1,8 +1,8 @@
 package com.ec.recauctionec.services;
 
-import com.ec.recauctionec.entities.AuctSessJoin;
-import com.ec.recauctionec.entities.AuctionSession;
-import com.ec.recauctionec.entities.Supplier;
+import com.ec.recauctionec.data.entities.AuctSessJoin;
+import com.ec.recauctionec.data.entities.AuctionSession;
+import com.ec.recauctionec.data.entities.Supplier;
 
 import java.sql.Date;
 import java.util.List;

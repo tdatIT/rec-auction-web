@@ -1,13 +1,13 @@
 package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.configs.UrlUtils;
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.entities.Wallet;
-import com.ec.recauctionec.entities.WalletHistory;
-import com.ec.recauctionec.paypal.PaypalPaymentIntent;
-import com.ec.recauctionec.paypal.PaypalPaymentMethod;
-import com.ec.recauctionec.repositories.WalletHistoryRepo;
-import com.ec.recauctionec.repositories.WalletRepo;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.entities.Wallet;
+import com.ec.recauctionec.data.entities.WalletHistory;
+import com.ec.recauctionec.configs.paypal.PaypalPaymentIntent;
+import com.ec.recauctionec.configs.paypal.PaypalPaymentMethod;
+import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
+import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.PaypalService;
 import com.ec.recauctionec.services.UserService;
 import com.paypal.api.payments.Links;

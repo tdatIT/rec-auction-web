@@ -1,13 +1,13 @@
 package com.ec.recauctionec.services.impl;
 
-import com.ec.recauctionec.entities.AddressData;
-import com.ec.recauctionec.entities.Role;
-import com.ec.recauctionec.entities.Supplier;
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.repositories.SupplierRepo;
-import com.ec.recauctionec.repositories.UserRepo;
+import com.ec.recauctionec.data.entities.AddressData;
+import com.ec.recauctionec.data.entities.Role;
+import com.ec.recauctionec.data.entities.Supplier;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.repositories.SupplierRepo;
+import com.ec.recauctionec.data.repositories.UserRepo;
 import com.ec.recauctionec.services.SupplierService;
-import com.ec.recauctionec.variable.RoleConst;
+import com.ec.recauctionec.data.variable.RoleConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

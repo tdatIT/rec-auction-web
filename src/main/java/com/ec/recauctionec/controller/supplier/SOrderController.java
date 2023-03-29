@@ -1,18 +1,16 @@
 package com.ec.recauctionec.controller.supplier;
 
-import com.ec.recauctionec.entities.CustomUserDetails;
-import com.ec.recauctionec.entities.Orders;
-import com.ec.recauctionec.entities.User;
+import com.ec.recauctionec.data.dto.OrderDTO;
+import com.ec.recauctionec.data.entities.CustomUserDetails;
+import com.ec.recauctionec.data.entities.Orders;
+import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -59,6 +57,21 @@ public class SOrderController {
                 orders.getProduct().getSupplier().getSupplierId() == user.getSuppliers().getSupplierId()) {
             modelMap.addAttribute("order", orders);
             return "supplier/order-form";
+        }
+        return "redirect:/404";
+    }
+
+    @RequestMapping(value = "/cap-nhat", method = RequestMethod.POST)
+    public String getOrderInfo(@ModelAttribute OrderDTO dto) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = ((CustomUserDetails) auth.getPrincipal()).getUser();
+        Orders orders = orderService.findById(dto.getOrderId());
+        if (orders != null &&
+                orders.getProduct().getSupplier().getSupplierId() == user.getSuppliers().getSupplierId()) {
+            orders.setStatus(dto.getStatus());
+            orders.setUpdateDate(new Date(new java.util.Date().getTime()));
+            orderService.updateOrder(orders);
+            return "redirect:/supplier/don-hang";
         }
         return "redirect:/404";
     }

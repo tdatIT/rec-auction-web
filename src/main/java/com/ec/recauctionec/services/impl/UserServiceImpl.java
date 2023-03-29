@@ -1,14 +1,14 @@
 package com.ec.recauctionec.services.impl;
 
-import com.ec.recauctionec.entities.Role;
-import com.ec.recauctionec.entities.User;
-import com.ec.recauctionec.entities.Wallet;
-import com.ec.recauctionec.repositories.RoleRepo;
-import com.ec.recauctionec.repositories.UserRepo;
-import com.ec.recauctionec.repositories.VerificationTokenRepo;
+import com.ec.recauctionec.data.entities.Role;
+import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.entities.Wallet;
+import com.ec.recauctionec.data.repositories.RoleRepo;
+import com.ec.recauctionec.data.repositories.UserRepo;
+import com.ec.recauctionec.data.repositories.VerificationTokenRepo;
 import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.UserService;
-import com.ec.recauctionec.verification.VerificationToken;
+import com.ec.recauctionec.data.entities.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

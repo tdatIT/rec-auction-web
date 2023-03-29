@@ -1,6 +1,6 @@
 package com.ec.recauctionec.event;
 
-import com.ec.recauctionec.entities.User;
+import com.ec.recauctionec.data.entities.User;
 import lombok.Data;
 import org.springframework.context.ApplicationEvent;
 

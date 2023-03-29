@@ -1,8 +1,8 @@
 package com.ec.recauctionec.services;
 
-import com.ec.recauctionec.dto.AuctionSessionDTO;
-import com.ec.recauctionec.entities.AuctionSession;
-import com.ec.recauctionec.entities.User;
+import com.ec.recauctionec.data.dto.AuctionSessionDTO;
+import com.ec.recauctionec.data.entities.AuctionSession;
+import com.ec.recauctionec.data.entities.User;
 
 import java.sql.Date;
 import java.util.List;
