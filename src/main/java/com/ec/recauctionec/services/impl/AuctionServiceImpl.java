@@ -2,7 +2,6 @@ package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.data.dto.AuctionSessionDTO;
 import com.ec.recauctionec.data.entities.*;
-
 import com.ec.recauctionec.data.repositories.AuctSessJoinRepo;
 import com.ec.recauctionec.data.repositories.AuctionRepo;
 import com.ec.recauctionec.data.repositories.UserRepo;
@@ -35,6 +34,11 @@ public class AuctionServiceImpl implements AuctionService {
     private StorageImage storageImage;
     @Autowired
     private AuctSessJoinRepo joinRepo;
+
+    @Override
+    public List<AuctionSession> findAllByDateAndPageSize(int page, int size, Date dateFilter) {
+        return auctionRepo.findByDateAndPageSize(PageRequest.of(page, size), dateFilter);
+    }
 
     @Override
     public AuctionSession findById(int id) {

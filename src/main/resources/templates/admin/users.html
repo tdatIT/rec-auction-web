@@ -76,8 +76,10 @@
                                     <div class="float-right">
                                         <form>
                                             <div class="input-group">
-                                                <input type="number" name="page" class="form-control" placeholder="Số trang">
-                                                <input type="number" name="size" class="form-control" placeholder="Bảng ghi">
+                                                <input type="number" name="page" class="form-control"
+                                                       placeholder="Số trang">
+                                                <input type="number" name="size" class="form-control"
+                                                       placeholder="Bảng ghi">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary"><i class="fas fa-filter"></i>
                                                     </button>
@@ -116,8 +118,12 @@
                                                         <div class="table-links">
                                                             <a th:href="@{/admin/nguoi-dung/thong-tin/{id}(id=${u.userId})}">Xem</a>
                                                             <div class="bullet"></div>
-                                                            <a th:href="@{/admin/nguoi-dung/khoa-tai-khoan/{id}(id=${u.userId})}">Vô
-                                                                hiệu</a>
+                                                            <a th:if="${u.userId != 1}" class="btn-ban-account" href="#"
+                                                               th:attr="data-id=${u.email}">Khóa
+                                                                tài khoản</a>
+                                                            <div class="bullet"></div>
+                                                            <a th:if="${u.active == false}" class="btn-active-account"
+                                                               href="#" th:attr="data-id=${u.email}">Mở khóa</a>
                                                         </div>
                                                     </td>
 
@@ -161,6 +167,7 @@
 
 
 <th:block th:insert="admin/admin-fragment::js-block"></th:block>
+<script src="/js/admin-popup.js"></script>
 <!-- Page Specific JS File -->
 <script src="/js/features-post-create.js"></script>
 <!-- Page Specific Lib File -->

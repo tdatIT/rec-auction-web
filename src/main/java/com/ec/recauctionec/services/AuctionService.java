@@ -17,10 +17,14 @@ public interface AuctionService {
 
     List<AuctionSession> findAllByUserAndActive(int userId, Date dateFilter);
 
+    List<AuctionSession> findAllByDateAndPageSize(int page, int size, Date dateFilter);
+
 
     boolean createNewAuction(User us, AuctionSessionDTO dto);
 
     void setWinAuctionSession(int auctionId);
 
     boolean cancelAuction(int auctionId);
+
+
 }

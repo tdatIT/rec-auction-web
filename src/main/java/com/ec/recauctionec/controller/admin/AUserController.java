@@ -35,7 +35,7 @@ public class AUserController {
         return "admin/users";
     }
 
-    @RequestMapping(value = {"/khoa-taikhoan"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/khoa-tai-khoan"}, method = RequestMethod.POST)
     public ResponseEntity disableUser(@RequestParam String email) {
         User user = userService.findByEmail(email);
         if (user.isActive() == true) {

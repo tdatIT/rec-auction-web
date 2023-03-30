@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+    <th:block th:insert="admin/admin-fragment::head-css-link"></th:block>
     <title>Trang quản lý phiên đấu giá</title>
 </head>
 
@@ -14,7 +14,7 @@
         <div class="loader"></div>
     </div>
     <div class="main-wrapper main-wrapper-1">
-        <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+        <th:block th:insert="admin/admin-fragment::header-sidebar"></th:block>
         <!-- Main Content -->
         <div class="main-content">
             <section class="section">
@@ -38,14 +38,18 @@
                                 <div class="card-body">
                                     <ul class="nav nav-pills">
                                         <li class="nav-item">
-                                            <a class="nav-link active">Tổng phiên đấu giá đã tham gia <span
-                                                    th:text="${total}"
+                                            <a class="nav-link active"
+                                               th:text="'Dữ liệu từ ngày: '+ ${#dates.format(date,'dd-MM-yyyy')}"></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active">Tổng phiên đấu giá <span
+                                                    th:text="${bids.size()}"
                                                     class="badge badge-white"></span></a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link">Số phiên đang hoạt động<span
+                                            <a class="nav-link">Số phiên kết thúc<span
                                                     class="badge badge-primary"
-                                                    th:text="${active_size}"></span></a>
+                                                    th:text="${total_end}"></span></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -69,8 +73,10 @@
                                         </div>
                                         <div class="float-right">
                                             <div class="input-group">
-                                                <input type="number" name="page" class="form-control" placeholder="Số trang">
-                                                <input type="number" name="size" class="form-control" placeholder="Bảng ghi">
+                                                <input type="number" name="page" class="form-control"
+                                                       placeholder="Số trang">
+                                                <input type="number" name="size" class="form-control"
+                                                       placeholder="Bảng ghi">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary"><i class="fas fa-filter"></i>
                                                     </button>
@@ -101,50 +107,44 @@
                                                 <th>Thời gian</th>
                                                 <th>Trạng thái</th>
                                             </tr>
-                                            <th:block th:if="${joins.size()>0}">
+                                            <th:block th:if="${bids.size()>0}">
                                                 <tr>
                                                     Không có dữ liệu. Vui lòng chọn ngày xem phù hợp
                                                 </tr>
                                             </th:block>
-                                            <th:block th:if="${joins.size()>0}" th:each="j:${joins}">
+                                            <th:block th:if="${bids.size()>0}" th:each="j:${bids}">
                                                 <tr>
                                                     <td>
-                                                        <a href="#" th:if="${j.auctionSession.img.size()>0}">
+                                                        <a href="#" th:if="${j.img.size()>0}">
                                                             <img alt="san-pham"
-                                                                 th:src="${j.auctionSession.img[0].imageFile}"
+                                                                 th:src="${j.img[0].imageFile}"
                                                                  class="rounded-circle" width="35"
                                                                  data-toggle="title">
                                                         </a>
-                                                        <a th:if="${j.auctionSession.img.size()==0}">
+                                                        <a th:if="${j.img.size()==0}">
                                                             <img src="https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
                                                                  class="rounded-circle" width="35"
                                                                  data-toggle="title" alt="san-pham">
                                                         </a>
                                                     </td>
-                                                    <td>[[${j.auctionSession.productKey}]]
+                                                    <td>[[${j.productKey}]]
                                                         <div class="table-links">
                                                             <div class="bullet"></div>
-                                                            <a th:href="@{/chi-tiet-dau-gia/{id}(id=${j.auctionSession.auctionSessId})}">Xem
+                                                            <a th:href="@{/chi-tiet-dau-gia/{id}(id=${j.auctionSessId})}">Xem
                                                                 hoặc đặt giá</a>
                                                         </div>
                                                     </td>
                                                     <td class="text-uppercase"
-                                                        th:text="${j.auctionSession.auctionSessId}"></td>
-                                                    <td th:text="${#numbers.formatDecimal(j.price, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
-                                                    <td th:text="${#dates.format(j.time, 'dd-MM-yyyy HH:mm')}"></td>
+                                                        th:text="${j.auctionSessId}"></td>
+                                                    <td th:text="${#numbers.formatDecimal(j.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
+                                                    <td th:text="${#dates.format(j.createDate, 'dd-MM-yyyy HH:mm')}"></td>
                                                     <td>
-                                                        <div th:if="${j.status == 1}" class="badge badge-primary">Chưa
-                                                            xác nhận
+                                                        <div th:if="${j.complete == true}" class="badge badge-primary">
+                                                            Kết thúc
                                                         </div>
-                                                        <div th:if="${j.status == 2}" class="badge badge-success">Hoạt
+                                                        <div th:if="${j.complete == false}" class="badge badge-danger">
+                                                            Hoạt
                                                             động
-                                                        </div>
-                                                        <div th:if="${j.status == 3}" class="badge badge-danger">Kết
-                                                            thúc
-                                                        </div>
-                                                        <div th:if="${j.status == 4}" class="badge badge-warning">Thắng
-                                                        </div>
-                                                        <div th:if="${j.status == 0}" class="badge badge-danger">Hủy
                                                         </div>
                                                     </td>
 
@@ -159,7 +159,7 @@
                 </div>
             </section>
         </div>
-        <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+        <th:block th:insert="admin/admin-fragment::footer"></th:block>
     </div>
 </div>
 

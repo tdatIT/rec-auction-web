@@ -35,4 +35,6 @@ public interface AuctionRepo extends JpaRepository<AuctionSession, Integer> {
     List<AuctionSession> findTop10AuctionForDay(Pageable top10,
                                                 @Param("currentDay") java.util.Date current);
 
+    @Query("select a from AuctionSession a where date(a.startDate) > ?1")
+    List<AuctionSession> findByDateAndPageSize(Pageable pageable, Date filterDate);
 }

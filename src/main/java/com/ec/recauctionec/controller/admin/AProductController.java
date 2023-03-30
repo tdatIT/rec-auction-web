@@ -47,7 +47,7 @@ public class AProductController {
     @RequestMapping(value = "/khoa-san-pham", method = RequestMethod.POST)
     public ResponseEntity updateProduct(@RequestParam String code) {
         Product p = productService.findByProductCode(code);
-        p.setStatus(Product.DISABLE);
+        p.setStatus(Product.BAN);
         p.setUpdateDate(new Date(new java.util.Date().getTime()));
         productService.updateProduct(p);
         return ResponseEntity.status(HttpStatus.OK).body("Ban success");

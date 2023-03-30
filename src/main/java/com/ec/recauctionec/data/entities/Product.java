@@ -15,6 +15,7 @@ public class Product {
     public static final int MANUAL = 1;
     public static final int AUTOMATIC = 2;
     public static final int DISABLE = 0;
+    public static final int BAN = -1;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

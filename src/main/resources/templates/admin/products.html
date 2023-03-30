@@ -111,7 +111,7 @@
                                                         <div class="table-links">
                                                             <a th:href="@{/chi-tiet-san-pham/{productCode}(productCode=${p.productCode})}">Xem</a>
                                                             <div class="bullet"></div>
-                                                            <a th:href="@{/admin/san-pham/khoa-san-pham/{productCode}(productCode=${p.productCode})}">Khóa
+                                                            <a href="#" class="btn-ban-product" th:attr="data-id=${p.productCode}">Khóa
                                                                 sản phẩm</a>
                                                         </div>
                                                     </td>
@@ -123,7 +123,10 @@
                                                         <div th:if="${p.status == 1}" class="badge badge-primary">Hoạt
                                                             động
                                                         </div>
-                                                        <div th:if="${p.status == 0}" class="badge badge-danger">Dừng
+                                                        <div th:if="${p.status == 0}" class="badge badge-warning">Dừng
+                                                        </div>
+                                                        <div th:if="${p.status == -1}" class="badge badge-danger">
+                                                            Khóa
                                                         </div>
                                                     </td>
 
@@ -144,6 +147,7 @@
 
 
 <th:block th:insert="admin/admin-fragment::js-block"></th:block>
+<script src="/js/admin-popup.js"></script>
 <!-- Page Specific JS File -->
 <script src="/js/features-post-create.js"></script>
 <!-- Page Specific Lib File -->
