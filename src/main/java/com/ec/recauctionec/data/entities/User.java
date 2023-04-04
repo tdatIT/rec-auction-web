@@ -53,12 +53,8 @@ public class User {
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
 
-
-    @Column(name = "username", nullable = true, length = 255)
-    private String username;
-
     @OneToMany(mappedBy = "user")
-    private Collection<AuctionSession> auctionSessions;
+    private Collection<Bid> bids;
 
     @OneToOne(mappedBy = "user")
     private Supplier suppliers;

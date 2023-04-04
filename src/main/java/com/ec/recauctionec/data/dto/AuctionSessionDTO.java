@@ -1,8 +1,8 @@
 package com.ec.recauctionec.data.dto;
 
-import com.ec.recauctionec.data.entities.AuctionSession;
+import com.ec.recauctionec.data.entities.Bid;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.data.entities.AuctSessJoin;
+import com.ec.recauctionec.data.entities.BidJoin;
 import com.ec.recauctionec.data.entities.Category;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,12 +49,12 @@ public class AuctionSessionDTO {
 
     private String productTagStr;
 
-    private Collection<AuctSessJoin> auctSessJoins;
+    private Collection<BidJoin> bidJoins;
 
     private User user;
 
-    public AuctionSession mapping() throws Exception {
-        AuctionSession auction = new AuctionSession();
+    public Bid mapping() throws Exception {
+        Bid auction = new Bid();
         //Set current time for properties
         Calendar current = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();

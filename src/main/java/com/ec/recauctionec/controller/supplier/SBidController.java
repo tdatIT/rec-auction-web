@@ -1,10 +1,10 @@
 package com.ec.recauctionec.controller.supplier;
 
-import com.ec.recauctionec.data.entities.AuctSessJoin;
+import com.ec.recauctionec.data.entities.BidJoin;
 import com.ec.recauctionec.data.entities.CustomUserDetails;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.services.AuctSessJoinService;
-import com.ec.recauctionec.services.AuctionService;
+import com.ec.recauctionec.services.BidJoinService;
+import com.ec.recauctionec.services.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/supplier/phien-dau-gia")
-public class SAuctionController {
+public class SBidController {
     private Authentication auth;
     @Autowired
-    private AuctionService auctionService;
+    private BidService bidService;
     @Autowired
-    private AuctSessJoinService joinService;
+    private BidJoinService joinService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String viewAllAuction(@RequestParam(value = "date-filter", required = false) Date date,
@@ -36,16 +36,16 @@ public class SAuctionController {
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (date == null)
             date = new Date(new java.util.Date().getTime());
-        List<AuctSessJoin> joins = joinService
+        List<BidJoin> joins = joinService
                 .findAllBySupplierAndDate(us.getSuppliers(), date);
         if (status != null) {
             if (status == true)
                 joins = joins.stream()
-                        .filter(t -> t.getAuctionSession().isComplete() == true)
+                        .filter(t -> t.getBid().isComplete() == true)
                         .collect(Collectors.toList());
             else
                 joins = joins.stream()
-                        .filter(t -> t.getAuctionSession().isComplete() == false)
+                        .filter(t -> t.getBid().isComplete() == false)
                         .collect(Collectors.toList());
         }
         long total = joinService.totalBidJoinOfSupplier(us.getSuppliers());

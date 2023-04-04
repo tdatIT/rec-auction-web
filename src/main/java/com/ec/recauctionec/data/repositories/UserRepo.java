@@ -8,11 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
-    @Query(value = "select u from User u where u.username = ?1 and u.password=?2")
-    User validateAccount(String username, String password);
-
-    @Query(value = "select u from User u where u.username=?1")
-    User findByUsername(String username);
+    @Query(value = "select u from User u where u.email = ?1 and u.password=?2")
+    User validateAccount(String email, String password);
 
     @Query(value = "select u from User u where u.email = ?1")
     User findByEmail(String email);

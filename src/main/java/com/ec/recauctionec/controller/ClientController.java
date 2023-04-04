@@ -1,15 +1,13 @@
 package com.ec.recauctionec.controller;
 
+import com.ec.recauctionec.configs.paypal.CheckUser;
 import com.ec.recauctionec.data.dto.UserDTO;
 import com.ec.recauctionec.data.entities.*;
-
+import com.ec.recauctionec.data.variable.Router;
 import com.ec.recauctionec.event.OnRegistrationCompleteEvent;
-import com.ec.recauctionec.configs.paypal.CheckUser;
-import com.ec.recauctionec.services.AuctionService;
+import com.ec.recauctionec.services.BidService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.UserService;
-import com.ec.recauctionec.data.variable.Router;
-import com.ec.recauctionec.data.entities.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +32,7 @@ public class ClientController {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
-    private AuctionService auctionService;
+    private BidService bidService;
 
     private Authentication auth;
 
@@ -43,7 +40,7 @@ public class ClientController {
     @RequestMapping(value = {"", Router.HOME_PAGE}, method = RequestMethod.GET)
     public String getHomePage(ModelMap modelMap) {
         List<Product> top5trending = productService.findTop5Trending();
-        List<AuctionSession> top10Auction = auctionService.findTop10AuctionForDay();
+        List<Bid> top10Auction = bidService.findTop10AuctionForDay();
         modelMap.addAttribute("top10Auction", top10Auction);
         modelMap.addAttribute("top5Trending", top5trending);
         return "index";
@@ -63,8 +60,8 @@ public class ClientController {
     }
 
     @RequestMapping(value = Router.REGISTER_PAGE, method = RequestMethod.POST)
-    public String registerNewAccount(@ModelAttribute UserDTO register, ModelMap modelMap,
-                                     HttpServletRequest req, Errors errors) {
+    public String registerNewAccount(@ModelAttribute UserDTO register,
+                                     HttpServletRequest req) {
         try {
             User notActiveAcc = userService.registerAccount(register.mappingClass());
             String appUrl = req.getContextPath();
@@ -77,7 +74,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = Router.LOGIN_PAGE, method = RequestMethod.GET)
-    public String login(ModelMap modelMap) {
+    public String login() {
         auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             return "login";
@@ -86,7 +83,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = Router.FORGOT_PASS_PAGE, method = RequestMethod.GET)
-    public String showForgot(ModelMap modelMap) {
+    public String showForgot() {
         auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             return "forgot";
@@ -95,7 +92,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = Router.RESET_PASS, method = RequestMethod.POST)
-    public ResponseEntity resetPassword(@RequestParam String email) {
+    public String resetPassword(@RequestParam String email) {
         User us = userService.findByEmail(email);
         try {
             if (us != null) {
@@ -104,11 +101,11 @@ public class ClientController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return "redirect:/" + Router.MESSAGE + "?type=" + MessageController.VERIFY_TOKEN;
     }
 
     @RequestMapping(value = Router.CONFIRM_RESET, method = RequestMethod.GET)
-    public String confirmResetPassword(@RequestParam("token") String token,
+    public String confirmResetPassword(@RequestParam String token,
                                        ModelMap modelMap) {
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
@@ -132,15 +129,15 @@ public class ClientController {
     @RequestMapping(value = "/chi-tiet-dau-gia/{id}", method = RequestMethod.GET)
     public String viewAuctionDetails(@PathVariable("id") int auctionId, ModelMap modelMap) {
         auth = SecurityContextHolder.getContext().getAuthentication();
-        AuctionSession auction = auctionService.findById(auctionId);
+        Bid auction = bidService.findById(auctionId);
         if (auction != null) {
-            List<AuctSessJoin> joins = new ArrayList<>(auction.getAuctSessJoins());
-            List<AuctionSession> top10Auction = auctionService.findTop10AuctionForDay();
+            List<BidJoin> joins = new ArrayList<>(auction.getBidJoins());
+            List<Bid> top10Auction = bidService.findTop10AuctionForDay();
             List<Product> products = new ArrayList<>();
             modelMap.addAttribute("top10Auction", top10Auction);
-            Collections.sort(joins, new Comparator<AuctSessJoin>() {
+            Collections.sort(joins, new Comparator<BidJoin>() {
                 @Override
-                public int compare(AuctSessJoin o1, AuctSessJoin o2) {
+                public int compare(BidJoin o1, BidJoin o2) {
                     return Double.compare(o1.getPrice(), o2.getPrice());
                 }
             });
@@ -157,7 +154,7 @@ public class ClientController {
                     modelMap.addAttribute("joined", 0);
                 } else {
                     //Did user join auction last time?
-                    AuctSessJoin last_bid = joins.stream()
+                    BidJoin last_bid = joins.stream()
                             .filter(bid -> bid.getProduct()
                                     .getSupplier()
                                     .getUser().getUserId() == us.getUserId())

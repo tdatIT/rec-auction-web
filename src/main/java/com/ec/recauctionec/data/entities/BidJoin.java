@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 @Data
 @EqualsAndHashCode
 
-@Table(name = "auct_sess_join")
-public class AuctSessJoin {
+@Table(name = "bid_joins")
+public class BidJoin {
 
     public static final int NOT_CONFIRM = 1;
     public static final int ACTIVE = 2;
@@ -23,13 +23,13 @@ public class AuctSessJoin {
     @Id
     @Column(name = "id", nullable = false)
     private long id;
-    
+
     @Column(name = "price", nullable = false, precision = 0)
     private double price;
-    
+
     @Column(name = "status", nullable = false)
     private int status;
-    
+
     @Column(name = "time", nullable = false)
     private Timestamp time;
 
@@ -38,7 +38,7 @@ public class AuctSessJoin {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "auction_sess_id")
-    private AuctionSession auctionSession;
+    @JoinColumn(name = "bid_id")
+    private Bid bid;
 
 }

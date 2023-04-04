@@ -7,7 +7,7 @@ import com.ec.recauctionec.data.repositories.*;
 import com.ec.recauctionec.services.shipping.Shipping;
 
 
-import com.ec.recauctionec.services.AuctSessJoinService;
+import com.ec.recauctionec.services.BidJoinService;
 import com.ec.recauctionec.services.OrderService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private WalletHistoryRepo historyRepo;
     @Autowired
-    private AuctSessJoinService joinService;
+    private BidJoinService joinService;
 
     @Override
     public Orders findById(int id) {

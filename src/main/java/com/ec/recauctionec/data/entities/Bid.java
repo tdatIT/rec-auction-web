@@ -10,12 +10,12 @@ import java.util.Collection;
 @Entity
 @Data
 @EqualsAndHashCode
-@Table(name = "auction_session")
-public class AuctionSession {
+@Table(name = "bids")
+public class Bid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "auction_sess_id", nullable = false)
-    private int auctionSessId;
+    @Column(name = "bid_id", nullable = false)
+    private int bidId;
 
 
     @Column(name = "closing_price", nullable = true, precision = 0)
@@ -47,8 +47,8 @@ public class AuctionSession {
     @Column(name = "product_tag_str", nullable = true, length = 255)
     private String productTagStr;
 
-    @OneToMany(mappedBy = "auctionSession", fetch = FetchType.LAZY)
-    private Collection<AuctSessJoin> auctSessJoins;
+    @OneToMany(mappedBy = "bid", fetch = FetchType.LAZY)
+    private Collection<BidJoin> bidJoins;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

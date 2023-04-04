@@ -21,26 +21,6 @@ public class FileUploadsController {
     @Autowired
     private UserService userService;
 
-    //Upload Avatar
-    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
-    public ResponseEntity uploadAvatar(@RequestParam String username,
-                                       @RequestParam MultipartFile multipartFile, Model model) {
-        try {
-            //upload file
-            String filename = multipartFile.getOriginalFilename();
-            File file = new File(getUploadFolder(), filename);
-            multipartFile.transferTo(file);
-            //update user avatar
-            User user = userService.findByUsername(username);
-            user.setAvatar(filename);
-            userService.updateUser(user);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     public File getUploadFolder() {
         File folderUpload = new File("/uploads");
         if (!folderUpload.exists()) {

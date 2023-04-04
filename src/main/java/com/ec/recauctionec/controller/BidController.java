@@ -21,17 +21,17 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/dau-gia")
-public class AuctionController {
+public class BidController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private ProductTagService productTagService;
     @Autowired
-    private AuctionService auctionService;
+    private BidService bidService;
     @Autowired
     private UserService userService;
     @Autowired
-    private AuctSessJoinService joinService;
+    private BidJoinService joinService;
     @Autowired
     private ProductService productService;
     private Authentication auth;
@@ -53,7 +53,7 @@ public class AuctionController {
                                 ModelMap modelMap) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
-        if (auctionService.createNewAuction(us, dto)) {
+        if (bidService.createNewAuction(us, dto)) {
             return "redirect:" + Router.MESSAGE + "?type=" + MessageController.CREATE_SUCCESS;
         }
         return "redirect:" + Router.MESSAGE + "?type=" + MessageController.CREATE_FAIL;
@@ -65,17 +65,17 @@ public class AuctionController {
                               @RequestParam("productId") int productId,
                               @RequestParam("price") double price) {
         auth = SecurityContextHolder.getContext().getAuthentication();
-        AuctionSession auction = auctionService.findById(auctionId);
+        Bid auction = bidService.findById(auctionId);
         Product product = productService.findById(productId);
         if (product.getSupplier()
                 .getUser().getUserId() != auction.getUser().getUserId()) {
-            AuctSessJoin auctSessJoin = new AuctSessJoin();
-            auctSessJoin.setPrice(price);
-            auctSessJoin.setProduct(product);
-            auctSessJoin.setAuctionSession(auction);
-            auctSessJoin.setTime(new Timestamp(new java.util.Date().getTime()));
-            auctSessJoin.setStatus(AuctSessJoin.ACTIVE);
-            joinService.joinAuction(auctSessJoin);
+            BidJoin bidJoin = new BidJoin();
+            bidJoin.setPrice(price);
+            bidJoin.setProduct(product);
+            bidJoin.setBid(auction);
+            bidJoin.setTime(new Timestamp(new java.util.Date().getTime()));
+            bidJoin.setStatus(BidJoin.ACTIVE);
+            joinService.joinAuction(bidJoin);
         }
         return "redirect:/chi-tiet-dau-gia/" + auctionId;
     }
@@ -87,7 +87,7 @@ public class AuctionController {
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (date == null)
             date = new Date(new java.util.Date().getTime());
-        List<AuctionSession> data = auctionService.findAllByUserAndActive(us.getUserId(), date);
+        List<Bid> data = bidService.findAllByUserAndActive(us.getUserId(), date);
         modelMap.addAttribute("data", data);
         return "/user/all-auction";
     }
@@ -98,9 +98,9 @@ public class AuctionController {
                                          ModelMap modelMap) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
-        AuctionSession auction = auctionService.findById(auctionId);
-        List<AuctSessJoin> joins = new ArrayList<>(auction.getAuctionSessId());
-        for (AuctSessJoin j : joins) {
+        Bid auction = bidService.findById(auctionId);
+        List<BidJoin> joins = new ArrayList<>(auction.getBidId());
+        for (BidJoin j : joins) {
             if (j.getProduct()
                     .getSupplier()
                     .getUser().getUserId() == us.getUserId()) {

@@ -2,13 +2,13 @@ package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.data.entities.Role;
 import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.entities.VerificationToken;
 import com.ec.recauctionec.data.entities.Wallet;
 import com.ec.recauctionec.data.repositories.RoleRepo;
 import com.ec.recauctionec.data.repositories.UserRepo;
 import com.ec.recauctionec.data.repositories.VerificationTokenRepo;
 import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.UserService;
-import com.ec.recauctionec.data.entities.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,7 +54,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User registerAccount(User user) {
-
         //Create hash password
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encrypt_pass = encoder.encode(user.getPassword());
@@ -64,11 +63,6 @@ public class UserServiceImpl implements UserService {
         user.setLevelUser(1);
         user.setAvatar("default");
         return userRepo.save(user);
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return userRepo.findByUsername(username);
     }
 
     @Override
@@ -84,7 +78,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken();
-
         myToken.setToken(token);
         myToken.setUser(user);
         verificationTokenRepo.save(myToken);

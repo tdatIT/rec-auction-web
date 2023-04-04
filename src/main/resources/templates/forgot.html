@@ -17,13 +17,15 @@
     <div class="container">
         <div class="tracking_box_inner">
             <h4>Nhập vào địa chỉ email tài khoản của bạn vào bên dưới</h4>
-            <div class="col-md-12 form-group mt-5">
-                <input id="forgot-pass-input" type="email" class="form-control" name="email"
-                       placeholder="Địa chỉ email đăng ký tài khoản">
-            </div>
-            <div class="col-md-12 form-group">
-                <button id="forgot-pass-btn" value="submit" class="button button-tracking">Tìm tài khoản</button>
-            </div>
+            <form action="/reset-password" method="post">
+                <div class="col-md-12 form-group mt-5">
+                    <input id="forgot-pass-input" type="email" class="form-control" name="email"
+                           placeholder="Địa chỉ email đăng ký tài khoản">
+                </div>
+                <div class="col-md-12 form-group">
+                    <button id="forgot-pass-btn" value="submit" class="button button-tracking">Tìm tài khoản</button>
+                </div>
+            </form>
         </div>
     </div>
 </section>

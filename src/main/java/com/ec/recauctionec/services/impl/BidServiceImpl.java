@@ -2,11 +2,11 @@ package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.data.dto.AuctionSessionDTO;
 import com.ec.recauctionec.data.entities.*;
-import com.ec.recauctionec.data.repositories.AuctSessJoinRepo;
-import com.ec.recauctionec.data.repositories.AuctionRepo;
+import com.ec.recauctionec.data.repositories.BidJoinRepos;
+import com.ec.recauctionec.data.repositories.BidRepos;
 import com.ec.recauctionec.data.repositories.UserRepo;
 import com.ec.recauctionec.data.repositories.WalletRepo;
-import com.ec.recauctionec.services.AuctionService;
+import com.ec.recauctionec.services.BidService;
 import com.ec.recauctionec.services.StorageImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AuctionServiceImpl implements AuctionService {
+public class BidServiceImpl implements BidService {
 
     public final static double CHECK_AVAILABLE = 0.3D;
     public final static int CHECK_TOTAL_AUCTION = 5;
 
     @Autowired
-    private AuctionRepo auctionRepo;
+    private BidRepos bidRepos;
     @Autowired
     private UserRepo user;
     @Autowired
@@ -33,26 +33,26 @@ public class AuctionServiceImpl implements AuctionService {
     @Autowired
     private StorageImage storageImage;
     @Autowired
-    private AuctSessJoinRepo joinRepo;
+    private BidJoinRepos joinRepo;
 
     @Override
-    public List<AuctionSession> findAllByDateAndPageSize(int page, int size, Date dateFilter) {
-        return auctionRepo.findByDateAndPageSize(PageRequest.of(page, size), dateFilter);
+    public List<Bid> findAllByDateAndPageSize(int page, int size, Date dateFilter) {
+        return bidRepos.findByDateAndPageSize(PageRequest.of(page, size), dateFilter);
     }
 
     @Override
-    public AuctionSession findById(int id) {
-        return auctionRepo.findById(id).orElseThrow();
+    public Bid findById(int id) {
+        return bidRepos.findById(id).orElseThrow();
     }
 
     @Override
-    public List<AuctionSession> findAllByDate(Date date) {
-        return auctionRepo.findAllActiveAuctionByDate(date);
+    public List<Bid> findAllByDate(Date date) {
+        return bidRepos.findAllActiveAuctionByDate(date);
     }
 
     @Override
-    public List<AuctionSession> findAllByUserAndActive(int userId, Date date) {
-        return auctionRepo.findAuctionOfUserAtTime(userId, date);
+    public List<Bid> findAllByUserAndActive(int userId, Date date) {
+        return bidRepos.findAuctionOfUserAtTime(userId, date);
     }
 
     @Override
@@ -60,10 +60,10 @@ public class AuctionServiceImpl implements AuctionService {
     public boolean createNewAuction(User us, AuctionSessionDTO dto) {
         boolean status = false;
         try {
-            AuctionSession auction = dto.mapping();
+            Bid auction = dto.mapping();
             Wallet w_us = walletRepo.findByUserId(us.getUserId()).get(0);
             if (w_us.getAccountBalance() >= (dto.getReservePrice() * CHECK_AVAILABLE)
-                    && auctionRepo.findActiveAuction(us.getUserId()).size() < CHECK_TOTAL_AUCTION) {
+                    && bidRepos.findActiveAuction(us.getUserId()).size() < CHECK_TOTAL_AUCTION) {
                 auction.setUser(us);
                 if (dto.isAuto()) {
                     //business logic process
@@ -79,7 +79,7 @@ public class AuctionServiceImpl implements AuctionService {
                     }
                     auction.setImg(imgs);
                 }
-                auctionRepo.save(auction);
+                bidRepos.save(auction);
                 status = true;
             }
         } catch (Exception e) {
@@ -91,19 +91,19 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     @Transactional
     public void setWinAuctionSession(int auctionId) {
-        AuctionSession auction = auctionRepo.findById(auctionId).orElseThrow();
+        Bid auction = bidRepos.findById(auctionId).orElseThrow();
         if (auction != null) {
 
-            if (auction.getAuctSessJoins().size() > 0) {
-                for (AuctSessJoin join : auction.getAuctSessJoins()) {
-                    join.setStatus(AuctSessJoin.LOSS);
+            if (auction.getBidJoins().size() > 0) {
+                for (BidJoin join : auction.getBidJoins()) {
+                    join.setStatus(BidJoin.LOSS);
                     joinRepo.save(join);
                 }
-                AuctSessJoin winner = joinRepo.findFirstByAuctionSessionOrderByPriceAsc(auction);
-                winner.setStatus(AuctSessJoin.WIN);
+                BidJoin winner = joinRepo.findFirstByBidOrderByPriceAsc(auction);
+                winner.setStatus(BidJoin.WIN);
                 auction.setComplete(true);
                 //save into db
-                auctionRepo.save(auction);
+                bidRepos.save(auction);
                 joinRepo.save(winner);
             }
         }
@@ -112,23 +112,23 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     @Transactional
     public boolean cancelAuction(int auctionId) {
-        AuctionSession auction = auctionRepo.findById(auctionId).orElseThrow();
+        Bid auction = bidRepos.findById(auctionId).orElseThrow();
         if (auction != null) {
-            for (AuctSessJoin join : auction.getAuctSessJoins()) {
-                join.setStatus(AuctSessJoin.LOSS);
+            for (BidJoin join : auction.getBidJoins()) {
+                join.setStatus(BidJoin.LOSS);
                 joinRepo.save(join);
             }
             auction.setComplete(true);
-            auctionRepo.save(auction);
+            bidRepos.save(auction);
             return true;
         }
         return false;
     }
 
     @Override
-    public List<AuctionSession> findTop10AuctionForDay() {
+    public List<Bid> findTop10AuctionForDay() {
         Pageable top10 = PageRequest.of(0, 10);
-        return auctionRepo.findTop10AuctionForDay(top10, new java.util.Date(new java.util.Date().getTime()));
+        return bidRepos.findTop10AuctionForDay(top10, new java.util.Date(new java.util.Date().getTime()));
     }
 
 }

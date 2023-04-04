@@ -26,7 +26,7 @@ public class Category {
     private String image;
 
     @OneToMany(mappedBy = "category")
-    private Collection<AuctionSession> auctionSessions;
+    private Collection<Bid> bids;
 
     @OneToMany(mappedBy = "category")
     private Collection<Product> products;

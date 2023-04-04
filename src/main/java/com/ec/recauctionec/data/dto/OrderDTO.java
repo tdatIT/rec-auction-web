@@ -28,7 +28,7 @@ public class OrderDTO {
     @NotNull
     private double totalPrice;
 
-    private AuctSessJoin winAuction;
+    private BidJoin winAuction;
 
     private Delivery deliveryByDeliveryId;
 

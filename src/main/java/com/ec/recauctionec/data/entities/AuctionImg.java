@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "auction_img")
+@Table(name = "bid_img")
 public class AuctionImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class AuctionImg {
     private String imageFile;
 
     @ManyToOne
-    @JoinColumn(name = "auction_session_id")
-    private AuctionSession auction;
+    @JoinColumn(name = "bid_id")
+    private Bid auction;
 
 }

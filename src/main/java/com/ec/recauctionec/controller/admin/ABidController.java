@@ -1,7 +1,7 @@
 package com.ec.recauctionec.controller.admin;
 
-import com.ec.recauctionec.data.entities.AuctionSession;
-import com.ec.recauctionec.services.AuctionService;
+import com.ec.recauctionec.data.entities.Bid;
+import com.ec.recauctionec.services.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/admin/dau-gia")
 public class ABidController {
     @Autowired
-    private AuctionService auctionService;
+    private BidService bidService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getAuctionList(@RequestParam(required = false) Integer page,
@@ -29,8 +29,8 @@ public class ABidController {
             size = 20;
         if (filter_date == null)
             filter_date = new Date(new java.util.Date().getTime());
-        List<AuctionSession> bids =
-                auctionService.findAllByDateAndPageSize(page, size, filter_date);
+        List<Bid> bids =
+                bidService.findAllByDateAndPageSize(page, size, filter_date);
         long total_end = bids.stream().filter(t -> t.isComplete() == true).count();
         modelMap.addAttribute("date", filter_date);
         modelMap.addAttribute("bids", bids);

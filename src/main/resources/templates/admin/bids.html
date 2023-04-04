@@ -130,12 +130,12 @@
                                                     <td>[[${j.productKey}]]
                                                         <div class="table-links">
                                                             <div class="bullet"></div>
-                                                            <a th:href="@{/chi-tiet-dau-gia/{id}(id=${j.auctionSessId})}">Xem
+                                                            <a th:href="@{/chi-tiet-dau-gia/{id}(id=${j.getBidId})}">Xem
                                                                 hoặc đặt giá</a>
                                                         </div>
                                                     </td>
                                                     <td class="text-uppercase"
-                                                        th:text="${j.auctionSessId}"></td>
+                                                        th:text="${j.getBidId}"></td>
                                                     <td th:text="${#numbers.formatDecimal(j.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
                                                     <td th:text="${#dates.format(j.createDate, 'dd-MM-yyyy HH:mm')}"></td>
                                                     <td>

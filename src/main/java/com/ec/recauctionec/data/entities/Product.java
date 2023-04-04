@@ -30,7 +30,7 @@ public class Product {
     @Column(length = 255)
     private String subDetail;
 
-    @Column(name = "product_name", nullable = false, length = 255)
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
     @Column(name = "status", nullable = false)
@@ -51,7 +51,7 @@ public class Product {
     @Column
     private Date updateDate;
     @OneToMany(mappedBy = "product")
-    private Collection<AuctSessJoin> auctSessJoins;
+    private Collection<BidJoin> bidJoins;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
