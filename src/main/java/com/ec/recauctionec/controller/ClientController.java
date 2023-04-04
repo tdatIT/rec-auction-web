@@ -101,7 +101,7 @@ public class ClientController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/" + Router.MESSAGE + "?type=" + MessageController.VERIFY_TOKEN;
+        return "redirect:" + Router.MESSAGE + "?type=" + MessageController.VERIFY_TOKEN;
     }
 
     @RequestMapping(value = Router.CONFIRM_RESET, method = RequestMethod.GET)
