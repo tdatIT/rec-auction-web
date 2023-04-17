@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/doanh-muc-san-pham")
+@RequestMapping(value = "/danh-muc-san-pham")
 public class CategoryController {
     @Autowired
     private ProductService productService;

@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/dang-ky",
                         "/dang-nhap",
                         "/trang-chu",
-                        "/doanh-muc",
+                        "/danh-muc",
                         "/tat-ca-phien",
                         "/san-pham").permitAll()
                 .antMatchers("/tai-khoan/**",
