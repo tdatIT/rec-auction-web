@@ -48,13 +48,9 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <input th:field="*{password}" type="password" class="form-control"
-                                   placeholder="Mật khẩu"
+                                   placeholder="Mật khẩu" minlength="8"
                                    required>
                         </div>
-                        <div class="col-md-12 form-group">
-                            <input type="password" class="form-control" placeholder="Xác nhận lại mật khẩu" required>
-                        </div>
-
                         <div class="col-md-12 form-group">
                             <input th:field="*{phoneNumber}" type="text" class="form-control"
                                    placeholder="Số điện thoại" required>
@@ -78,22 +74,27 @@
 </th:block>
 <script src="/js/province_data.js"></script>
 <script>
-    $('#email').change(function () {
+    $('#email').blur(function () {
         var email = $(this).val()
         $.ajax({
             url: '/check-email',
             method: 'get',
             data: {"email": email},
             success: function (data) {
-                if (data.status == false) {
-                    iziToast.warning({
-                        title: 'Email tồn tại',
-                        message: 'Vui lòng sử dụng email khác',
-                        timeout: 1000,
-                        position: "topRight"
-                    });
+                $('#email').removeClass('is-valid, is-invalid');
+                $('.valid-feedback, .invalid-feedback').remove()
+                if (data.status == true) {
+                    $('#email').addClass('is-valid');
+                    $('#email').after('<div class="valid-feedback">\n' + 'Email có thể đăng ký\n' + '</div>')
+                    console.log('Can register new account with this email')
+                } else {
+                    $('#email').addClass('is-invalid');
+                    $('#email').after('<div class="invalid-feedback">\n' + 'Email này đã được đăng ký\n' + '</div>')
+                    console.log('Email has exist')
                 }
-            }
+
+            },
+
         })
     })
 </script>

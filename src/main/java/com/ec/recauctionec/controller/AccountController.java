@@ -104,8 +104,7 @@ public class AccountController {
 
     @PostMapping(value = "/doi-mat-khau")
     public String updatePassword(@RequestParam("current-password") String curr_passwd,
-                                 @RequestParam("password") String newPass,
-                                 ModelMap modelMap) {
+                                 @RequestParam("password") String newPass){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         return userService.updatePassword(us, curr_passwd, newPass) ?
@@ -117,8 +116,7 @@ public class AccountController {
     public String updateInfo(@RequestParam("firstname") String firstname,
                              @RequestParam("lastname") String lastname,
                              @RequestParam("email") String email,
-                             @RequestParam("phone") String phone,
-                             ModelMap modelMap) {
+                             @RequestParam("phone") String phone) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         try {

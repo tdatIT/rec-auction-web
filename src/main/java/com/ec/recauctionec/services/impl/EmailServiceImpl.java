@@ -1,16 +1,24 @@
 package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.data.email.EmailDetails;
+import com.ec.recauctionec.data.email.EmailFactory;
+import com.ec.recauctionec.data.entities.Bid;
+import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.data.variable.PathVariable;
+import com.ec.recauctionec.services.EmailService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 @Service
+@Log4j2
 public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
@@ -18,40 +26,44 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
+    private void sendMail(EmailDetails details) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom("noreply@recaution.com");
+        helper.setTo(details.getRecipient());
+        helper.setSubject(details.getSubject());
+        helper.setText(details.getMsgBody(), true);
+        javaMailSender.send(message);
+        log.info("Send email verify account [" + details.getRecipient() + "]");
+    }
+
     @Override
-    public boolean sendSimpleEmail(EmailDetails details) {
+    public boolean sendVerifyEmail(User us, String token) {
         try {
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setFrom(sender);
-            simpleMailMessage.setTo(details.getRecipient());
-            simpleMailMessage.setSubject(details.getSubject());
-            simpleMailMessage.setText(details.getMsgBody());
-            //Send email
-            javaMailSender.send(simpleMailMessage);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+            String link = PathVariable.CONTEXT_PATH + "/confirm-reset?token=" + token;
+            EmailDetails email = EmailFactory.getVerifyEmail(link, us.getEmail());
+            sendMail(email);
+        } catch (MessagingException e) {
+            log.error(e.getMessage());
         }
         return false;
     }
 
     @Override
-    public boolean sendResetPassword(User us, String token) {
+    public boolean sendNotifyEmail(String email, Bid bid) {
         try {
-            String recipientAddress = us.getEmail();
-            String subject = "Xác nhận đăng ký tài khoản";
-            String confirmationUrl
-                    = "/confirm-reset?token=" + token;
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setTo(recipientAddress);
-            email.setSubject(subject);
-            email.setText("Nhấn vào link bên dưới để xác thực tài khoản" + "\r\n" + PathVariable.CONTEXT_PATH + confirmationUrl);
-            javaMailSender.send(email);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+            String link = PathVariable.CONTEXT_PATH + "/chi-tiet-dau-gia/" + bid.getBidId();
+            EmailDetails email_detail = EmailFactory.getNotifyEmail(link, email);
+            sendMail(email_detail);
+            log.info("Send email verify account [" + email + "]");
+        } catch (MessagingException e) {
+            log.error(e.getMessage());
         }
         return false;
     }
 
+    @Override
+    public boolean sendMailOrder(String email, Orders orders) {
+        return false;
+    }
 }

@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
             token.setUser(us);
             token.setToken(token_str);
             verificationTokenRepo.save(token);
-            emailService.sendResetPassword(us, token_str);
+            emailService.sendVerifyEmail(us, token_str);
         }
     }
 

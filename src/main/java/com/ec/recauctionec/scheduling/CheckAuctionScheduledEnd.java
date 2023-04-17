@@ -1,9 +1,8 @@
 package com.ec.recauctionec.scheduling;
 
 import com.ec.recauctionec.data.dto.OrderDTO;
-import com.ec.recauctionec.data.email.EmailDetails;
-import com.ec.recauctionec.data.entities.BidJoin;
 import com.ec.recauctionec.data.entities.Bid;
+import com.ec.recauctionec.data.entities.BidJoin;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.BidJoinService;
@@ -64,13 +63,9 @@ public class CheckAuctionScheduledEnd {
                     log.info("Create order of Auction ID:  " + auction.getBidId());
                 }
             } else if (auction.getEndDate().getTime() <= calendar.getTimeInMillis() + (MIN_NOTIFY * MILLISECOND)) {
-                EmailDetails email = new EmailDetails();
-                email.setRecipient(auction.getUser().getEmail());
-                email.setSubject("Phiên Đấu Giá Sắp Kết Thúc");
-                email.setMsgBody("Phiên đấu giá ID:[" + auction.getBidId() +
-                        "] của bạn còn 30p nữa là hết hạn]");
-                emailService.sendSimpleEmail(email);
-                log.info("Send mail notify will end auction to: " + email.getRecipient());
+                User us = auction.getUser();
+                emailService.sendNotifyEmail(us.getEmail(), auction);
+                log.info("Send mail notify will end auction to: " + us.getEmail());
             }
         }
 

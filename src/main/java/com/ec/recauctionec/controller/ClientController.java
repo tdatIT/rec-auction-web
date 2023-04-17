@@ -178,20 +178,5 @@ public class ClientController {
         return "redirect:/thong-bao?type=" + MessageController.NOT_FOUND_AUCTION;
     }
 
-    @GetMapping(value = "/check-email")
-    public ResponseEntity checkExistEmail(@RequestParam String email) {
-        User us = userService.findByEmail(email);
-        if (us != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new CheckUser(200,
-                            "Email already register for diff account",
-                            false));
 
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new CheckUser(200,
-                        "Email not exist",
-                        true));
-
-    }
 }

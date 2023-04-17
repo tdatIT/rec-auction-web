@@ -77,6 +77,7 @@ public class PaymentController {
     public String cancelPay(ModelMap modelMap) {
         modelMap.addAttribute("title", "Thanh toán thành công");
         modelMap.addAttribute("message", "Thanh toán thành công");
+        modelMap.addAttribute("link","tai-khoan/quan-ly-vi");
         modelMap.addAttribute("description", "Cảm ơn bạn đã thực hiện giao dịch");
         return "message";
     }
