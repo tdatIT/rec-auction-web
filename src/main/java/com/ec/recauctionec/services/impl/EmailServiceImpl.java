@@ -38,9 +38,9 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public boolean sendVerifyEmail(User us, String token) {
+    public boolean sendVerifyEmail(User us, String token, String requestUrl) {
         try {
-            String link = PathVariable.CONTEXT_PATH + "/confirm-reset?token=" + token;
+            String link = PathVariable.CONTEXT_PATH + requestUrl + "?token=" + token;
             EmailDetails email = EmailFactory.getVerifyEmail(link, us.getEmail());
             sendMail(email);
         } catch (MessagingException e) {

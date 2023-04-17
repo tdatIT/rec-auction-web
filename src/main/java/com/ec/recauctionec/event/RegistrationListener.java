@@ -27,6 +27,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         String token = UUID.randomUUID().toString();
         service.createVerificationToken(user, token);
         //Send email
-        emailService.sendVerifyEmail(user, token);
+        emailService.sendVerifyEmail(user, token,"/registration-confirm");
     }
 }
