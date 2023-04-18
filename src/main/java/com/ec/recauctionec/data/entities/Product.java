@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Data
 @EqualsAndHashCode
-@Table(name = "product", schema = "recauction_db")
+@Table(name = "product")
 public class Product {
     public static final int MANUAL = 1;
     public static final int AUTOMATIC = 2;

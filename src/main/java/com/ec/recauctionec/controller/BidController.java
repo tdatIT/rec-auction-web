@@ -94,8 +94,7 @@ public class BidController {
 
     @PostMapping(value = "/dat-gia-moi")
     public ResponseEntity getJoinAuction(@RequestParam("auctionId") int auctionId,
-                                         @RequestParam("price") double price,
-                                         ModelMap modelMap) {
+                                         @RequestParam("price") double price) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         Bid auction = bidService.findById(auctionId);
