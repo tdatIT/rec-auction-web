@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -39,19 +40,20 @@ public class CheckAuctionScheduledEnd {
     @Autowired
     private BidJoinService joinService;
 
+    @Transactional
     @Scheduled(fixedRate = MIN_SCHEDULED * MILLISECOND)
     public void checkEndTimeAuction() {
-        log.info("---Scheduled check end time auctions run---");
+        log.info("---Scheduled check end time bid has been started---");
         calendar = Calendar.getInstance();
-        List<Bid> auctions = bidService
+        List<Bid> bids = bidService
                 .findAllByDate(new Date(new java.util.Date().getTime()));
-        for (Bid auction : auctions) {
-            if (auction.getEndDate().getTime() <= calendar.getTimeInMillis()) {
-                bidService.setWinAuctionSession(auction.getBidId());
-                BidJoin win = joinService.findBestPriceAuctionJoinByAuction(auction);
+        for (Bid bid : bids) {
+            if (bid.getEndDate().getTime() <= calendar.getTimeInMillis()) {
+                bidService.setWinAuctionSession(bid.getBidId());
+                BidJoin win = joinService.findBestPriceAuctionJoinByAuction(bid);
                 if (win != null) {
                     OrderDTO dto = new OrderDTO();
-                    User us = auction.getUser();
+                    User us = bid.getUser();
                     dto.setUser(us);
                     //set default address
                     dto.setProduct(win.getProduct());
@@ -60,11 +62,11 @@ public class CheckAuctionScheduledEnd {
 
                     dto.setCreateDate(new Timestamp(new java.util.Date().getTime()));
                     orderService.createOrderNotConfirm(dto);
-                    log.info("Create order of Auction ID:  " + auction.getBidId());
+                    log.info("Create order of Auction ID:  " + bid.getBidId());
                 }
-            } else if (auction.getEndDate().getTime() <= calendar.getTimeInMillis() + (MIN_NOTIFY * MILLISECOND)) {
-                User us = auction.getUser();
-                emailService.sendNotifyEmail(us.getEmail(), auction);
+            } else if (bid.getEndDate().getTime() <= calendar.getTimeInMillis() + (MIN_NOTIFY * MILLISECOND)) {
+                User us = bid.getUser();
+                emailService.sendNotifyEmail(us.getEmail(), bid);
                 log.info("Send mail notify will end auction to: " + us.getEmail());
             }
         }

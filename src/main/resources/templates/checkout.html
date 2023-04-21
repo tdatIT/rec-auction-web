@@ -41,7 +41,8 @@
                                             <div class="p-5">
                                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                                     <h1 class="mb-0 text-black">Thông tin đơn hàng</h1>
-                                                    <p class="mb-0 text-black id-order">ID:<span id="order-id" th:text="${order.orderId}"></span>
+                                                    <p class="mb-0 text-black id-order">ID:<span id="order-id"
+                                                                                                 th:text="${order.orderId}"></span>
                                                     </p>
                                                 </div>
                                                 <hr class="my-4">
@@ -76,8 +77,9 @@
                                                        data-target="#exampleModal">Thêm địa chỉ</a>
                                                 </h5>
                                                 <div class="mb-4 pb-2">
-                                                    <select id="select-address" class="select address-select" required>
-                                                        <option selected hidden>Chọn địa chỉ giao hàng hoặc thêm mới</option>
+                                                    <select  id="select-address" class="address-select" required>
+                                                        <option selected hidden>Chọn địa chỉ giao hàng hoặc thêm mới
+                                                        </option>
                                                         <th:block th:each="a: ${address}">
                                                             <option th:value="${a.addressId}" class="text-color-white"
                                                                     th:text="${a.getAddressDetailInfo()}"></option>
@@ -132,13 +134,15 @@
                                                     <h5 class="text-color-white" id="total-price">0đ</h5>
                                                 </div>
 
-                                                <button type="button" id="confirm-order"
-                                                        class="btn btn-success btn-block btn-lg text-color-white">
-                                                    Xác nhận thanh toán
-                                                </button>
-                                                <button class="btn btn-outline-warning">
-                                                    Hủy đơn
-                                                </button>
+                                                <div class="row d-flex justify-content-between">
+                                                    <button type="button" id="confirm-order"
+                                                            class="btn btn-success text-color-white col-md-6">
+                                                        Thanh toán
+                                                    </button>
+                                                    <button class="btn btn-outline-warning col-md-4">
+                                                        Hủy đơn
+                                                    </button>
+                                                </div>
 
                                             </div>
                                         </div>

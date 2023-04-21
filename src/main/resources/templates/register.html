@@ -74,7 +74,7 @@
 </th:block>
 <script src="/js/province_data.js"></script>
 <script>
-    $('#email').change(function () {
+    $('#email').on('input',function () {
         var email = $(this).val()
         $.ajax({
             url: '/check-email',

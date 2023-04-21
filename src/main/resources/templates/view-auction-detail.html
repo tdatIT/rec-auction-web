@@ -142,7 +142,7 @@
                                         <div class="modal-body">
                                             <th:block th:if="${products.size()==0}">
                                                 <div class="form-group">
-                                                    <label for="notify">Chưa có sản phẩm phù hợp trong kho</label>
+                                                    <p for="notify">Chưa có sản phẩm phù hợp trong kho</p>
                                                     <a id="notify" class="btn btn-info text-white" href="/supplier">
                                                         Thêm sản phẩm vào kho
                                                     </a>
@@ -157,7 +157,8 @@
                                                         <div class="menu">
                                                             <th:block th:each="c: ${products}">
                                                                 <div class="item" th:attr="data-value=${c.productId}">
-                                                                    <img class="ui mini avatar image" th:src="${c.images[0].imgName}">
+                                                                    <img class="ui mini avatar image"
+                                                                         th:src="${c.images[0].imgName}">
                                                                     [[${c.productName}]]
                                                                 </div>
                                                             </th:block>
@@ -166,9 +167,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="exampleFormControlInput1">Kêu giá</label>
+                                                    <label for="priceBid">Kêu giá: <span
+                                                            id="preview-price">0đ</span></label>
                                                     <input type="number" class="form-control"
-                                                           id="exampleFormControlInput1" placeholder="10000000đ"
+                                                           id="priceBid" placeholder="10000000đ"
                                                            name="price" required>
                                                 </div>
                                                 <input th:value="${auction.getBidId}" type="number"
@@ -181,7 +183,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy
                                             </button>
-                                            <button type="submit" class="btn btn-success" id="">
+                                            <button th:if="${products.size()>0}" type="submit" class="btn btn-success">
                                                 Đặt giá
                                             </button>
                                         </div>
@@ -320,6 +322,14 @@
 
 <script>
     $('.ui.dropdown').dropdown()
+    $('#priceBid').on('input', function () {
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+        });
+        $('#preview-price').text(formatter.format($(this).val()))
+    })
+
     function changeImage(element) {
         let main = document.querySelectorAll("ul#thumbnail li img");
         for (let i = 0; i < main.length; i++) {

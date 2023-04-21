@@ -10,7 +10,7 @@ import java.util.Collection;
 @Entity
 @Data
 @EqualsAndHashCode
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

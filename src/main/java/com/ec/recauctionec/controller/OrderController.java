@@ -57,7 +57,6 @@ public class OrderController {
                 modelMap.addAttribute("balance", walletRepo
                         .findByUserId(user.getUserId()).iterator().next()
                         .getAccountBalance());
-
             }
         } catch (Exception e) {
             e.printStackTrace();
