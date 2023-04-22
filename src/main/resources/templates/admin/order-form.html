@@ -2,7 +2,7 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:insert="supplier/supplier-fragment::head-css-link"></th:block>
+    <th:block th:insert="admin/admin-fragment::head-css-link"></th:block>
     <title>Xử lý đơn hàng - RecAuctionCMS</title>
 </head>
 
@@ -13,7 +13,7 @@
         <div class="loader"></div>
     </div>
     <div class="main-wrapper main-wrapper-1">
-        <th:block th:insert="supplier/supplier-fragment::header-sidebar"></th:block>
+        <th:block th:insert="admin/admin-fragment::header-sidebar"></th:block>
         <!-- Main Content -->
         <div class="main-content">
             <section class="section">
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <form th:object="${order}" action="/supplier/don-hang/cap-nhat" method="post">
+                                <form th:object="${order}" action="/admin/don-hang/cap-nhat" method="post">
                                     <div class="card-header d-flex justify-content-between">
                                         <h4>Thông tin đơn hàng</h4>
                                         <div class="section-header-button">
@@ -111,8 +111,8 @@
                                                 thái xử lý</label>
                                             <div class="col-sm-12 col-md-7">
                                                 <select th:field="*{status}" class="form-control selectric">
-                                                    <option value="3">Vận chuyển</option>
                                                     <option value="4">Hoàn tất</option>
+                                                    <option value="0">Hủy</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@
             </section>
         </div>
         <!-- Main Content -->
-        <th:block th:insert="supplier/supplier-fragment::footer"></th:block>
+        <th:block th:insert="admin/admin-fragment::footer"></th:block>
     </div>
 </div>
 <!--Modal-->
@@ -204,7 +204,7 @@
     </div>
 </div>
 
-<th:block th:insert="supplier/supplier-fragment::js-block"></th:block>
+<th:block th:insert="admin/admin-fragment::js-block"></th:block>
 <!-- Page Specific JS File -->
 <script src="/js/product-form.js"></script>
 

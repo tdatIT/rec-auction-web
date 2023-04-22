@@ -6,8 +6,8 @@ $(function () {
         forceHeight: false
     });
 
- /*   //------- Active Nice Select --------//
-    $('select').niceSelect();*/
+    /*   //------- Active Nice Select --------//
+       $('select').niceSelect();*/
 
     //------- hero carousel -------//
     $(".hero-carousel").owlCarousel({
@@ -146,21 +146,48 @@ $("#select-address").change(function () {
     })
 })
 $("#confirm-order").on('click', function () {
-    var addressId = $("#select-address").val();
-    var orderId = $('.id-order').text()
-    if (addressId != null && orderId != null) {
-        $.post({
-            url: '/don-hang/xac-nhan-don-hang',
-            data: {
-                'addressId': addressId,
-                'orderId': orderId
-            },
-            success(data) {
-                window.location.href = "/don-hang"
+    var total = $('#total-price').text()
+    Swal.fire({
+        title: "Xác nhận",
+        text: "Xác nhận thanh toán số tiền :" + total,
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Huỷ",
+        showConfirmButton: true,
+        confirmButtonColor: '#28A745'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.showLoading();
+            var addressId = $("#select-address").val();
+            var orderId = $('#select-address').data('id');
+            if (addressId != -1) {
+                $.post({
+                    url: '/xac-nhan-don-hang',
+                    data: {
+                        'addressId': addressId,
+                        'orderId': orderId
+                    },
+                    success(data) {
+                        Swal.close()
+                        Swal.fire("Xác nhận đơn hàng thành công", "Đơn hàng của bạn đã thanh toán. Hệ thống chuyển trang sau 5s !", "success")
+                        setTimeout(function () {
+                            window.location.href = "/don-hang";
+                        }, 5000);
+                    },
+                    error(data) {
+                        swal.close()
+                        console.log(data)
+                        Swal.fire("Không thể tạo đơn hàng", "Số dư của bạn không đủ đê thực hiện thanh toán", "error")
+                    }
+                })
+            } else {
+                Swal.close()
+                Swal.fire("Thất bại !", "Vui lòng chọn địa chỉ giao hàng !", "error");
             }
-        })
-    } else
-        alert('Vui lòng chọn đầy đủ thông tin')
+        }
+    })
+
 })
 
 

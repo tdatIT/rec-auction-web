@@ -27,11 +27,17 @@ public class SOrderController {
     public String getOrderList(@RequestParam(name = "date-filter", required = false) java.sql.Date filterDate,
                                @RequestParam(name = "status", required = false) Integer status,
                                ModelMap modelMap) {
-        if (filterDate == null)
-            filterDate = new Date(new java.util.Date().getTime());
+
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
-        List<Orders> orders = orderService.findAllBySupplierDate(us.getSuppliers(), filterDate);
+        List<Orders> orders;
+        if (filterDate == null) {
+            filterDate = new Date(new java.util.Date().getTime());
+            orders = orderService.find5LastOrderBySupplier(us.getSuppliers());
+        } else {
+            orders = orderService.findAllBySupplierDate(us.getSuppliers(), filterDate);
+        }
+
         if (status != null) {
             orders = orders.stream()
                     .filter(t -> t.getStatus() == status)

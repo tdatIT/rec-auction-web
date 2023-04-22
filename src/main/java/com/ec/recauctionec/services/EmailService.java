@@ -9,5 +9,5 @@ public interface EmailService {
 
     boolean sendNotifyEmail(String email, Bid bid);
 
-    boolean sendMailOrder(String email, Orders orders);
+    boolean sendMailOrder(Orders orders);
 }

@@ -19,6 +19,8 @@ public interface BidService {
 
     List<Bid> findAllByDateAndPageSize(int page, int size, Date dateFilter);
 
+    List<Bid> find5LastBidByUserId(User user);
+
 
     boolean createNewAuction(User us, AuctionSessionDTO dto);
 

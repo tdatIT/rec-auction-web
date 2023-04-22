@@ -27,6 +27,11 @@ public interface OrderRepo extends JpaRepository<Orders, Integer> {
             "and date(o.createDate)>=?2 and o.status != 1")
     List<Orders> findAllBySupplierAndDate(int supplierId, Date filterDate);
 
+    @Query("select o from Orders o where o.product.supplier.supplierId =?1 " +
+            "and o.status != 1")
+    List<Orders> find5LastBySupplier(int supplierId, Pageable pageable);
+
+
     @Query("select count(o) from Orders o where (o.product.supplier.supplierId =?1 " +
             "and date(o.createDate)>=?2) and o.status = 2")
     long totalPendingOrderByDate(int supplierId, Date date);
@@ -37,6 +42,10 @@ public interface OrderRepo extends JpaRepository<Orders, Integer> {
 
     @Query("select count(o) from Orders o where o.createDate >= ?1")
     long totalOrderFromDateForAdmin(java.sql.Date filter);
+
     @Query("select o from Orders o where o.createDate >= ?1 order by o.createDate desc")
     List<Orders> findAllOrdersByDate(java.sql.Date filter, Pageable pageable);
+
+    @Query("select o from Orders o where  o.user.userId=?1 order by o.createDate desc ")
+    List<Orders> find5LastOrders(int userId, Pageable pageable);
 }

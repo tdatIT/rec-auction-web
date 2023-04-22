@@ -1,7 +1,6 @@
 package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.data.entities.*;
-
 import com.ec.recauctionec.data.repositories.UserAddressRepo;
 import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
 import com.ec.recauctionec.data.repositories.WalletRepo;
@@ -68,12 +67,15 @@ public class AccountController {
     public String getWalletPage(@RequestParam(value = "filter", required = false)
                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                 ModelMap modelMap) {
+        //get user logged from security
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
+        //get wallet from user
         Wallet wallet = walletRepo.findByUserId(us.getUserId()).get(0);
         WalletHistory recent = historyRepo.findTop1ByWalletOrderByCreateDateDesc(wallet);
+        //if date query is null get 5 transaction recent
         List<WalletHistory> logs = date == null ?
-                historyRepo.findLogByDate(new Date(new Date().getTime()), wallet.getWalletId())
+                historyRepo.find5RecentLogByWallet(wallet.getWalletId())
                 : historyRepo.findLogByDate(date, wallet.getWalletId());
         modelMap.addAttribute("logs", logs);
         modelMap.addAttribute("recent", recent);
@@ -104,7 +106,7 @@ public class AccountController {
 
     @PostMapping(value = "/doi-mat-khau")
     public String updatePassword(@RequestParam("current-password") String curr_passwd,
-                                 @RequestParam("password") String newPass){
+                                 @RequestParam("password") String newPass) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         return userService.updatePassword(us, curr_passwd, newPass) ?

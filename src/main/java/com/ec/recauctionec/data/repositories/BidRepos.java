@@ -37,4 +37,7 @@ public interface BidRepos extends JpaRepository<Bid, Integer> {
 
     @Query("select a from Bid a where date(a.startDate) > ?1")
     List<Bid> findByDateAndPageSize(Pageable pageable, Date filterDate);
+
+    @Query("select a from Bid a where a.user.userId=?1 order by a.createDate desc")
+    List<Bid> find5LastBidByUserId(int userId, Pageable pageable);
 }

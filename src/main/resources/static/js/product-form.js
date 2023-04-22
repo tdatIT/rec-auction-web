@@ -15,7 +15,7 @@ const formatter = new Intl.NumberFormat('vi-VN', {
     currency: 'VND',
 });
 $(document).ready(function () {
-    if($('#productId').val() == 0)
+    if ($('#productId').val() == 0)
         $('#productId').val("")
 })
 $('#default-price').on('input', function (e) {
@@ -37,7 +37,7 @@ $('#add-type').on('click', function (e) {
 })
 $('#remove-product').click(function (e) {
     console.log('Run')
-    swal({
+    Swal.fire({
         title: 'Bạn có muốn xóa sản phẩm này?',
         text: 'Sản phẩm sẽ không hiển thị trên web nhưng vẫn lưu trữ dữ liệu trong hệ thống',
         icon: 'warning',
@@ -54,11 +54,11 @@ $('#remove-product').click(function (e) {
                     window.location.href = '/supplier/san-pham'
                 },
                 error: function () {
-                    swal("Thất bại !", "Xóa sản phẩm không thành công thử lại sau !", "error");
+                    Swal.fire("Thất bại !", "Xóa sản phẩm không thành công thử lại sau !", "error");
                 }
             })
         } else {
-            swal('Hủy thao tác thành công');
+            Swal.fire('Hủy thao tác thành công');
         }
     });
 })

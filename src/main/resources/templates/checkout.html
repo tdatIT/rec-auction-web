@@ -77,8 +77,10 @@
                                                        data-target="#exampleModal">Thêm địa chỉ</a>
                                                 </h5>
                                                 <div class="mb-4 pb-2">
-                                                    <select  id="select-address" class="address-select" required>
-                                                        <option selected hidden>Chọn địa chỉ giao hàng hoặc thêm mới
+                                                    <select th:attr="data-id=${order.orderId}" id="select-address"
+                                                            class="address-select" required>
+                                                        <option value="-1" selected hidden>Chọn địa chỉ giao hàng hoặc
+                                                            thêm mới
                                                         </option>
                                                         <th:block th:each="a: ${address}">
                                                             <option th:value="${a.addressId}" class="text-color-white"

@@ -3,12 +3,10 @@ package com.ec.recauctionec.services.impl;
 import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.data.repositories.*;
-
-import com.ec.recauctionec.services.shipping.Shipping;
-
-
 import com.ec.recauctionec.services.BidJoinService;
+import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.OrderService;
+import com.ec.recauctionec.services.shipping.Shipping;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
     private WalletHistoryRepo historyRepo;
     @Autowired
     private BidJoinService joinService;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Orders findById(int id) {
@@ -63,6 +63,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Orders> findAllOrderByDate(java.sql.Date filter, Integer page, Integer size) {
         return orderRepo.findAllOrdersByDate(filter, PageRequest.of(page, size));
+    }
+
+    @Override
+    public List<Orders> find5LastOrderBySupplier(Supplier supplier) {
+        return orderRepo.find5LastBySupplier(supplier.getSupplierId(), PageRequest.of(0, 5));
+    }
+
+    @Override
+    public List<Orders> find5LastOrder(User user) {
+        return orderRepo.find5LastOrders(user.getUserId(), PageRequest.of(0, 5));
     }
 
     @Override
@@ -104,14 +114,17 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public boolean confirmOrder(OrderDTO dto) {
         try {
+            Delivery default_deli = deliveryRepo.findById(DEFAULT_SHIPPING).orElseThrow();
             Orders order = dto.mapping();
             Wallet user_wallet = dto.getUser().getWallet();
             if (user_wallet.getAccountBalance() >= order.getTotalPrice()) {
                 //Calculate Shipping Cost
                 AddressData src = order.getProduct().getSupplier().getAddresses().get(0);
                 AddressData des = order.getAddress();
-                order.setShippingPrice(Shipping.calculateShipping(src, des,
-                        deliveryRepo.findById(DEFAULT_SHIPPING).orElseThrow()));
+                order.setShippingPrice(Shipping.calculateShipping(src, des, default_deli));
+                order.setDelivery(default_deli);
+                //set new total price = old_total + shipping
+                order.setTotalPrice(dto.getTotalPrice() + order.getShippingPrice());
                 //Calculate commission of transaction
                 //Set more info of order
                 order.setStatus(Orders.CONFIRM);
@@ -129,6 +142,7 @@ public class OrderServiceImpl implements OrderService {
                         user_wallet.getAccountBalance() - log1.getValue());
                 walletRepo.save(user_wallet);
                 historyRepo.save(log1);
+                emailService.sendMailOrder(order);
                 return true;
             }
         } catch (Exception e) {
@@ -182,42 +196,40 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public boolean completedOrder(Orders order) {
-        try {
-            Wallet user_wallet = order.getProduct()
-                    .getSupplier()
-                    .getUser()
-                    .getWallet();
-            if (order.getStatus() == Orders.DELIVERY) {
-                order.setStatus(Orders.COMPLETE);
-                order.setUpdateDate(new java.sql.Date(new Date().getTime()));
-                //Create commission
-                Commission commission = new Commission();
-                double realValue = order.getTotalPrice() - order.getShippingPrice();
-                commission.setAmountFromSupplier(realValue * FROM_SUPPLIER);
-                /*  double profit = order.getWinAuction()
-                        .getAuctionSession()
-                        .getReservePrice() - order.getTotalPrice();*//*
-                commission.setAmountFromBuyer(profit * FROM_BUYER);*/
-                commission.setOrder(order);
-                //Create log in wallet of user by status
-                WalletHistory log1 = new WalletHistory();
-                log1.setType(true);
-                log1.setValue(order.getTotalPrice() - commission.getAmountFromSupplier());
-                log1.setWallet(user_wallet);
-                log1.setPaymentId("ROLL_BACK_ORDER");
-                log1.setCreateDate(new Timestamp(new Date().getTime()));
-                //transfer money into wallet
-                user_wallet.setAccountBalance(
-                        user_wallet.getAccountBalance() + log1.getValue());
-                historyRepo.save(log1);
-                walletRepo.save(user_wallet);
-                commissionRepo.save(commission);
-                return true;
-            }
-        } catch (Exception e) {
-            log.info(e.getMessage());
+    public boolean completedOrder(OrderDTO dto) {
+        Orders order = orderRepo.findByOrderId(dto.getOrderId());
+        Wallet user_wallet = order.getProduct()
+                .getSupplier()
+                .getUser()
+                .getWallet();
+        if (order.getStatus() == Orders.DELIVERY) {
+            order.setStatus(Orders.COMPLETE);
+            order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+            //Create commission
+            Commission commission = new Commission();
+            double realValue = dto.getTotalPrice() - dto.getShippingPrice();
+            commission.setAmountFromSupplier(realValue * FROM_SUPPLIER);
+            double profit = dto.getShippingPrice();
+            commission.setAmountFromBuyer(profit);
+            commission.setOrder(order);
+            //Create log in wallet of user by status
+            WalletHistory log1 = new WalletHistory();
+            log1.setType(true);
+            log1.setValue(dto.getTotalPrice() - commission.getAmountFromSupplier());
+            log1.setWallet(user_wallet);
+            log1.setPaymentId("ROLL_BACK_ORDER");
+            log1.setCreateDate(new Timestamp(new Date().getTime()));
+            //transfer money into wallet
+            user_wallet.setAccountBalance(
+                    user_wallet.getAccountBalance() + log1.getValue());
+            //save change into database
+            orderRepo.save(order);
+            historyRepo.save(log1);
+            walletRepo.save(user_wallet);
+            commissionRepo.save(commission);
+            return true;
         }
+
         return false;
     }
 

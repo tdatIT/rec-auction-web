@@ -3,6 +3,7 @@ package com.ec.recauctionec.services;
 import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.Supplier;
+import com.ec.recauctionec.data.entities.User;
 
 import java.util.Date;
 import java.util.List;
@@ -16,9 +17,15 @@ public interface OrderService {
 
     List<Orders> findAll();
 
+    List<Orders> find5LastOrderBySupplier(Supplier supplier);
+
     List<Orders> findAllBySupplierDate(Supplier supplier, Date filterDate);
-    long numberOfOrdersPendingOfSupplier(Supplier supplier,Date filterDate);
-    long numberOfOrdersOfSupplier(Supplier supplier,Date filterDate);
+
+    List<Orders> find5LastOrder(User user);
+
+    long numberOfOrdersPendingOfSupplier(Supplier supplier, Date filterDate);
+
+    long numberOfOrdersOfSupplier(Supplier supplier, Date filterDate);
 
     void createOrderNotConfirm(OrderDTO dto);
 
@@ -26,7 +33,7 @@ public interface OrderService {
 
     boolean cancelOrder(OrderDTO dto);
 
-    boolean completedOrder(Orders order);
+    boolean completedOrder(OrderDTO dto);
 
     boolean deliveryOrder(OrderDTO dto);
 

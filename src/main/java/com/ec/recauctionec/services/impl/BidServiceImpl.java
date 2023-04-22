@@ -46,6 +46,11 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
+    public List<Bid> find5LastBidByUserId(User user) {
+        return bidRepos.find5LastBidByUserId(user.getUserId(), PageRequest.of(0, 5));
+    }
+
+    @Override
     public List<Bid> findAllByDate(Date date) {
         return bidRepos.findAllActiveAuctionByDate(date);
     }

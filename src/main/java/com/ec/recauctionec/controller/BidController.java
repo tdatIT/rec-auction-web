@@ -2,9 +2,8 @@ package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.data.dto.AuctionSessionDTO;
 import com.ec.recauctionec.data.entities.*;
-
-import com.ec.recauctionec.services.*;
 import com.ec.recauctionec.data.variable.Router;
+import com.ec.recauctionec.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,9 +84,11 @@ public class BidController {
                                       ModelMap modelMap) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
-        if (date == null)
-            date = new Date(new java.util.Date().getTime());
-        List<Bid> data = bidService.findAllByUserAndActive(us.getUserId(), date);
+        List<Bid> data;
+        if (date != null)
+            data = bidService.findAllByUserAndActive(us.getUserId(), date);
+        else
+            data = bidService.find5LastBidByUserId(us);
         modelMap.addAttribute("data", data);
         return "/user/all-auction";
     }

@@ -63,7 +63,14 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public boolean sendMailOrder(String email, Orders orders) {
+    public boolean sendMailOrder(Orders orders) {
+        try {
+            EmailDetails email_detail = EmailFactory.getOrderEmail(orders);
+            sendMail(email_detail);
+            log.info("Send mail order confirm success has successful");
+        } catch (MessagingException e) {
+            log.error(e.getMessage());
+        }
         return false;
     }
 }

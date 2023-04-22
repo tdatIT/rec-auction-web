@@ -18,6 +18,9 @@ public interface WalletHistoryRepo extends JpaRepository<WalletHistory, Integer>
             "where date(log.createDate) >= ?1 and log.wallet.walletId =?2")
     List<WalletHistory> findLogFromFilterDateToCurrent(Date date, int walletId);
 
+    @Query("select log from WalletHistory log where log.wallet.walletId=?1 order by log.createDate desc")
+    List<WalletHistory> find5RecentLogByWallet(int walletId);
+
     WalletHistory findTop1ByWalletOrderByCreateDateDesc(Wallet wallet);
 
     @Query("select date(i.createDate) as createDate,sum(i.value) as value,i.type as type " +

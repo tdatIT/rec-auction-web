@@ -1,21 +1,21 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.data.dto.OrderDTO;
-import com.ec.recauctionec.data.entities.AddressData;
 import com.ec.recauctionec.data.entities.CustomUserDetails;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.data.repositories.UserAddressRepo;
 import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.OrderService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +39,7 @@ public class OrderController {
 
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         List<Orders> orders = date == null ?
-                orderService.findOrderByDate(user.getUserId(), new Date(new Date().getTime()))
+                orderService.find5LastOrder(user)
                 : orderService.findOrderByDate(user.getUserId(), date);
         modelMap.addAttribute("orders", orders);
         return "user/order-list";
@@ -64,26 +64,5 @@ public class OrderController {
         return "checkout";
     }
 
-    @PostMapping("/xac-nhan-don-hang")
-    public String confirmOrder(@RequestParam("orderId") int orderId,
-                               @RequestParam("addressId") int addressId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
-        try {
-            Orders order = orderService.findById(orderId);
-            if (order != null &&
-                    order.getUser().getUserId() == user.getUserId()) {
 
-                AddressData address = userAddressRepo.findById(addressId)
-                        .orElseThrow();
-                OrderDTO dto = new OrderDTO();
-                BeanUtils.copyProperties(order, dto);
-                dto.setAddress(address);
-                orderService.confirmOrder(dto);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "redirect:/don-hang";
-    }
 }
