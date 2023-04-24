@@ -3,6 +3,7 @@ package com.ec.recauctionec.services.impl;
 import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.data.repositories.*;
+import com.ec.recauctionec.data.response.OrderTypeQuery;
 import com.ec.recauctionec.services.BidJoinService;
 import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.OrderService;
@@ -29,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     //Percent for 1 transaction for E-Commerce Exchange
     private static final double FROM_SUPPLIER = 0.05;
 
-    private static final double FROM_BUYER = 0.25;
+    private static final double FROM_BUYER = 0.15;
     //Viettel POST
     private static final int DEFAULT_SHIPPING = 1;
     //status order
@@ -97,6 +98,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public long numberOfOrdersOfSupplier(Supplier supplier, Date filterDate) {
         return orderRepo.totalOrderByDate(supplier.getSupplierId(), filterDate);
+    }
+
+    @Override
+    public List<OrderTypeQuery> getTotalOrderInMonth(Integer month, Integer year) {
+        return orderRepo.totalOrderInMonthAndGroupByStatus(month, year);
     }
 
     @Override

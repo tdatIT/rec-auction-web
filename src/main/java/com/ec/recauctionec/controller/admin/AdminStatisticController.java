@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminStatisticController {
     @GetMapping(value = {"", "/phan-tich"})
     public String getDashboard(ModelMap modelMap) {
-        return "admin/blank-page";
+        return "admin/statistic-admin";
     }
 }

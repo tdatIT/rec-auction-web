@@ -1,6 +1,7 @@
 package com.ec.recauctionec.services;
 
 import com.ec.recauctionec.data.entities.Product;
+import com.ec.recauctionec.data.response.BestSellerQuery;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface ProductService {
     long totalProduct();
 
     long totalActive();
+
+    List<BestSellerQuery> getTopSeller(Integer month, Integer year);
 }

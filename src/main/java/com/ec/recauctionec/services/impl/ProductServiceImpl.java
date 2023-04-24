@@ -2,6 +2,7 @@ package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.data.entities.Product;
 import com.ec.recauctionec.data.repositories.ProductRepo;
+import com.ec.recauctionec.data.response.BestSellerQuery;
 import com.ec.recauctionec.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAllProduct(int page, int size) {
         return productRepo.findAllProductByPageAndSize(PageRequest.of(page, size));
+    }
+
+    @Override
+    public List<BestSellerQuery> getTopSeller(Integer month, Integer year) {
+        return productRepo.getBestSellerInMonth(month,year);
     }
 
     @Override

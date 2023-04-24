@@ -1,6 +1,7 @@
 package com.ec.recauctionec.data.repositories;
 
 import com.ec.recauctionec.data.entities.Orders;
+import com.ec.recauctionec.data.response.OrderTypeQuery;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -48,4 +49,10 @@ public interface OrderRepo extends JpaRepository<Orders, Integer> {
 
     @Query("select o from Orders o where  o.user.userId=?1 order by o.createDate desc ")
     List<Orders> find5LastOrders(int userId, Pageable pageable);
+
+    @Query("select o.status as type, count(o.status) as total from Orders o" +
+            " where month(o.createDate)=?1 and year(o.createDate)=?2" +
+            " group by o.status")
+    List<OrderTypeQuery> totalOrderInMonthAndGroupByStatus(Integer month, Integer year);
+
 }

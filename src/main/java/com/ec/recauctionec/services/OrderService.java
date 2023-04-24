@@ -4,6 +4,7 @@ import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.Supplier;
 import com.ec.recauctionec.data.entities.User;
+import com.ec.recauctionec.data.response.OrderTypeQuery;
 
 import java.util.Date;
 import java.util.List;
@@ -42,4 +43,6 @@ public interface OrderService {
     long totalOrderFromDate(java.sql.Date filter);
 
     List<Orders> findAllOrderByDate(java.sql.Date filter, Integer page, Integer size);
+
+    List<OrderTypeQuery> getTotalOrderInMonth(Integer month, Integer year);
 }

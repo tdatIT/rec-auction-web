@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="admin/admin-fragment::head-css-link"></th:block>
+    <title>Trang quản lý hệ thống</title>
+</head>
+
+<body>
+<div id="app">
+    <!-- Page Preloder -->
+    <div id="pre-loader">
+        <div class="loader"></div>
+    </div>
+    <div class="main-wrapper main-wrapper-1">
+        <th:block th:insert="admin/admin-fragment::header-sidebar"></th:block>
+        <!-- Main Content -->
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h1>
+                        Phân tích hoạt động hệ thống
+                    </h1>
+                    <div class="section-header-breadcrumb">
+                        <div class="breadcrumb-item active"><a href="#">Trang chủ</a></div>
+                        <div class="breadcrumb-item"><a href="#">Phân tích hoạt động</a></div>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <h2 class="section-title">RecAuction</h2>
+                    <p class="section-lead">Hiển thị biểu đồ phân tích cho các giao dịch, lợi nhuận, đơn hàng, sản phẩm
+                        bán chạy theo các tháng</p>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Biểu đồ biến động doanh thu của tháng</h4>
+                                    <div class="card-header-action">
+                                        <div class="input-group">
+                                            <input id="lchart-input" name="date-filter" type="month"
+                                                   class="form-control date-month"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Chọn ngày cần xem đến ngày hiện tại">
+                                            <button id="lchart-btn" class="btn btn-primary">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="line-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Biểu đồ so sánh trạng thái hoạt động đơn hàng</h4>
+                                    <div class="card-header-action">
+                                        <div class="input-group">
+                                            <input id="dchart-input" name="date-filter" type="month"
+                                                   class="form-control date-month"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Chọn ngày cần xem đến ngày hiện tại">
+                                            <button id="dchart-btn" class="btn btn-primary">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="donut-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Biểu đồ biến động doanh thu của tháng</h4>
+                                    <div class="card-header-action">
+                                        <div class="input-group">
+                                            <input id="do-chart-input" name="date-filter" type="month"
+                                                   class="form-control date-month"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Chọn ngày cần xem đến ngày hiện tại">
+                                            <button id="do-chart-btn" class="btn btn-primary">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="doughnut-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Danh sách các sản phẩm bán chạy</h4>
+                                    <div class="card-header-action">
+                                        <div class="input-group">
+                                            <input id="dschart-input" name="date-filter" type="month"
+                                                   class="form-control date-month"
+                                                   data-toggle="tooltip"
+                                                   data-placement="bottom"
+                                                   title="Chọn ngày cần xem đến ngày hiện tại">
+                                            <button id="dschart-btn" class="btn btn-primary">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table align-middle table-session">
+                                        <thead class="bg-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên</th>
+                                            <th>Số lượng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- Main Content -->
+        <th:block th:insert="admin/admin-fragment::footer"></th:block>
+    </div>
+</div>
+
+<th:block th:insert="admin/admin-fragment::js-block"></th:block>
+<!-- Page Specific JS File -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script src="/js/chart_admin.js"></script>
+<script>
+    $(document).ready(function () {
+        let today = new Date().toISOString().slice(0, 10);
+        $('.date').attr('max', today)
+        $('.date').attr('value', today)
+        $('.date-month').attr('max', today.slice(0, 7))
+        $('.date-month').attr('value', today.slice(0, 7))
+    })
+</script>
+</body>
+
+</html>

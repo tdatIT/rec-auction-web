@@ -2,6 +2,7 @@ package com.ec.recauctionec.data.repositories;
 
 
 import com.ec.recauctionec.data.entities.Product;
+import com.ec.recauctionec.data.response.BestSellerQuery;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,4 +45,13 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     List<Product> findProductForAuction(@RequestParam("userId") int userId, @RequestParam("productTag") String productTagStr);
 
 
+    @Query("select p.productId as productId, " +
+            "p.productCode as productCode, " +
+            "p.productName as productName, " +
+            "count(o) as total from Product p " +
+            "inner join Orders o " +
+            "on p.productId = o.product.productId " +
+            "where month (o.createDate)=?1 and year(o.createDate)=?2 " +
+            "group by p.productId")
+    List<BestSellerQuery> getBestSellerInMonth(Integer month, Integer year);
 }

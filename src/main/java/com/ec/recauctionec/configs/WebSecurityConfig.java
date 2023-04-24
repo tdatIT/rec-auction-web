@@ -1,7 +1,5 @@
 package com.ec.recauctionec.configs;
 
-import com.ec.recauctionec.data.entities.CustomUserDetails;
-import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -57,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/dau-gia/**",
                         "/don-hang/**",
                         "/thanh-toan/**",
-                        "/api/v1/supplier/**").authenticated()
+                        "/api/v1/supplier/**",
+                        "/api/v1/admin/**").authenticated()
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
@@ -77,11 +75,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //authorize
         //admin
         http.authorizeRequests()
-                .antMatchers("/admin/**")
+                .antMatchers("/admin/**",
+                        "/api/v1/admin/**")
                 .access("hasRole('ADMIN')");
         //supplier
         http.authorizeRequests()
-                .antMatchers("/supplier/**")
+                .antMatchers("/supplier/**",
+                        "/api/v1/supplier/**")
                 .access("hasRole('SUPPLIER')");
         //handle when user not have permission
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");

@@ -15,10 +15,10 @@ public class Commission {
     @Column(name = "order_id", nullable = false)
     private int orderId;
 
-    @Column(name = "amount_from_buyer", nullable = false, precision = 0)
+    @Column(name = "amount_from_buyer", nullable = false)
     private double amountFromBuyer;
 
-    @Column(name = "amount_from_supplier", nullable = false, precision = 0)
+    @Column(name = "amount_from_supplier", nullable = false)
     private double amountFromSupplier;
 
     @OneToOne(mappedBy = "commission")

@@ -39,4 +39,8 @@ public interface WalletHistoryRepo extends JpaRepository<WalletHistory, Integer>
             "group by month(i.createDate),i.type")
     List<WalletObjQuery> statisticTransactionForPieChart(int walletId, Date dateFilter);
 
+    @Query("select i.type as type, sum(i.value) as value from WalletHistory i " +
+            "where month(i.createDate)=?1 and year(i.createDate)=?2 group by i.type")
+    List<WalletObjQuery> statisticAllTransactionInMonth(int month, int year);
+
 }
