@@ -80,7 +80,7 @@
                         <div class="col-12 col-md-6 col-lg-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4>Biểu đồ biến động doanh thu của tháng</h4>
+                                    <h4>Biểu đồ tổng lượng giao dịch trong hệ thống</h4>
                                     <div class="card-header-action">
                                         <div class="input-group">
                                             <input id="do-chart-input" name="date-filter" type="month"
@@ -105,19 +105,19 @@
                                     <h4>Danh sách các sản phẩm bán chạy</h4>
                                     <div class="card-header-action">
                                         <div class="input-group">
-                                            <input id="dschart-input" name="date-filter" type="month"
+                                            <input id="table-filter-input" name="date-filter" type="month"
                                                    class="form-control date-month"
                                                    data-toggle="tooltip"
                                                    data-placement="bottom"
                                                    title="Chọn ngày cần xem đến ngày hiện tại">
-                                            <button id="dschart-btn" class="btn btn-primary">
+                                            <button id="table-filter-btn" class="btn btn-primary">
                                                 <i class="fa fa-filter"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table align-middle table-session">
+                                    <table id="table-product" class="table align-middle table-session">
                                         <thead class="bg-light">
                                         <tr>
                                             <th>ID</th>

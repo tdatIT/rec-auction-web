@@ -1,3 +1,29 @@
+$('#lchart-btn').on('click',function (){
+    var data = $('#lchart-input').val();
+    var year = data.substring(0,4)
+    var month = data.substring(6,7)
+    callApiDrawChart(month, year, '/api/v1/admin/totalCommission/', drawAdminLineChart);
+})
+
+$('#dchart-btn').on('click',function (){
+    var data = $('#dchart-input').val();
+    var year = data.substring(0,4)
+    var month = data.substring(6,7)
+    callApiDrawChart(month, year, '/api/v1/admin/totalOrderInMonth/', drawAdminPieChart);
+})
+
+$('#do-chart-btn').on('click',function (){
+    var data = $('#do-chart-input').val();
+    var year = data.substring(0,4)
+    var month = data.substring(6,7)
+    callApiDrawChart(month, year, '/api/v1/admin/totalTransactionInMonth/', drawAdminDoughnutChart)
+})
+$('#table-filter-btn').on('click',function (){
+    var data = $('#table-filter-input').val();
+    var year = data.substring(0,4)
+    var month = data.substring(6,7)
+    showTable(month, year)
+})
 $(document).ready(function () {
     const now = new Date();
     const month = now.getMonth() + 1; // getMonth() returns 0-indexed month, so add 1
@@ -25,6 +51,7 @@ function showTable(month, year) {
         url: '/api/v1/admin/topBestSellerInMonth/' + month + '/' + year,
         method: 'get',
         success: function (json) {
+            $('#table-product tr').remove()
             console.log('GET:' + '/api/v1/admin/topBestSellerInMonth/')
             console.log(json)
             json.forEach(t => {

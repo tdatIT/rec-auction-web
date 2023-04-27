@@ -7,8 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class RecauctionEcApplicationTests {
-    @Autowired
-    private BidRepos bidRepos;
 
     @Test
     void contextLoads() throws Exception {
