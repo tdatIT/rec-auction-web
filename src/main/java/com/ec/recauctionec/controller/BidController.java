@@ -48,8 +48,7 @@ public class BidController {
     }
 
     @PostMapping(value = "/tao-phien")
-    public String createAuction(@ModelAttribute AuctionSessionDTO dto,
-                                ModelMap modelMap) {
+    public String createAuction(@ModelAttribute AuctionSessionDTO dto) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (bidService.createNewAuction(us, dto)) {

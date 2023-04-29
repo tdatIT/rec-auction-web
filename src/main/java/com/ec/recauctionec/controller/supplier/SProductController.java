@@ -2,11 +2,11 @@ package com.ec.recauctionec.controller.supplier;
 
 import com.ec.recauctionec.data.dto.ProductDTO;
 import com.ec.recauctionec.data.entities.*;
+import com.ec.recauctionec.data.variable.SupplierLevelUtils;
 import com.ec.recauctionec.services.CategoryService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.StorageImage;
 import com.ec.recauctionec.services.SupplierService;
-import com.ec.recauctionec.data.variable.SupplierLevelUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -115,11 +116,10 @@ public class SProductController {
     }
 
     @RequestMapping(value = "/chinh-sua", method = RequestMethod.POST)
-    public String updateProduct(@ModelAttribute ProductDTO productDTO,
-                                ModelMap modelMap) {
-
+    public String updateProduct(@ModelAttribute ProductDTO productDTO) {
         Product p = productService.findByProductCode(productDTO.getProductCode());
         BeanUtils.copyProperties(productDTO, p);
+        p.setUpdateDate(new Date());
         if (productDTO.getImages_file() != null) {
             List<String> filenames = storageImage.storageMultiImage(productDTO.getImages_file());
             p.setImages(filenames.stream().map(

@@ -159,41 +159,46 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public boolean cancelOrder(OrderDTO dto) {
+    public boolean cancelOrder(int orderId) {
         try {
-            Orders order = dto.mapping();
-            Wallet user_wallet = dto.getUser().getWallet();
+            Orders order = orderRepo.findByOrderId(orderId);
+            Wallet user_wallet = order.getUser().getWallet();
+            //Create a log of user wallet transactions
+            WalletHistory log1 = new WalletHistory();
             if (order.getStatus() != Orders.CANCEL && order.getStatus() != Orders.COMPLETE) {
-                order.setStatus(Orders.CANCEL);
-                order.setUpdateDate(new java.sql.Date(new Date().getTime()));
-                //Create log in wallet of user by status
-                WalletHistory log1 = new WalletHistory();
-                if (order.getStatus() != Orders.NOT_CONFIRM) {
+                //If the order was canceled by the supplier when the order has been confirmed and shipped,
+                //then the money will be rolled back to the user's wallet
+                if (order.getStatus() == Orders.CONFIRM
+                        && order.getStatus() == Orders.DELIVERY) {
                     log1.setType(true);
                     log1.setValue(order.getTotalPrice());
                     log1.setWallet(user_wallet);
-                    log1.setPaymentId("ROLL_BACK_ORDER");
+                    log1.setPaymentId("RB_ORDER");
+                    log1.setCreateDate(new Timestamp(new Date().getTime()));
                     //Charge into wallet
                     user_wallet.setAccountBalance(
-                            user_wallet.getAccountBalance() + order.getTotalPrice() * 0.8);
-                } else {
-                    if (user_wallet.getAccountBalance() >=
-                            order.getTotalPrice() * 0.3) {
-                        log1.setType(false);
-                        log1.setValue(order.getTotalPrice());
-                        log1.setWallet(user_wallet);
-                        log1.setPaymentId("CANCEL_ORDER_CHARGE");
-                        //Charge into wallet
-                        user_wallet.setAccountBalance(
-                                user_wallet.getAccountBalance() - order.getTotalPrice() * 0.3
-                        );
-                    }
-                    return false;
+                            user_wallet.getAccountBalance() + order.getTotalPrice() * 0.1);
                 }
-                historyRepo.save(log1);
-                walletRepo.save(user_wallet);
-                return true;
+                //Money will be charged when an order created by the system is not confirmed by the user.
+                if (order.getStatus() == Orders.NOT_CONFIRM &&
+                        user_wallet.getAccountBalance() >= order.getTotalPrice() * 0.3) {
+                    log1.setType(false);
+                    log1.setValue(order.getTotalPrice());
+                    log1.setCreateDate(new Timestamp(new Date().getTime()));
+                    log1.setWallet(user_wallet);
+                    log1.setPaymentId("CHARGE_CO");
+                    //Charge money
+                    user_wallet.setAccountBalance(
+                            user_wallet.getAccountBalance() - order.getTotalPrice() * 0.3
+                    );
+                }
             }
+            order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+            order.setStatus(Orders.CANCEL);
+            orderRepo.save(order);
+            historyRepo.save(log1);
+            walletRepo.save(user_wallet);
+            return true;
         } catch (Exception e) {
             log.info(e.getMessage());
         }

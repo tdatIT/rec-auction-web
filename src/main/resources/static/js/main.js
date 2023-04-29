@@ -176,7 +176,7 @@ $("#confirm-order").on('click', function () {
                         }, 5000);
                     },
                     error(data) {
-                        swal.close()
+                        Swal.close()
                         console.log(data)
                         Swal.fire("Không thể tạo đơn hàng", "Số dư của bạn không đủ đê thực hiện thanh toán", "error")
                     }
@@ -191,3 +191,37 @@ $("#confirm-order").on('click', function () {
 })
 
 
+$('#cancel-order').on('click', function () {
+    var total = $('.product-price').text()
+    Swal.fire({
+        title: "Hủy đơn hàng",
+        text: "Hủy đơn hàng nhưng bạn vẫn phải thanh toán 30% đơn hàng: " + total,
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        cancelButtonText: "Huỷ",
+        showConfirmButton: true,
+        confirmButtonColor: '#28A745'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.showLoading();
+            var orderId = $('#select-address').data('id');
+            $.ajax({
+                url: '/huy-don-hang/' + orderId,
+                method: 'POST',
+                success(data) {
+                    Swal.close()
+                    Swal.fire("Hủy đơn hàng thành công", "Đã hủy đơn hàng thành công chuyển về trang chủ sau 5s !", "success")
+                    setTimeout(function () {
+                        window.location.href = "/don-hang";
+                    }, 5000);
+                },
+                error(data) {
+                    swal.close()
+                    console.log(data)
+                    Swal.fire("Hủy đơn hàng thất bại", "Số dư của bạn không đủ đê thực hiện thanh toán hoặc đơn hàng không tồn tại", "error")
+                }
+            })
+        }
+    })
+})

@@ -13,24 +13,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ConfirmOrder {
+public class ProcessingOrder {
 
     @Autowired
     private OrderService orderService;
     @Autowired
     private UserAddressRepo userAddressRepo;
 
+    Authentication auth;
+
     @RequestMapping(value = "/xac-nhan-don-hang", method = RequestMethod.POST)
     public ResponseEntity confirmOrder(@RequestParam("orderId") int orderId,
                                        @RequestParam("addressId") int addressId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = ((CustomUserDetails) auth.getPrincipal()).getUser();
 
         Orders order = orderService.findById(orderId);
         if (order != null &&
@@ -45,6 +44,19 @@ public class ConfirmOrder {
                 return ResponseEntity.ok("Create new order success");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Create order was failed, cause wallet not enough");
+    }
+
+    @RequestMapping(value = "/huy-don-hang/{orderId}", method = RequestMethod.POST)
+    public ResponseEntity cancelOrder(@PathVariable Integer orderId) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = ((CustomUserDetails) auth.getPrincipal()).getUser();
+        Orders order = orderService.findById(orderId);
+        if (order != null &&
+                order.getUser().getUserId() == user.getUserId()) {
+            if (orderService.cancelOrder(orderId))
+                return ResponseEntity.status(HttpStatus.OK).body("Cancel order has been successful");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cancel was failed. Check wallet balance again !");
     }
 }
 

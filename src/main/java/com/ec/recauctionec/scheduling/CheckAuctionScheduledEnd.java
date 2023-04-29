@@ -81,7 +81,7 @@ public class CheckAuctionScheduledEnd {
         for (Orders o : orders) {
             OrderDTO dto = new OrderDTO();
             BeanUtils.copyProperties(o, dto);
-            orderService.cancelOrder(dto);
+            orderService.cancelOrder(dto.getOrderId());
             log.info("Cancel Order ID: " + dto.getOrderId());
         }
 

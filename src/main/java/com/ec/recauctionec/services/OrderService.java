@@ -32,7 +32,7 @@ public interface OrderService {
 
     boolean confirmOrder(OrderDTO dto);
 
-    boolean cancelOrder(OrderDTO dto);
+    boolean cancelOrder(int orderId);
 
     boolean completedOrder(OrderDTO dto);
 
