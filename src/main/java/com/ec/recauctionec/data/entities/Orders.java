@@ -54,7 +54,6 @@ public class Orders {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "commission_id", referencedColumnName = "order_id")
     private Commission commission;
