@@ -62,3 +62,15 @@ $('#remove-product').click(function (e) {
         }
     });
 })
+
+$('#subDetail').on('input', function () {
+    var detail_str = $(this).val()
+    $(this).removeClass('is-valid, is-invalid');
+    if (detail_str.length < 255) {
+        $(this).addClass('is-valid');
+    } else {
+        $(this).addClass('is-invalid');
+        $(this).after('<div class="invalid-feedback">\n' + 'Vượt quá chiều dài cho phép 255\n' + '</div>')
+
+    }
+})

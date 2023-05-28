@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class ProductDTO {
 
-    private int productId;
+    private int productId = 0;
     private String productCode;
 
     private int categoryId;
