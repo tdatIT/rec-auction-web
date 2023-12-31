@@ -16,6 +16,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -40,8 +41,9 @@ public class PaymentController {
     private UserService userService;
     @Autowired
     private WalletHistoryRepo walletHistoryRepo;
-    @Autowired
-    private WalletRepo walletRepo;
+
+    @Value("${server.host}")
+    public String CONTEXT_PATH;
 
     @GetMapping("/thanh-toan")
     public String getPayment(ModelMap modelMap) {
@@ -49,9 +51,9 @@ public class PaymentController {
     }
 
     @PostMapping("/thanh-toan")
-    public String pay(HttpServletRequest request, @RequestParam("amount") double amount_value) {
-        String cancelUrl = UrlUtils.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
-        String successUrl = UrlUtils.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
+    public String pay(@RequestParam("amount") double amount_value) {
+        String cancelUrl = CONTEXT_PATH + "/" + URL_PAYPAL_CANCEL;
+        String successUrl = CONTEXT_PATH + "/" + URL_PAYPAL_SUCCESS;
         double amount_to_dollar = amount_value / Wallet.USD_TO_VND;
         try {
             Payment payment = paypalService.createPayment(
