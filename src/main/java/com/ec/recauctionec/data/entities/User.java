@@ -26,7 +26,7 @@ public class User {
     private Date createDate;
 
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
 
@@ -66,7 +66,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<AddressData> userAddresses;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

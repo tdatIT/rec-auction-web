@@ -35,7 +35,7 @@ public class Wallet {
 
     public static String generatorWalletNumber() {
         String uuid = UUID.randomUUID().toString();
-        String code = new Random().nextInt(999999) + 100000 + " ";
+        String code = String.valueOf(new Random().nextInt(999999) + 100000);
         return uuid.substring(0, 6) + code;
     }
 
