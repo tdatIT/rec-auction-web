@@ -1,5 +1,7 @@
 package com.ec.recauctionec.data.variable;
 
+import org.springframework.context.annotation.Configuration;
+@Configuration
 public class PathVariable {
-    public static final String CONTEXT_PATH = "http://localhost:8080";
+
 }

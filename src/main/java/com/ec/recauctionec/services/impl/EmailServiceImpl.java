@@ -26,6 +26,9 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
+    @Value("${server.host}")
+    public String CONTEXT_PATH;
+
     private void sendMail(EmailDetails details) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -40,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean sendVerifyEmail(User us, String token, String requestUrl) {
         try {
-            String link = PathVariable.CONTEXT_PATH + requestUrl + "?token=" + token;
+            String link = CONTEXT_PATH + requestUrl + "?token=" + token;
             EmailDetails email = EmailFactory.getVerifyEmail(link, us.getEmail());
             sendMail(email);
         } catch (MessagingException e) {
@@ -52,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean sendNotifyEmail(String email, Bid bid) {
         try {
-            String link = PathVariable.CONTEXT_PATH + "/chi-tiet-dau-gia/" + bid.getBidId();
+            String link = CONTEXT_PATH + "/chi-tiet-dau-gia/" + bid.getBidId();
             EmailDetails email_detail = EmailFactory.getNotifyEmail(link, email);
             sendMail(email_detail);
             log.info("Send email verify account [" + email + "]");

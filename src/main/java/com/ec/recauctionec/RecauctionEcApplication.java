@@ -23,7 +23,6 @@ public class RecauctionEcApplication {
                 "api_secret", "xz-CUQykgKnBja571VNtfhX2gsU",
                 "secure",true
         ));
-
         return cloudinary;
     }
 
