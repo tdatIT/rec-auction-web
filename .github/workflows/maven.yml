@@ -18,8 +18,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+        
     steps:
+    - uses: shogo82148/actions-setup-mysql@v1
+      with:
+        mysql-version: "8.0"
+        my-cnf: |
+          root-password: 123123@Dat
+    - run: mysql -uroot -e 'create database recauction_db;'
+          
     - uses: actions/checkout@v4
     - name: Set up JDK 17
       uses: actions/setup-java@v3
