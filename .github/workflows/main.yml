@@ -11,7 +11,7 @@ jobs:
     env:
       DB_DATABASE: recauction_db
       DB_USER: root
-      DB_PASSWORD: 123123@Dat
+      DB_PASSWORD: '123123@Dat'
       
     runs-on: ubuntu-latest
  
@@ -20,7 +20,7 @@ jobs:
       run: |
         sudo /etc/init.d/mysql start
         sudo mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${{ env.DB_PASSWORD }}';"
-        sudo mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ env.DB_DATABASE }};"
+        sudo mysql -u${{ env.DB_USER }} -p"${{ env.DB_PASSWORD }}" -e "CREATE DATABASE IF NOT EXISTS ${{ env.DB_DATABASE }};"
           
     - uses: actions/checkout@v4
     - name: Set up JDK 11
