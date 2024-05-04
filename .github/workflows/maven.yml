@@ -29,7 +29,8 @@ jobs:
           max_allowed_packet=16MB
           max_connections=50
           local_infile=1
-          root-password=123123@Dat
+          user=root
+          password=123123@Dat
     - run: mysql -uroot -e 'create database recauction_db;'
           
     - uses: actions/checkout@v4
