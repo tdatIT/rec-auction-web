@@ -19,7 +19,7 @@ jobs:
     - name: Set up MySQL
       run: |
         sudo /etc/init.d/mysql start
-        sudo mysql -u${{ env.DB_USER }} --password="${{ env.DB_PASSWORD }}" -e "CREATE DATABASE IF NOT EXISTS ${{ env.DB_DATABASE }};"
+        
           
     - uses: actions/checkout@v4
     - name: Set up JDK 11
