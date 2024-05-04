@@ -24,7 +24,7 @@ jobs:
       with:
         mysql-version: "8.0"
         my-cnf: |
-          root-password: 123123@Dat
+          root-password=123123@Dat
     - run: mysql -uroot -e 'create database recauction_db;'
           
     - uses: actions/checkout@v4
