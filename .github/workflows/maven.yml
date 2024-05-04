@@ -24,6 +24,11 @@ jobs:
       with:
         mysql-version: "8.0"
         my-cnf: |
+          innodb_log_file_size=256MB
+          innodb_buffer_pool_size=512MB
+          max_allowed_packet=16MB
+          max_connections=50
+          local_infile=1
           root-password=123123@Dat
     - run: mysql -uroot -e 'create database recauction_db;'
           
