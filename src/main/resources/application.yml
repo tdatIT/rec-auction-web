@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/recauction_db
     username: root
-    password: 123123
+    password: 123123@Dat
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -19,7 +19,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: '587'
-    username: testing.email.it2k2@gmail.com
+    username:
     password:
     properties:
       mail:
@@ -28,7 +28,7 @@ spring:
           starttls:
             enable: true
 server:
-  host: http://tdawebservice.tech
+  host: http://localhost:8080
   servlet:
     encoding:
       charset: utf-8
@@ -38,14 +38,10 @@ server:
 paypal:
   mode: sandbox
   client:
-    app: Ad9tSzvE1MEuTpX22TvZVDq-AX-_Vge1uFyIZ6nQD7W9vlYkSBfnUtiyBctPEA5HxJ9b9z8Iz9mUmwbF
-    secret: EDOwfQ0ECOQlF9OTW20vxBvnhYYzwAuN_FSrjiiLuBAsArU5JCiw1AzqZSwK5jssedsEhawrxjLmGeDm
+    app:
+    secret:
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: debug
-        type:
-          descriptor:
-            sql: trace
+cloudinary:
+  cloud_name:
+  api_key:
+  api_secret:

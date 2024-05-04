@@ -1,9 +1,10 @@
 package com.ec.recauctionec.data.dto;
 
+import com.ec.recauctionec.data.entities.BidParticipant;
+import com.ec.recauctionec.data.entities.Category;
 import com.ec.recauctionec.data.entities.Bid;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.data.entities.BidJoin;
-import com.ec.recauctionec.data.entities.Category;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,12 +19,12 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode
 public class AuctionSessionDTO {
-    private int auctionSessId;
+    private int bidSessId;
     @NotEmpty
     private String productKey;
 
     @NotEmpty
-    private String createDate;
+    private String createdDate;
 
     @NotNull
     private int countDay;
@@ -49,12 +50,12 @@ public class AuctionSessionDTO {
 
     private String productTagStr;
 
-    private Collection<BidJoin> bidJoins;
+    private Collection<BidParticipant> bidderData;
 
     private User user;
 
     public Bid mapping() throws Exception {
-        Bid auction = new Bid();
+        Bid bid = new Bid();
         //Set current time for properties
         Calendar current = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
@@ -67,15 +68,15 @@ public class AuctionSessionDTO {
         startDate.add(Calendar.DAY_OF_MONTH, countDay);
         Timestamp endTime = new Timestamp(startDate.getTimeInMillis());
         //set create time
-        auction.setCreateDate(new Timestamp(new Date().getTime()));
-        auction.setStartDate(startTime);
-        auction.setEndDate(endTime);
+        bid.setCreatedDate(new Timestamp(new Date().getTime()));
+        bid.setStartDate(startTime);
+        bid.setEndedDate(endTime);
         //Mapping into object
-        auction.setProductKey(productKey);
-        auction.setReservePrice(reservePrice);
-        auction.setDescription(description);
-        auction.setProductTagStr(productTagStr);
-        auction.setCategory(category);
-        return auction;
+        bid.setProductKey(productKey);
+        bid.setReservePrice(reservePrice);
+        bid.setDescription(description);
+        bid.setProductTagStr(productTagStr);
+        bid.setCategory(category);
+        return bid;
     }
 }

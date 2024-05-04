@@ -4,14 +4,13 @@ import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.data.repositories.*;
 import com.ec.recauctionec.data.response.OrderTypeQuery;
-import com.ec.recauctionec.services.BidJoinService;
 import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.OrderService;
 import com.ec.recauctionec.services.shipping.Shipping;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,34 +21,23 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private ModelMapper modelMapper;
-    private static final Logger log =
-            LoggerFactory.getLogger(OrderServiceImpl.class);
+
+    private final ModelMapper modelMapper;
+    private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
     //Percent for 1 transaction for E-Commerce Exchange
     private static final double FROM_SUPPLIER = 0.05;
-
     private static final double FROM_BUYER = 0.15;
     //Viettel POST
     private static final int DEFAULT_SHIPPING = 1;
     //status order
-
-    @Autowired
-    private CommissionRepo commissionRepo;
-
-    @Autowired
-    private OrderRepo orderRepo;
-    @Autowired
-    private DeliveryRepo deliveryRepo;
-    @Autowired
-    private WalletRepo walletRepo;
-    @Autowired
-    private WalletHistoryRepo historyRepo;
-    @Autowired
-    private BidJoinService joinService;
-    @Autowired
-    private EmailService emailService;
+    private final CommissionRepo commissionRepo;
+    private final OrderRepo orderRepo;
+    private final DeliveryRepo deliveryRepo;
+    private final WalletRepo walletRepo;
+    private final WalletTransactionRepo historyRepo;
+    private final EmailService emailService;
 
     @Override
     public Orders findById(int id) {
@@ -111,8 +99,8 @@ public class OrderServiceImpl implements OrderService {
         Orders order = modelMapper.map(dto, Orders.class);
         order.setDelivery(new Delivery(DEFAULT_SHIPPING));
         order.setStatus(Orders.NOT_CONFIRM);
-        order.setCreateDate(new Timestamp(new Date().getTime()));
-        order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+        order.setCreatedDate(new Timestamp(new Date().getTime()));
+        order.setUpdatedDate(new java.sql.Date(new Date().getTime()));
         orderRepo.save(order);
     }
 
@@ -134,14 +122,14 @@ public class OrderServiceImpl implements OrderService {
                 //Calculate commission of transaction
                 //Set more info of order
                 order.setStatus(Orders.CONFIRM);
-                order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+                order.setUpdatedDate(new java.sql.Date(new Date().getTime()));
                 orderRepo.save(order);
                 //Create log in wallet of user
-                WalletHistory log1 = new WalletHistory();
+                WalletTransaction log1 = new WalletTransaction();
                 log1.setType(false);
                 log1.setValue(order.getTotalPrice());
                 log1.setWallet(user_wallet);
-                log1.setCreateDate(new Timestamp(new Date().getTime()));
+                log1.setCreatedDate(new Timestamp(new Date().getTime()));
                 log1.setPaymentId("CHARGE ORDER");
                 //Charge into wallet
                 user_wallet.setAccountBalance(
@@ -164,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
             Orders order = orderRepo.findByOrderId(orderId);
             Wallet user_wallet = order.getUser().getWallet();
             //Create a log of user wallet transactions
-            WalletHistory log1 = new WalletHistory();
+            WalletTransaction log1 = new WalletTransaction();
             if (order.getStatus() != Orders.CANCEL && order.getStatus() != Orders.COMPLETE) {
                 //If the order was canceled by the supplier when the order has been confirmed and shipped,
                 //then the money will be rolled back to the user's wallet
@@ -174,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
                     log1.setValue(order.getTotalPrice());
                     log1.setWallet(user_wallet);
                     log1.setPaymentId("RB_ORDER");
-                    log1.setCreateDate(new Timestamp(new Date().getTime()));
+                    log1.setCreatedDate(new Timestamp(new Date().getTime()));
                     //Charge into wallet
                     user_wallet.setAccountBalance(
                             user_wallet.getAccountBalance() + order.getTotalPrice() * 0.1);
@@ -184,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
                         user_wallet.getAccountBalance() >= order.getTotalPrice() * 0.3) {
                     log1.setType(false);
                     log1.setValue(order.getTotalPrice());
-                    log1.setCreateDate(new Timestamp(new Date().getTime()));
+                    log1.setCreatedDate(new Timestamp(new Date().getTime()));
                     log1.setWallet(user_wallet);
                     log1.setPaymentId("CHARGE_CO");
                     //Charge money
@@ -193,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
                     );
                 }
             }
-            order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+            order.setUpdatedDate(new java.sql.Date(new Date().getTime()));
             order.setStatus(Orders.CANCEL);
             orderRepo.save(order);
             historyRepo.save(log1);
@@ -215,7 +203,7 @@ public class OrderServiceImpl implements OrderService {
                 .getWallet();
         if (order.getStatus() == Orders.DELIVERY) {
             order.setStatus(Orders.COMPLETE);
-            order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+            order.setUpdatedDate(new java.sql.Date(new Date().getTime()));
             //Create commission
             Commission commission = new Commission();
             double realValue = dto.getTotalPrice() - dto.getShippingPrice();
@@ -224,12 +212,12 @@ public class OrderServiceImpl implements OrderService {
             commission.setAmountFromBuyer(profit);
             commission.setOrder(order);
             //Create log in wallet of user by status
-            WalletHistory log1 = new WalletHistory();
+            WalletTransaction log1 = new WalletTransaction();
             log1.setType(true);
             log1.setValue(dto.getTotalPrice() - commission.getAmountFromSupplier());
             log1.setWallet(user_wallet);
             log1.setPaymentId("ROLL_BACK_ORDER");
-            log1.setCreateDate(new Timestamp(new Date().getTime()));
+            log1.setCreatedDate(new Timestamp(new Date().getTime()));
             //transfer money into wallet
             user_wallet.setAccountBalance(
                     user_wallet.getAccountBalance() + log1.getValue());
@@ -248,7 +236,7 @@ public class OrderServiceImpl implements OrderService {
     public boolean deliveryOrder(OrderDTO dto) {
         Orders order = dto.mapping();
         order.setStatus(Orders.DELIVERY);
-        order.setUpdateDate(new java.sql.Date(new Date().getTime()));
+        order.setUpdatedDate(new java.sql.Date(new Date().getTime()));
         orderRepo.save(order);
         return true;
     }

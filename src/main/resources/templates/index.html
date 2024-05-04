@@ -94,7 +94,7 @@
                                     <h5 th:text="${#numbers.formatDecimal(a.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></h5>
                                 </td>
                                 <td>
-                                    <h5 th:text="${#dates.format(a.endDate, 'dd-MM-yyyy HH:mm')}"></h5>
+                                    <h5 th:text="${#dates.format(a.endedDate, 'dd-MM-yyyy HH:mm')}"></h5>
                                 </td>
                                 <td>
                                     <a th:href="@{/chi-tiet-dau-gia/{id}(id=${a.getBidId})}">Xem</a>
@@ -165,7 +165,7 @@
     <!--================ End footer Area  =================-->
 </footer>
 <th:block th:replace="fragments :: js_block"></th:block>
-<script src="/js/app.js"></script>
+<script src="/js/home_script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
 </body>
 </html>

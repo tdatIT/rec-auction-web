@@ -2,6 +2,7 @@ package com.ec.recauctionec.controller.admin;
 
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin/nguoi-dung")
 public class AUserController {
-    @Autowired
-    UserService userService;
+    final UserService userService;
 
     @GetMapping(value = {""})
     public String getUserList(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, ModelMap modelMap) {

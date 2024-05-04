@@ -4,7 +4,7 @@ import com.ec.recauctionec.data.dto.AuctionSessionDTO;
 import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.data.variable.Router;
 import com.ec.recauctionec.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,20 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/dau-gia")
 public class BidController {
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ProductTagService productTagService;
-    @Autowired
-    private BidService bidService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private BidJoinService joinService;
-    @Autowired
-    private ProductService productService;
+    
+    private final CategoryService categoryService;
+    private final ProductTagService productTagService;
+    private final BidService bidService;
+    private final UserService userService;
+    private final BidParticipantService joinService;
+    private final ProductService productService;
     private Authentication auth;
 
 
@@ -67,13 +63,13 @@ public class BidController {
         Product product = productService.findById(productId);
         if (product.getSupplier()
                 .getUser().getUserId() != auction.getUser().getUserId()) {
-            BidJoin bidJoin = new BidJoin();
-            bidJoin.setPrice(price);
-            bidJoin.setProduct(product);
-            bidJoin.setBid(auction);
-            bidJoin.setTime(new Timestamp(new java.util.Date().getTime()));
-            bidJoin.setStatus(BidJoin.ACTIVE);
-            joinService.joinAuction(bidJoin);
+            BidParticipant bidParticipant = new BidParticipant();
+            bidParticipant.setPrice(price);
+            bidParticipant.setProduct(product);
+            bidParticipant.setBid(auction);
+            bidParticipant.setTime(new Timestamp(new java.util.Date().getTime()));
+            bidParticipant.setStatus(BidParticipant.ACTIVE);
+            joinService.joinAuction(bidParticipant);
         }
         return "redirect:/chi-tiet-dau-gia/" + auctionId;
     }
@@ -98,8 +94,8 @@ public class BidController {
         auth = SecurityContextHolder.getContext().getAuthentication();
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         Bid auction = bidService.findById(auctionId);
-        List<BidJoin> joins = new ArrayList<>(auction.getBidId());
-        for (BidJoin j : joins) {
+        List<BidParticipant> joins = new ArrayList<>(auction.getBidId());
+        for (BidParticipant j : joins) {
             if (j.getProduct()
                     .getSupplier()
                     .getUser().getUserId() == us.getUserId()) {

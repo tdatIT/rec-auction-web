@@ -48,10 +48,11 @@ public class Product {
     @Column(name = "product_tag")
     private String productTag;
 
-    @Column
-    private Date updateDate;
+    @Column(name = "updated_date")
+    private Date updatedDate;
+
     @OneToMany(mappedBy = "product")
-    private Collection<BidJoin> bidJoins;
+    private Collection<BidParticipant> bidParticipants;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

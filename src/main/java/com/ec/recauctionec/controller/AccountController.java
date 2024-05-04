@@ -2,11 +2,11 @@ package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.data.repositories.UserAddressRepo;
-import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
+import com.ec.recauctionec.data.repositories.WalletTransactionRepo;
 import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.SupplierService;
 import com.ec.recauctionec.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,18 +19,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/tai-khoan")
+@RequiredArgsConstructor
 public class AccountController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserAddressRepo addressRepo;
-    @Autowired
-    private WalletRepo walletRepo;
-    @Autowired
-    private WalletHistoryRepo historyRepo;
-    @Autowired
-    private SupplierService supplierService;
-
+    final UserService userService;
+    final UserAddressRepo addressRepo;
+    private final WalletRepo walletRepo;
+    private final WalletTransactionRepo historyRepo;
+    private final SupplierService supplierService;
     private Authentication auth;
 
     @RequestMapping(value = {"/thong-tin", ""}, method = RequestMethod.GET)
@@ -72,9 +67,9 @@ public class AccountController {
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         //get wallet from user
         Wallet wallet = walletRepo.findByUserId(us.getUserId()).get(0);
-        WalletHistory recent = historyRepo.findTop1ByWalletOrderByCreateDateDesc(wallet);
+        WalletTransaction recent = historyRepo.findTop1ByWalletOrderByCreatedDateDesc(wallet);
         //if date query is null get 5 transaction recent
-        List<WalletHistory> logs = date == null ?
+        List<WalletTransaction> logs = date == null ?
                 historyRepo.find5RecentLogByWallet(wallet.getWalletId())
                 : historyRepo.findLogByDate(date, wallet.getWalletId());
         modelMap.addAttribute("logs", logs);

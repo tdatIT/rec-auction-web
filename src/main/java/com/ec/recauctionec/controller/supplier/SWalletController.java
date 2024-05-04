@@ -2,9 +2,9 @@ package com.ec.recauctionec.controller.supplier;
 
 import com.ec.recauctionec.data.entities.CustomUserDetails;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.data.entities.WalletHistory;
-import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ec.recauctionec.data.entities.WalletTransaction;
+import com.ec.recauctionec.data.repositories.WalletTransactionRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,10 @@ import java.sql.Date;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/supplier/quan-ly-vi")
 public class SWalletController {
-    @Autowired
-    private WalletHistoryRepo walletRepo;
+    private final WalletTransactionRepo walletRepo;
     private Authentication auth;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -31,7 +31,7 @@ public class SWalletController {
             dateFilter = new Date(new java.util.Date().getTime());
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
 
-        List<WalletHistory> logs = walletRepo
+        List<WalletTransaction> logs = walletRepo
                 .findLogFromFilterDateToCurrent(dateFilter, us.getWallet().getWalletId());
         modelMap.addAttribute("logs", logs);
         modelMap.addAttribute("wallet", us.getWallet());

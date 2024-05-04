@@ -20,7 +20,7 @@
                 <div class="section-header">
                     <h1>Mã Ví:
                         <span class="text-uppercase"
-                              th:text="${wallet.wallet_number.substring(0,6)+'-XXX-'+wallet.wallet_number.substring(7,11)}">
+                              th:text="${wallet.getWalletNumber.substring(0,6)+'-XXX-'+wallet.getWalletNumber.substring(7,11)}">
                         </span>
                     </h1>
                     <div class="section-header-button">
@@ -114,10 +114,10 @@
                                             </tr>
                                             <th:block th:each="l:${logs}">
                                                 <tr>
-                                                    <td th:text="${l.noHistory}"></td>
+                                                    <td th:text="${l.getTransId}"></td>
                                                     <td th:text="${#numbers.formatDecimal(l.value, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
                                                     <td class="text-uppercase" th:text="${l.paymentId}"></td>
-                                                    <td th:text="${#dates.format(l.createDate, 'dd-MM-yyyy')}"></td>
+                                                    <td th:text="${#dates.format(l.createdDate, 'dd-MM-yyyy')}"></td>
                                                     <td>
                                                         <div th:if="${l.type == true}" class="badge badge-primary">Nạp
                                                             tiền

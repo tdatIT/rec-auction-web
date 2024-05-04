@@ -5,6 +5,7 @@ import com.ec.recauctionec.data.entities.CustomUserDetails;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/supplier/don-hang")
 public class SOrderController {
-    @Autowired
-    private OrderService orderService;
+
+    private final OrderService orderService;
     private Authentication auth;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -75,7 +77,7 @@ public class SOrderController {
         if (orders != null &&
                 orders.getProduct().getSupplier().getSupplierId() == user.getSuppliers().getSupplierId()) {
             orders.setStatus(dto.getStatus());
-            orders.setUpdateDate(new Date(new java.util.Date().getTime()));
+            orders.setUpdatedDate(new Date(new java.util.Date().getTime()));
             orderService.updateOrder(orders);
             return "redirect:/supplier/don-hang";
         }

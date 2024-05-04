@@ -2,13 +2,14 @@ package com.ec.recauctionec.scheduling;
 
 import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.Bid;
-import com.ec.recauctionec.data.entities.BidJoin;
+import com.ec.recauctionec.data.entities.BidParticipant;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.services.BidJoinService;
+import com.ec.recauctionec.services.BidParticipantService;
 import com.ec.recauctionec.services.BidService;
 import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CheckAuctionScheduledEnd {
     private static final Logger log =
             LoggerFactory.getLogger(CheckAuctionScheduledEnd.class);
@@ -31,14 +33,10 @@ public class CheckAuctionScheduledEnd {
     private static final int MILLISECOND = 60000;
     private static Calendar calendar;
 
-    @Autowired
-    private BidService bidService;
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private BidJoinService joinService;
+    private final BidService bidService;
+    private final EmailService emailService;
+    private final OrderService orderService;
+    private final BidParticipantService joinService;
 
     @Transactional
     @Scheduled(fixedRate = MIN_SCHEDULED * MILLISECOND)
@@ -48,9 +46,9 @@ public class CheckAuctionScheduledEnd {
         List<Bid> bids = bidService
                 .findAllByDate(new Date(new java.util.Date().getTime()));
         for (Bid bid : bids) {
-            if (bid.getEndDate().getTime() <= calendar.getTimeInMillis()) {
+            if (bid.getEndedDate().getTime() <= calendar.getTimeInMillis()) {
                 bidService.setWinAuctionSession(bid.getBidId());
-                BidJoin win = joinService.findBestPriceAuctionJoinByAuction(bid);
+                BidParticipant win = joinService.findBestPriceAuctionJoinByAuction(bid);
                 if (win != null) {
                     OrderDTO dto = new OrderDTO();
                     User us = bid.getUser();
@@ -60,11 +58,11 @@ public class CheckAuctionScheduledEnd {
                     dto.setTotalPrice(win.getPrice());
                     dto.setStatus(Orders.NOT_CONFIRM);
 
-                    dto.setCreateDate(new Timestamp(new java.util.Date().getTime()));
+                    dto.setCreatedDate(new Timestamp(new java.util.Date().getTime()));
                     orderService.createOrderNotConfirm(dto);
                     log.info("Create order of Auction ID:  " + bid.getBidId());
                 }
-            } else if (bid.getEndDate().getTime() <= calendar.getTimeInMillis() + (MIN_NOTIFY * MILLISECOND)) {
+            } else if (bid.getEndedDate().getTime() <= calendar.getTimeInMillis() + (MIN_NOTIFY * MILLISECOND)) {
                 User us = bid.getUser();
                 emailService.sendNotifyEmail(us.getEmail(), bid);
                 log.info("Send mail notify will end auction to: " + us.getEmail());

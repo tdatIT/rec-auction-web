@@ -6,13 +6,13 @@ public class SupplierLevelUtils {
 
     public static boolean checkingAvailableProduct(Supplier supplier) {
         int noProduct = supplier.getProducts().size();
-        switch (supplier.getLevelSupp()) {
+        switch (supplier.getLevelSupplier()) {
             case Supplier.LEVEL_BASIC:
-                return (noProduct < Supplier.NUM_OF_PRODUCTS_FOR_BASIC ? true : false);
+                return (noProduct < Supplier.NUM_OF_PRODUCTS_FOR_BASIC);
             case Supplier.LEVEL_PREMIUM:
-                return (noProduct < Supplier.NUM_OF_PRODUCTS_FOR_PREMIUM ? true : false);
+                return (noProduct < Supplier.NUM_OF_PRODUCTS_FOR_PREMIUM);
             case Supplier.LEVEL_MALL:
-                return (noProduct < Supplier.NUM_OF_PRODUCTS_FOR_MALL ? true : false);
+                return (noProduct < Supplier.NUM_OF_PRODUCTS_FOR_MALL);
         }
         return false;
 

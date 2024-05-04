@@ -7,10 +7,10 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "bid_img")
-public class AuctionImg {
+public class BidImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long imageId;
+    private long id;
 
     @Column(name = "image_file")
     private String imageFile;

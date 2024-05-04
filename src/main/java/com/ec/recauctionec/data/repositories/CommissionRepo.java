@@ -11,10 +11,10 @@ public interface CommissionRepo extends JpaRepository<Commission, Integer> {
 
     @Query("select sum(c.amountFromBuyer) as fromBuyer," +
             "sum(c.amountFromSupplier) as fromSupplier, " +
-            "date(o.createDate) as createDate " +
+            "date(o.createdDate) as createDate " +
             "from Commission c " +
             "inner join Orders o on c.orderId = o.orderId " +
-            "where month(o.createDate)=?1 and year (o.createDate)=?2 " +
-            "group by o.createDate")
+            "where month(o.createdDate)=?1 and year (o.createdDate)=?2 " +
+            "group by o.createdDate")
     List<CommissionType> getTotalCommissionInMonth(Integer month, Integer year);
 }

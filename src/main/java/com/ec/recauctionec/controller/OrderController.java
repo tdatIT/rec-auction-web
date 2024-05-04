@@ -6,6 +6,7 @@ import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.data.repositories.UserAddressRepo;
 import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -18,15 +19,12 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/don-hang")
 public class OrderController {
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private UserAddressRepo userAddressRepo;
-    @Autowired
-    private WalletRepo walletRepo;
+    private final OrderService orderService;
+    private final UserAddressRepo userAddressRepo;
+    private final WalletRepo walletRepo;
 
     @GetMapping("")
     public String getOrderList(@RequestParam(value = "filter", required = false)
@@ -60,6 +58,4 @@ public class OrderController {
         }
         return "checkout";
     }
-
-
 }

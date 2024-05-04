@@ -2,6 +2,7 @@ package com.ec.recauctionec.controller;
 
 import com.ec.recauctionec.data.entities.Product;
 import com.ec.recauctionec.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class SearchController {
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @GetMapping("/tim-kiem")
     public String getSearchPage(@RequestParam("keyword") String keyword, ModelMap modelMap) {

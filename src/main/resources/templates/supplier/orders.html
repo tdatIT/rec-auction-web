@@ -117,8 +117,8 @@
                                                     </td>
 
                                                     <td th:text="${#numbers.formatDecimal(o.totalPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
-                                                    <td th:text="${#dates.format(o.createDate, 'dd-MM-yyyy')}"></td>
-                                                    <td th:text="${#dates.format(o.updateDate, 'dd-MM-yyyy')}"></td>
+                                                    <td th:text="${#dates.format(o.getCreatedDate, 'dd-MM-yyyy')}"></td>
+                                                    <td th:text="${#dates.format(o.updatedDate, 'dd-MM-yyyy')}"></td>
                                                     <td>
                                                         <div th:if="${o.status == 2}" class="badge badge-warning">
                                                             Chờ xử lý

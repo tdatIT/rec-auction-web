@@ -137,7 +137,7 @@
                                                     <td class="text-uppercase"
                                                         th:text="${j.getBidId}"></td>
                                                     <td th:text="${#numbers.formatDecimal(j.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
-                                                    <td th:text="${#dates.format(j.createDate, 'dd-MM-yyyy HH:mm')}"></td>
+                                                    <td th:text="${#dates.format(j.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
                                                     <td>
                                                         <div th:if="${j.complete == true}" class="badge badge-primary">
                                                             Kết thúc

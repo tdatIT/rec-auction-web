@@ -145,7 +145,7 @@
                                         <h5 th:text="${#numbers.formatDecimal(a.reservePrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></h5>
                                     </td>
                                     <td>
-                                        <h5 th:text="${#dates.format(a.endDate, 'dd-MM-yyyy HH:mm')}"></h5>
+                                        <h5 th:text="${#dates.format(a.endedDate, 'dd-MM-yyyy HH:mm')}"></h5>
                                     </td>
                                     <td>
                                         <a th:href="@{/chi-tiet-dau-gia/{id}(id=${a.getBidId})}">Xem</a>

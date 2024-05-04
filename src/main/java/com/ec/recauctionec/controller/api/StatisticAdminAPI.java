@@ -1,14 +1,14 @@
 package com.ec.recauctionec.controller.api;
 
 import com.ec.recauctionec.data.repositories.CommissionRepo;
-import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
+import com.ec.recauctionec.data.repositories.WalletTransactionRepo;
 import com.ec.recauctionec.data.response.BestSellerQuery;
 import com.ec.recauctionec.data.response.CommissionType;
 import com.ec.recauctionec.data.response.OrderTypeQuery;
 import com.ec.recauctionec.data.response.WalletObjQuery;
 import com.ec.recauctionec.services.OrderService;
 import com.ec.recauctionec.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +20,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/admin")
 public class StatisticAdminAPI {
-    @Autowired
-    private WalletHistoryRepo walletHistoryRepo;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private CommissionRepo commissionRepo;
-    @Autowired
-    private ProductService productService;
+
+    private final WalletTransactionRepo walletTransactionRepo;
+    private final OrderService orderService;
+    private final CommissionRepo commissionRepo;
+    private final ProductService productService;
 
     @RequestMapping(value = "/totalTransactionInMonth/{month}/{year}", method = RequestMethod.GET)
     public ResponseEntity getTotalTransactionInMonth(@PathVariable(required = false) Integer month, @PathVariable(required = false) Integer year) {
@@ -38,7 +36,7 @@ public class StatisticAdminAPI {
             year = current.getYear();
             month = current.getMonthValue();
         }
-        List<WalletObjQuery> data = walletHistoryRepo.statisticAllTransactionInMonth(month, year);
+        List<WalletObjQuery> data = walletTransactionRepo.statisticAllTransactionInMonth(month, year);
         if (data == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Data is empty");
         }

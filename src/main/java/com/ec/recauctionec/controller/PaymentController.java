@@ -1,13 +1,11 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.configs.UrlUtils;
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.data.entities.Wallet;
-import com.ec.recauctionec.data.entities.WalletHistory;
+import com.ec.recauctionec.data.entities.WalletTransaction;
 import com.ec.recauctionec.configs.paypal.PaypalPaymentIntent;
 import com.ec.recauctionec.configs.paypal.PaypalPaymentMethod;
-import com.ec.recauctionec.data.repositories.WalletHistoryRepo;
-import com.ec.recauctionec.data.repositories.WalletRepo;
+import com.ec.recauctionec.data.repositories.WalletTransactionRepo;
 import com.ec.recauctionec.services.PaypalService;
 import com.ec.recauctionec.services.UserService;
 import com.paypal.api.payments.Links;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -40,7 +37,7 @@ public class PaymentController {
     @Autowired
     private UserService userService;
     @Autowired
-    private WalletHistoryRepo walletHistoryRepo;
+    private WalletTransactionRepo walletTransactionRepo;
 
     @Value("${server.host}")
     public String CONTEXT_PATH;
@@ -102,14 +99,14 @@ public class PaymentController {
                             .getAmount()
                             .getTotal());
             if (payment.getState().equals("approved")) {
-                WalletHistory history = new WalletHistory();
+                WalletTransaction history = new WalletTransaction();
                 history.setWallet(wallet);
                 history.setPaymentId(paymentId);
-                history.setCreateDate(new Timestamp(new Date().getTime()));
+                history.setCreatedDate(new Timestamp(new Date().getTime()));
                 history.setValue(total * Wallet.USD_TO_VND);
                 //Nap tien
                 history.setType(true);
-                walletHistoryRepo.save(history);
+                walletTransactionRepo.save(history);
                 double oldBalance = wallet.getAccountBalance();
                 wallet.setAccountBalance(oldBalance + history.getValue());
                 //

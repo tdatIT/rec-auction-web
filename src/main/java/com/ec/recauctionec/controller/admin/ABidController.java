@@ -2,6 +2,7 @@ package com.ec.recauctionec.controller.admin;
 
 import com.ec.recauctionec.data.entities.Bid;
 import com.ec.recauctionec.services.BidService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,10 +14,11 @@ import java.sql.Date;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin/dau-gia")
 public class ABidController {
-    @Autowired
-    private BidService bidService;
+
+    private final BidService bidService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getAuctionList(@RequestParam(required = false) Integer page,

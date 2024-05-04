@@ -605,7 +605,7 @@ public class EmailFactory {
                 "<td class=\"pad\" style=\"padding-bottom:5px;padding-left:10px;padding-right:10px;padding-top:10px;\">\n" +
                 "<div style=\"font-family: sans-serif\">\n" +
                 "<div class=\"\" style=\"font-size: 12px; font-family: Arial, Helvetica, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #555555; line-height: 1.2;\">\n" +
-                "<p style=\"margin: 0; font-size: 12px; mso-line-height-alt: 14.399999999999999px;\"><span style=\"font-size:16px;\"><strong>THÔNG TIN ĐƠN HÀNG [MÃ ĐƠN HÀNG]</strong></span><strong> </strong><span style=\"font-size:14px;color:#969696;\">" + order.getCreateDate() + "</span></p>\n" +
+                "<p style=\"margin: 0; font-size: 12px; mso-line-height-alt: 14.399999999999999px;\"><span style=\"font-size:16px;\"><strong>THÔNG TIN ĐƠN HÀNG [MÃ ĐƠN HÀNG]</strong></span><strong> </strong><span style=\"font-size:14px;color:#969696;\">" + order.getCreatedDate() + "</span></p>\n" +
                 "</div>\n" +
                 "</div>\n" +
                 "</td>\n" +

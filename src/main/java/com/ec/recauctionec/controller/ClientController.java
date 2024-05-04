@@ -1,17 +1,18 @@
 package com.ec.recauctionec.controller;
 
-import com.ec.recauctionec.configs.paypal.CheckUser;
 import com.ec.recauctionec.data.dto.UserDTO;
 import com.ec.recauctionec.data.entities.*;
 import com.ec.recauctionec.data.variable.Router;
 import com.ec.recauctionec.event.OnRegistrationCompleteEvent;
+import com.ec.recauctionec.scheduling.CheckAuctionScheduledEnd;
 import com.ec.recauctionec.services.BidService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.UserService;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,19 +24,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
 public class ClientController {
-    @Autowired
-    private UserService userService;
+    Logger log = LoggerFactory.getLogger(ClientController.class);
 
-    @Autowired
-    ProductService productService;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private BidService bidService;
-
+    private final UserService userService;
+    final ProductService productService;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final BidService bidService;
     private Authentication auth;
-
 
     @RequestMapping(value = {"", Router.HOME_PAGE}, method = RequestMethod.GET)
     public String getHomePage(ModelMap modelMap) {
@@ -68,6 +65,7 @@ public class ClientController {
             applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(notActiveAcc,
                     req.getLocale(), appUrl));
         } catch (RuntimeException ex) {
+            log.error(ex.getMessage());
             return "redirect:" + Router.REGISTER_PAGE + "?error=true";
         }
         return "redirect:" + Router.MESSAGE + "?type=" + MessageController.VERIFY_TOKEN;
@@ -99,7 +97,7 @@ public class ClientController {
                 userService.requestResetPassword(us);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return "redirect:" + Router.MESSAGE + "?type=" + MessageController.VERIFY_TOKEN;
     }
@@ -131,13 +129,13 @@ public class ClientController {
         auth = SecurityContextHolder.getContext().getAuthentication();
         Bid auction = bidService.findById(auctionId);
         if (auction != null) {
-            List<BidJoin> joins = new ArrayList<>(auction.getBidJoins());
+            List<BidParticipant> joins = new ArrayList<>(auction.getBidderData());
             List<Bid> top10Auction = bidService.findTop10AuctionForDay();
             List<Product> products = new ArrayList<>();
             modelMap.addAttribute("top10Auction", top10Auction);
-            Collections.sort(joins, new Comparator<BidJoin>() {
+            Collections.sort(joins, new Comparator<BidParticipant>() {
                 @Override
-                public int compare(BidJoin o1, BidJoin o2) {
+                public int compare(BidParticipant o1, BidParticipant o2) {
                     return Double.compare(o1.getPrice(), o2.getPrice());
                 }
             });
@@ -154,7 +152,7 @@ public class ClientController {
                     modelMap.addAttribute("joined", 0);
                 } else {
                     //Did user join auction last time?
-                    BidJoin last_bid = joins.stream()
+                    BidParticipant last_bid = joins.stream()
                             .filter(bid -> bid.getProduct()
                                     .getSupplier()
                                     .getUser().getUserId() == us.getUserId())

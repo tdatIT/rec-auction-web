@@ -4,6 +4,7 @@ import com.ec.recauctionec.data.entities.Bid;
 import com.ec.recauctionec.data.entities.Product;
 import com.ec.recauctionec.services.BidService;
 import com.ec.recauctionec.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/chi-tiet-san-pham")
 public class ProductController {
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private BidService bidService;
+
+    private final ProductService productService;
+    private final BidService bidService;
 
     @RequestMapping("/{productCode}")
     public String viewProductSupplier(@PathVariable String productCode, ModelMap modelMap) {

@@ -19,11 +19,11 @@ public class Wallet {
     @Column(name = "wallet_id", nullable = false)
     private int walletId;
     @Column(length = 12)
-    private String wallet_number;
+    private String walletNumber;
     @Column(name = "account_balance", nullable = false, precision = 0)
     private double accountBalance = 0D;
 
-    @Column(name = "isActive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
     @OneToOne
@@ -31,13 +31,12 @@ public class Wallet {
     private User user;
 
     @OneToMany(mappedBy = "wallet")
-    private Collection<WalletHistory> walletHistories;
+    private Collection<WalletTransaction> walletTransactions;
 
     public static String generatorWalletNumber() {
         String uuid = UUID.randomUUID().toString();
-        String code = String.valueOf(new Random().nextInt(999999) + 100000);
+        String code = String.valueOf(new Random().nextInt(99999) + 10000);
         return uuid.substring(0, 6) + code;
     }
-
 
 }

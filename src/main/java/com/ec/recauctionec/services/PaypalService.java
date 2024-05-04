@@ -5,6 +5,7 @@ import com.ec.recauctionec.configs.paypal.PaypalPaymentMethod;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PaypalService {
-    @Autowired
-    private APIContext apiContext;
+    private final APIContext apiContext;
 
     public Payment createPayment(Double total, String currency,
                                  PaypalPaymentMethod method,

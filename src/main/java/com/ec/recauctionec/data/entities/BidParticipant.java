@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 @Data
 @EqualsAndHashCode
 
-@Table(name = "bid_joins")
-public class BidJoin {
+@Table(name = "bid_participants")
+public class BidParticipant {
 
     public static final int NOT_CONFIRM = 1;
     public static final int ACTIVE = 2;
@@ -24,7 +24,7 @@ public class BidJoin {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "price", nullable = false, precision = 0)
+    @Column(name = "price", nullable = false)
     private double price;
 
     @Column(name = "status", nullable = false)

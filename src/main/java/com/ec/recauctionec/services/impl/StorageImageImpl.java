@@ -3,6 +3,7 @@ package com.ec.recauctionec.services.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.ec.recauctionec.services.StorageImage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,9 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class StorageImageImpl implements StorageImage {
-    @Autowired
-    Cloudinary cloudinary;
+
+    private final Cloudinary cloudinary;
 
     @Override
     public List<String> storageMultiImage(MultipartFile[] files) {
@@ -34,23 +36,6 @@ public class StorageImageImpl implements StorageImage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        /*Path uploadPath = Paths.get("/uploads");
-        //upload file
-        String filename = multipartFile.getOriginalFilename();
-
-        try {
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            InputStream inputStream = multipartFile.getInputStream();
-            Path filePath = uploadPath.resolve(filename);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            //update user avatar
-            return filename;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         return "";
     }
 

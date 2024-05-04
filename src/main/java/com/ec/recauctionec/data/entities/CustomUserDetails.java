@@ -11,7 +11,6 @@ import java.util.Collections;
 
 @Data
 public class CustomUserDetails implements UserDetails {
-    @Autowired
     User user;
 
     public CustomUserDetails(User user) {

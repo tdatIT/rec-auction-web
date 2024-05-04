@@ -5,8 +5,8 @@ import com.ec.recauctionec.data.email.EmailFactory;
 import com.ec.recauctionec.data.entities.Bid;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.data.variable.PathVariable;
 import com.ec.recauctionec.services.EmailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +19,10 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
-    @Autowired
-    private JavaMailSender javaMailSender;
+
+    private final JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")
     private String sender;

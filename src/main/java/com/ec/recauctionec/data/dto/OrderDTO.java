@@ -16,9 +16,9 @@ public class OrderDTO {
 
     private int orderId;
     @NotNull
-    private Timestamp createDate;
+    private Timestamp createdDate;
 
-    private Date updateDate;
+    private Date updatedDate;
 
     private int deliveryId;
 
@@ -28,7 +28,7 @@ public class OrderDTO {
     @NotNull
     private double totalPrice;
 
-    private BidJoin winAuction;
+    private BidParticipant winAuction;
 
     private Delivery deliveryByDeliveryId;
 

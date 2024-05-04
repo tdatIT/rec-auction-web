@@ -8,6 +8,7 @@ import com.ec.recauctionec.data.repositories.SupplierRepo;
 import com.ec.recauctionec.data.repositories.UserRepo;
 import com.ec.recauctionec.services.SupplierService;
 import com.ec.recauctionec.data.variable.RoleConst;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SupplierServiceImpl implements SupplierService {
-    @Autowired
-    SupplierRepo supplierRepo;
-    @Autowired
-    UserRepo userRepo;
+
+    private final SupplierRepo supplierRepo;
+    private final UserRepo userRepo;
 
     @Override
     public Supplier findByOwnerId(int ownerId) {
@@ -34,8 +35,8 @@ public class SupplierServiceImpl implements SupplierService {
         if (user != null && (user.getRole().getRoleId() == RoleConst.USER)) {
             Supplier supplier = new Supplier();
             supplier.setActive(true);
-            supplier.setCreateDate(new Date(new java.util.Date().getTime()));
-            supplier.setLevelSupp(Supplier.LEVEL_BASIC);
+            supplier.setCreatedDate(new Date(new java.util.Date().getTime()));
+            supplier.setLevelSupplier(Supplier.LEVEL_BASIC);
             supplier.setRating(0);
             List<AddressData> dataList = new ArrayList<>();
             address.setSupplier(supplier);

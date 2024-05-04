@@ -3,6 +3,7 @@ package com.ec.recauctionec.controller.admin;
 import com.ec.recauctionec.data.dto.OrderDTO;
 import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +14,12 @@ import java.sql.Date;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin/don-hang")
 public class AOrderController {
-    @Autowired
-    OrderService orderService;
-    @Autowired
-    ModelMapper modelMapper;
+
+    private final OrderService orderService;
+    private final ModelMapper modelMapper;
 
     @GetMapping(value = {""})
     public String getOrderList(@RequestParam(required = false) Integer page,

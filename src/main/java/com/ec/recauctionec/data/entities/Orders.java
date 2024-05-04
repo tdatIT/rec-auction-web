@@ -23,11 +23,11 @@ public class Orders {
     @Column(name = "order_id", nullable = false)
     private int orderId;
 
-    @Column(name = "createDate", nullable = false)
-    private Timestamp createDate;
+    @Column(name = "created_date", nullable = false)
+    private Timestamp createdDate;
 
-    @Column(name = "updateDate", nullable = false)
-    private Date updateDate;
+    @Column(name = "updated_date", nullable = false)
+    private Date updatedDate;
 
     @Column(name = "shipping_price", nullable = false, precision = 0)
     private double shippingPrice;

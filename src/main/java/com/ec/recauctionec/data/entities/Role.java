@@ -21,7 +21,7 @@ public class Role {
     @Column(name = "description", nullable = true, length = 255)
     private String description;
 
-    @Column(name = "NAME", nullable = false, length = 20)
+    @Column(name = "name", nullable = false, length = 20)
     private String name;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)

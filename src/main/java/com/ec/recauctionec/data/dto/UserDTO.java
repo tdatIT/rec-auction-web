@@ -28,7 +28,7 @@ public class UserDTO {
     @Min(value = 8)
     private String password;
     private String username;
-    private Date createDate;
+    private Date createdDate;
 
     public User mappingClass() {
         User us = new User();

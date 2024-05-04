@@ -7,15 +7,15 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-@Table(name = "wallet_history")
-public class WalletHistory {
+@Table(name = "wallet_transaction")
+public class WalletTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "no_history", nullable = false)
-    private int noHistory;
+    @Column(name = "transaction_id", nullable = false)
+    private int transId;
     
-    @Column(name = "createDate", nullable = false)
-    private Timestamp createDate;
+    @Column(name = "created_date", nullable = false)
+    private Timestamp createdDate;
     
     @Column(name = "type", nullable = false)
     private boolean type;

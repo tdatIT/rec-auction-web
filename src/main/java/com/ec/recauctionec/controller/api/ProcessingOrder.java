@@ -7,6 +7,7 @@ import com.ec.recauctionec.data.entities.Orders;
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.data.repositories.UserAddressRepo;
 import com.ec.recauctionec.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class ProcessingOrder {
 
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private UserAddressRepo userAddressRepo;
+    private final OrderService orderService;
+    private final UserAddressRepo userAddressRepo;
 
     Authentication auth;
 

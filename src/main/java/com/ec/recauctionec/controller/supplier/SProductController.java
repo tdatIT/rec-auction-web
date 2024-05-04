@@ -7,6 +7,7 @@ import com.ec.recauctionec.services.CategoryService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.StorageImage;
 import com.ec.recauctionec.services.SupplierService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,25 +25,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/supplier/san-pham")
 public class SProductController {
-    @Autowired
-    ProductService productService;
-
-    @Autowired
-    CategoryService categoryService;
-
-    @Autowired
-    SupplierService supplierService;
-
-    @Autowired
-    StorageImage storageImage;
-
-    @Autowired
-    ModelMapper modelMapper;
-
+   
+    final ProductService productService;
+    final CategoryService categoryService;
+    final StorageImage storageImage;
+    final ModelMapper modelMapper;
     private Authentication auth;
-
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getProductList(ModelMap modelMap, HttpServletRequest request) {
@@ -54,7 +45,7 @@ public class SProductController {
         List<Product> products = productService.findBySupplierId(sup.getSupplierId());
         modelMap.addAttribute("products", products);
         //get number of products available
-        int max_product = SupplierLevelUtils.getNumberProductAvailable(sup.getLevelSupp());
+        int max_product = SupplierLevelUtils.getNumberProductAvailable(sup.getLevelSupplier());
         boolean available_product = SupplierLevelUtils.checkingAvailableProduct(sup);
         modelMap.addAttribute("enable_add", available_product);
         modelMap.addAttribute("total_products", max_product);
@@ -119,7 +110,7 @@ public class SProductController {
     public String updateProduct(@ModelAttribute ProductDTO productDTO) {
         Product p = productService.findByProductCode(productDTO.getProductCode());
         BeanUtils.copyProperties(productDTO, p);
-        p.setUpdateDate(new Date());
+        p.setUpdatedDate(new Date());
         if (productDTO.getImages_file() != null) {
             List<String> filenames = storageImage.storageMultiImage(productDTO.getImages_file());
             p.setImages(filenames.stream().map(

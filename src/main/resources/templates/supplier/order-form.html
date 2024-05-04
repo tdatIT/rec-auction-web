@@ -80,18 +80,18 @@
                                             <label class="col-form-label text-md-right col-3 col-md-3 col-lg-3">Ngày
                                                 tạo</label>
                                             <div class="col-sm-3 col-md-3">
-                                                <input th:field="*{createDate}"
+                                                <input th:field="*{getCreatedDate}"
                                                        class="form-control"
-                                                       th:value="*{#dates.format(createDate,'dd-MM-yy')}"
+                                                       th:value="*{#dates.format(getCreatedDate,'dd-MM-yy')}"
                                                        data-toggle="tooltip" data-placement="bottom"
                                                        title="Ngày tạo đơn hàng" readonly>
                                             </div>
 
                                             <label class="col-form-label col-1 col-md-1 col-lg-1">Cập nhật</label>
                                             <div class="col-sm-3 col-md-3 justify-content-start">
-                                                <input th:field="*{updateDate}"
+                                                <input th:field="*{updatedDate}"
                                                        class="form-control"
-                                                       th:value="*{#dates.format(updateDate,'dd-MM-yy')}"
+                                                       th:value="*{#dates.format(updatedDate,'dd-MM-yy')}"
                                                        data-toggle="tooltip" data-placement="bottom"
                                                        title="Ngày đơn hàng được xử lý" readonly>
                                             </div>
@@ -145,7 +145,7 @@
                                                             th:text="${order.product.productCode}"></td>
 
                                                         <td th:text="${#numbers.formatDecimal(order.product.defaultPrice, 0, 'POINT', 0, 'COMMA')+'₫'}"></td>
-                                                        <td th:text="${#dates.format(order.product.updateDate, 'dd-MM-yyyy')}"></td>
+                                                        <td th:text="${#dates.format(order.product.updatedDate, 'dd-MM-yyyy')}"></td>
                                                         <td>
                                                             <div th:if="${order.product.status == 1}"
                                                                  class="badge badge-primary">Hoạt

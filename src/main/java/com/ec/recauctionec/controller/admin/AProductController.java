@@ -4,6 +4,7 @@ import com.ec.recauctionec.data.entities.Product;
 import com.ec.recauctionec.services.CategoryService;
 import com.ec.recauctionec.services.ProductService;
 import com.ec.recauctionec.services.StorageImage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,12 @@ import java.sql.Date;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin/san-pham")
 public class AProductController {
-    @Autowired
-    ProductService productService;
-    @Autowired
-    CategoryService categoryService;
-    @Autowired
-    StorageImage storageImage;
+    final ProductService productService;
+    final CategoryService categoryService;
+    final StorageImage storageImage;
 
     @GetMapping(value = {""})
     public String getProductList(@RequestParam(required = false) Integer page,
@@ -48,7 +47,7 @@ public class AProductController {
     public ResponseEntity updateProduct(@RequestParam String code) {
         Product p = productService.findByProductCode(code);
         p.setStatus(Product.BAN);
-        p.setUpdateDate(new Date(new java.util.Date().getTime()));
+        p.setUpdatedDate(new Date(new java.util.Date().getTime()));
         productService.updateProduct(p);
         return ResponseEntity.status(HttpStatus.OK).body("Ban success");
     }

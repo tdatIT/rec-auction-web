@@ -4,6 +4,7 @@ import com.ec.recauctionec.data.entities.Product;
 import com.ec.recauctionec.data.repositories.ProductRepo;
 import com.ec.recauctionec.data.response.BestSellerQuery;
 import com.ec.recauctionec.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,12 @@ import java.util.Random;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    private ProductRepo productRepo;
 
-    private Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private final ProductRepo productRepo;
+
+    private final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Override
     public List<Product> findAllProduct(int page, int size) {
@@ -68,14 +70,14 @@ public class ProductServiceImpl implements ProductService {
         String uuid = UUID.randomUUID().toString();
         String productCode = uuid.substring(0, 4)
                 + (new Random().nextInt(9999) + 1000);
-        product.setUpdateDate(new Date());
+        product.setUpdatedDate(new Date());
         product.setProductCode(productCode);
         productRepo.save(product);
     }
 
     @Override
     public void updateStatusProduct(Product product, int status) {
-        product.setUpdateDate(new Date());
+        product.setUpdatedDate(new Date());
         product.setStatus(status);
         productRepo.save(product);
 
@@ -88,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Product product) {
-        product.setUpdateDate(new Date());
+        product.setUpdatedDate(new Date());
         product.setStatus(Product.DELETED_S);
         product.setDeleted(true);
         productRepo.save(product);

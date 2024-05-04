@@ -56,7 +56,7 @@
                                 <div class="col">
                                     <label>Ngày bắt đầu</label>
                                     <div class="form-group">
-                                        <input th:field="*{createDate}" id="date-input" onchange="showdate()"
+                                        <input th:field="*{createdDate}" id="date-input" onchange="showdate()"
                                                type="date" name="datetime"
                                                value="dd/mm/yyyy"
                                                class="datepicker" required
@@ -183,7 +183,7 @@
 <!-- include FilePond jQuery adapter -->
 <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/home_script.js}"></script>
 <script th:src="@{/js/create_auction_form.js}"></script>
 <script>
 

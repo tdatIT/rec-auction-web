@@ -9,7 +9,7 @@ import com.ec.recauctionec.data.repositories.UserRepo;
 import com.ec.recauctionec.data.repositories.VerificationTokenRepo;
 import com.ec.recauctionec.services.EmailService;
 import com.ec.recauctionec.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,16 +20,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    VerificationTokenRepo verificationTokenRepo;
-    @Autowired
-    UserRepo userRepo;
-    @Autowired
-    RoleRepo roleRepo;
-    @Autowired
-    EmailService emailService;
+    private final VerificationTokenRepo verificationTokenRepo;
+    private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
+    private final EmailService emailService;
 
     @Override
     public List<User> findAllUser(int page, int size) {
@@ -59,7 +56,7 @@ public class UserServiceImpl implements UserService {
         String encrypt_pass = encoder.encode(user.getPassword());
         user.setPassword(encrypt_pass);
         user.setRole(roleRepo.findByRoleId(Role.ROLE_USER));
-        user.setCreateDate(new Date(new java.util.Date().getTime()));
+        user.setCreatedDate(new Date(new java.util.Date().getTime()));
         user.setLevelUser(1);
         user.setAvatar("default");
         return userRepo.save(user);
@@ -114,11 +111,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateConfirmUser(User user) {
         //Create new wallet
         Wallet wallet = new Wallet();
         wallet.setUser(user);
-        wallet.setWallet_number(Wallet.generatorWalletNumber());
+        wallet.setWalletNumber(Wallet.generatorWalletNumber());
         user.setWallet(wallet);
         //update user info and delete token
         userRepo.save(user);

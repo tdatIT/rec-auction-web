@@ -1,11 +1,11 @@
 package com.ec.recauctionec.controller.supplier;
 
-import com.ec.recauctionec.data.entities.BidJoin;
+import com.ec.recauctionec.data.entities.BidParticipant;
 import com.ec.recauctionec.data.entities.CustomUserDetails;
 import com.ec.recauctionec.data.entities.User;
-import com.ec.recauctionec.services.BidJoinService;
+import com.ec.recauctionec.services.BidParticipantService;
 import com.ec.recauctionec.services.BidService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,13 +20,11 @@ import java.util.stream.Collectors;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/supplier/phien-dau-gia")
 public class SBidController {
     private Authentication auth;
-    @Autowired
-    private BidService bidService;
-    @Autowired
-    private BidJoinService joinService;
+    private final BidParticipantService joinService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String viewAllAuction(@RequestParam(value = "date-filter", required = false) Date date,
@@ -36,7 +34,7 @@ public class SBidController {
         User us = ((CustomUserDetails) auth.getPrincipal()).getUser();
         if (date == null)
             date = new Date(new java.util.Date().getTime());
-        List<BidJoin> joins = joinService
+        List<BidParticipant> joins = joinService
                 .findAllBySupplierAndDate(us.getSuppliers(), date);
         if (status != null) {
             if (status == true)

@@ -15,15 +15,4 @@ public class RecauctionEcApplication {
         SpringApplication.run(RecauctionEcApplication.class, args);
     }
 
-    @Bean
-    public Cloudinary cloudinary() {
-        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "dddb8btv0",
-                "api_key", "159138865977743",
-                "api_secret", "xz-CUQykgKnBja571VNtfhX2gsU",
-                "secure",true
-        ));
-        return cloudinary;
-    }
-
 }

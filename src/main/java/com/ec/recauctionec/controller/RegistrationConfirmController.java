@@ -3,6 +3,7 @@ package com.ec.recauctionec.controller;
 import com.ec.recauctionec.data.entities.User;
 import com.ec.recauctionec.services.UserService;
 import com.ec.recauctionec.data.entities.VerificationToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 @Controller
+@RequiredArgsConstructor
 public class RegistrationConfirmController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    private MessageSource messages;
+    final UserService userService;
+    final MessageSource messages;
 
     @GetMapping("/registration-confirm")
     public String confirmRegistration(WebRequest request, Model model,

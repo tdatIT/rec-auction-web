@@ -17,7 +17,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     @Query("select p from  Product p where p.productName like %:name%")
     List<Product> findAllByProductName(String name);
 
-    @Query("select p from Product p order by p.updateDate desc")
+    @Query("select p from Product p order by p.updatedDate desc")
     List<Product> findAllProductByPageAndSize(Pageable pageable);
 
     @Query("select count(p) from Product p")
@@ -51,7 +51,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
             "count(o) as total from Product p " +
             "inner join Orders o " +
             "on p.productId = o.product.productId " +
-            "where month (o.createDate)=?1 and year(o.createDate)=?2 " +
+            "where month (o.createdDate)=?1 and year(o.createdDate)=?2 " +
             "group by p.productId")
     List<BestSellerQuery> getBestSellerInMonth(Integer month, Integer year);
 }

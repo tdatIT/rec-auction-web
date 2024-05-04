@@ -43,7 +43,7 @@
                                                         <tr>
                                                             <td>Mã ví:</td>
                                                             <td class="text-uppercase"
-                                                                th:text="${wallet.wallet_number.substring(0,6)+'-XXX-'+wallet.wallet_number.substring(7,11)}"></td>
+                                                                th:text="${wallet.getWalletNumber.substring(0,6)+'-XXX-'+wallet.getWalletNumber.substring(7,11)}"></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Số dư:</td>
@@ -63,7 +63,7 @@
                                                         <tr>
                                                             <td>GD gần nhất:</td>
                                                             <td th:if="${recent != null}"
-                                                                th:text="${#dates.format(recent.createDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                                                                th:text="${#dates.format(recent.createdDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                                             <td th:if="${recent == null}">Không có</td>
                                                         </tr>
                                                     </table>
@@ -114,7 +114,7 @@
                                                 <tbody th:each="i: ${logs}">
                                                 <tr>
                                                     <td>
-                                                        <p th:text="${i.noHistory}">NULL</p>
+                                                        <p th:text="${i.getTransId}">NULL</p>
                                                     </td>
                                                     <td>
                                                         <p th:if="${i.type == true}">Nạp vào</p>
@@ -124,7 +124,7 @@
                                                         <p th:text="${#numbers.formatDecimal(i.value, 0, 'POINT', 0, 'COMMA')+'₫'}"></p>
                                                     </td>
                                                     <td>
-                                                        <p th:text="${#dates.format(i.createDate, 'dd-MM-yyyy HH:mm')}"></p>
+                                                        <p th:text="${#dates.format(i.createdDate, 'dd-MM-yyyy HH:mm')}"></p>
                                                     </td>
                                                     <td>
                                                         <p th:text="${i.paymentId}"></p>

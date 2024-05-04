@@ -26,14 +26,14 @@ public class Supplier {
     @Column(name = "supplier_id", nullable = false)
     private int supplierId;
 
-    @Column(name = "createDate", nullable = false)
-    private Date createDate;
+    @Column(name = "created_date", nullable = false)
+    private Date createdDate;
 
-    @Column(name = "isActive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    @Column(name = "level_supp", nullable = false)
-    private int levelSupp;
+    @Column(name = "level_supplier", nullable = false)
+    private int levelSupplier;
 
     @Column(name = "rating", nullable = false)
     private int rating;

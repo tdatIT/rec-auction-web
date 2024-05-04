@@ -22,14 +22,14 @@ public class Bid {
     private Double closingPrice;
 
 
-    @Column(name = "createDate", nullable = false)
-    private Timestamp createDate;
+    @Column(name = "created_date", nullable = false)
+    private Timestamp createdDate;
 
 
-    @Column(name = "end_date", nullable = false)
-    private Timestamp endDate;
+    @Column(name = "ended_date", nullable = false)
+    private Timestamp endedDate;
 
-    @Column(name = "isComplete", nullable = false)
+    @Column(name = "is_complete", nullable = false)
     private boolean isComplete;
 
     @Column(name = "product_key", nullable = false, length = 255)
@@ -48,7 +48,7 @@ public class Bid {
     private String productTagStr;
 
     @OneToMany(mappedBy = "bid", fetch = FetchType.LAZY)
-    private Collection<BidJoin> bidJoins;
+    private Collection<BidParticipant> bidderData;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -59,7 +59,7 @@ public class Bid {
     private User user;
 
     @OneToMany(mappedBy = "auction", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<AuctionImg> img;
+    private Collection<BidImg> img;
 
 
 }

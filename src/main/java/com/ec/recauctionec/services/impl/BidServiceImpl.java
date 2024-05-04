@@ -2,13 +2,13 @@ package com.ec.recauctionec.services.impl;
 
 import com.ec.recauctionec.data.dto.AuctionSessionDTO;
 import com.ec.recauctionec.data.entities.*;
-import com.ec.recauctionec.data.repositories.BidJoinRepos;
+import com.ec.recauctionec.data.repositories.BidParticipantRepos;
 import com.ec.recauctionec.data.repositories.BidRepos;
 import com.ec.recauctionec.data.repositories.UserRepo;
 import com.ec.recauctionec.data.repositories.WalletRepo;
 import com.ec.recauctionec.services.BidService;
 import com.ec.recauctionec.services.StorageImage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,21 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BidServiceImpl implements BidService {
-
     public final static double CHECK_AVAILABLE = 0.3D;
     public final static int CHECK_TOTAL_AUCTION = 5;
-
-    @Autowired
-    private BidRepos bidRepos;
-    @Autowired
-    private UserRepo user;
-    @Autowired
-    private WalletRepo walletRepo;
-    @Autowired
-    private StorageImage storageImage;
-    @Autowired
-    private BidJoinRepos joinRepo;
+    private final BidRepos bidRepos;
+    private final WalletRepo walletRepo;
+    private final StorageImage storageImage;
+    private final BidParticipantRepos joinRepo;
 
     @Override
     public List<Bid> findAllByDateAndPageSize(int page, int size, Date dateFilter) {
@@ -74,10 +67,10 @@ public class BidServiceImpl implements BidService {
                     //business logic process
                 }
                 if (dto.getImg() != null) {
-                    List<AuctionImg> imgs = new ArrayList<>();
+                    List<BidImg> imgs = new ArrayList<>();
                     List<String> filenames = storageImage.storageMultiImage(dto.getImg());
                     for (String name : filenames) {
-                        AuctionImg img = new AuctionImg();
+                        BidImg img = new BidImg();
                         img.setImageFile(name);
                         img.setAuction(auction);
                         imgs.add(img);
@@ -99,13 +92,13 @@ public class BidServiceImpl implements BidService {
         Bid auction = bidRepos.findById(auctionId).orElseThrow();
         if (auction != null) {
 
-            if (auction.getBidJoins().size() > 0) {
-                for (BidJoin join : auction.getBidJoins()) {
-                    join.setStatus(BidJoin.LOSS);
+            if (auction.getBidderData().size() > 0) {
+                for (BidParticipant join : auction.getBidderData()) {
+                    join.setStatus(BidParticipant.LOSS);
                     joinRepo.save(join);
                 }
-                BidJoin winner = joinRepo.findFirstByBidOrderByPriceAsc(auction);
-                winner.setStatus(BidJoin.WIN);
+                BidParticipant winner = joinRepo.findFirstByBidOrderByPriceAsc(auction);
+                winner.setStatus(BidParticipant.WIN);
                 auction.setComplete(true);
                 //save into db
                 bidRepos.save(auction);
@@ -119,8 +112,8 @@ public class BidServiceImpl implements BidService {
     public boolean cancelAuction(int auctionId) {
         Bid auction = bidRepos.findById(auctionId).orElseThrow();
         if (auction != null) {
-            for (BidJoin join : auction.getBidJoins()) {
-                join.setStatus(BidJoin.LOSS);
+            for (BidParticipant join : auction.getBidderData()) {
+                join.setStatus(BidParticipant.LOSS);
                 joinRepo.save(join);
             }
             auction.setComplete(true);
